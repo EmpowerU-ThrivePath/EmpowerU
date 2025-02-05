@@ -1,0 +1,1 @@
+The code and software for this project is not to be copied or used for the exact same purposes as the project's.

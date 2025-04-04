@@ -19,3 +19,6 @@ You can then make changes and commit: git commit -m "Describe your change"
 
 Finally, push any changes.
 
+# Running Project
+- Server: npm run dev
+- Client: npm run dev

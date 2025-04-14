@@ -7,6 +7,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import ProfileSettings from "./screens/Settings/Profile";
 import Login from "./screens/Login";
+import Home from './screens/Home';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -33,6 +34,7 @@ function App() {
       <NavBar/>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/Home" element={<Home />} />
           <Route path="/settings" element={<ProfileSettings />}>            
             <Route path="profile" element={<ProfileSettings/>} />
             <Route path="data" element={<ProfileSettings/>} />

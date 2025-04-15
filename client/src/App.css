@@ -110,17 +110,65 @@
 }
 
 /*HOME*/
+.homeHeader {
+  margin-left: 125px;
+}
+
+.homeHeading {
+  font-size: 35px;
+  margin-bottom: 0;
+}
+
+.homeText {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
 .allModulesDiv {
   display: flex;
   flex-wrap: wrap;
-  margin: auto;
-  width: 1450px;
+  gap: 40px;
+  justify-content: center;
 }
 
 .module {
   background-color: #F5F5F5;
-  width: 700px;
-  height: 300px;
-  margin: 10px;
+  width: 550px;
+  height: 250px;
+  border-radius: 20px;
+  padding: 50px;
+  position: relative;
+}
+
+.moduleName {
+  font-size: 28px;
+  margin: 0;
+}
+
+.moduleStatusDiv {
+  background-color: #FBFFAF;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.moduleStatusDiv p {
+  margin-bottom: 0;
+  padding: 6px 15px;
+  color: #9F7E1C;
+}
+
+.moduleButtonDiv {
+  background-color: #095C13;
+  color: white;
+  border-radius: 20px;
+  width: fit-content;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 50px;
+}
+
+.moduleButtonDiv p {
+  padding: 8px 50px;
+  margin: 0;
 }
 /*END HOME*/

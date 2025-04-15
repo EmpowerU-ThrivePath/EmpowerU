@@ -108,3 +108,19 @@
   height: 400px;
 }
 }
+
+/*HOME*/
+.allModulesDiv {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  width: 1450px;
+}
+
+.module {
+  background-color: #F5F5F5;
+  width: 700px;
+  height: 300px;
+  margin: 10px;
+}
+/*END HOME*/

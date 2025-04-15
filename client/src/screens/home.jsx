@@ -3,7 +3,30 @@ import React from 'react'
 const Home = () => {
     return (
         <>
-        <p>this is the dashboard</p>
+        <div>
+            <p>Good morning, <span>User!</span></p>
+            <p>Let’s begin working on your journey.</p>
+        </div>
+
+        <div className='allModulesDiv'>
+            <div className='module'>
+                <p>Resume</p>
+                <p>In progress</p>
+            </div>
+
+            <div className='module'>
+                <p>Resume</p>
+                <p>In progress</p>
+            </div>
+
+            <div className='module'>
+                <p>Module Name</p>
+            </div>
+
+            <div className='module'>
+                <p>Module Name</p>
+            </div>
+        </div>
         </>
     )
 }

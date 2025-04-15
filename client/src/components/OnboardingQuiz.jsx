@@ -139,8 +139,8 @@ const questions = [
 
 const OnboardingQuiz = () => {
   const [currentQuestionId, setCurrentQuestionId] = useState("graduation-date");
-  const [answers, setAnswers] = useState({});
-  const [history, setHistory] = useState({});
+  const [answers, setAnswers] = useState([]);
+  const [history, setHistory] = useState([]);
 
   const currentQuestion = questions.find((q) => q.id === currentQuestionId);
 
@@ -160,7 +160,7 @@ const OnboardingQuiz = () => {
     );
     const nextId = selectedOption?.next;
 
-    setHistory((prev) => [...prev, currentQuestion.id]);
+    setHistory((prev) => [...prev, currentQuestionId]);
 
     if (nextId) {
       setCurrentQuestionId(nextId);
@@ -181,10 +181,10 @@ const OnboardingQuiz = () => {
 
   let QuestionComponent;
   switch (currentQuestion.type) {
-    case "multiple-choice":
+    case "multiple":
       QuestionComponent = MultipleChoiceQuestion;
       break;
-    case "multi-select":
+    case "multi":
       QuestionComponent = MultiSelectQuestion;
       break;
     case "dropdown":

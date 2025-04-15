@@ -8,6 +8,9 @@ import NavBar from "./components/NavBar";
 import ProfileSettings from "./screens/Settings/Profile";
 import Login from "./screens/Login";
 
+// Deleting this later
+import OnboardingQuiz from "./components/OnboardingQuiz";
+
 function App() {
   const [count, setCount] = useState(0);
 
@@ -30,17 +33,18 @@ function App() {
 
   return (
     <>
-      <NavBar/>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/settings" element={<ProfileSettings />}>            
-            <Route path="profile" element={<ProfileSettings/>} />
-            <Route path="data" element={<ProfileSettings/>} />
-            <Route path="accessibility" element={<ProfileSettings/>} />
-            <Route path="security" element={<ProfileSettings/>} />
-            <Route path="support" element={<ProfileSettings/>} />
-          </Route>
-        </Routes>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/settings" element={<ProfileSettings />}>
+          <Route path="profile" element={<ProfileSettings />} />
+          <Route path="data" element={<ProfileSettings />} />
+          <Route path="accessibility" element={<ProfileSettings />} />
+          <Route path="security" element={<ProfileSettings />} />
+          <Route path="support" element={<ProfileSettings />} />
+        </Route>
+        <Route path="/quiz" element={<OnboardingQuiz />} />
+      </Routes>
     </>
   );
 }

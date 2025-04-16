@@ -182,3 +182,59 @@
   height: 250px;
 }
 /*END HOME*/
+
+/*ROADMAP*/
+.backBtn {
+  margin-left: 30px;
+}
+
+.flexContainer {
+  display: flex;
+  gap: 40px;
+  margin: 30px 70px;
+}
+
+.moduleInfo {
+  background-color: #F5F5F5;
+  border-radius: 20px;
+  height: 300px;
+  width: 650px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;  
+}
+
+.moduleContent {
+  margin: 20px;
+}
+
+.taskCount {
+  padding-top: 20px;
+}
+
+.nextTask {
+  background-color: pink;
+  border-radius: 20px;
+  height: 300px;
+  width: 500px;
+}
+
+.item2 {
+  background-color: lightgoldenrodyellow;
+  width: 400px;
+}
+
+.item3 {
+  background-color: white;
+  outline: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 150px;
+  border-radius: 40px;
+  position: absolute;
+  right: 0;
+  margin-right: 30px;
+}
+/*END ROADMAP*/

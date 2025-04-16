@@ -2,12 +2,72 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
+  padding: 26px 40px;
+  height: 25px;
+  background-color: #FFF;
+  box-shadow: 0px 10px 25px 1px #00000017;
+
 }
 
 .navbar-left {
   justify-content: left;
+  justify-content: center;
+  align-items: center;
 }
+
+.navbar-left h1 {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tab { 
+  text-decoration: none;
+  color: inherit ;
+  padding: 0 64px 0 0;
+}
+
+.drop-down {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.pfp {
+  width: 45px;
+  cursor: pointer;
+
+}
+
+.drop-down-options {
+  background-color: white;
+  position: absolute;
+  top: 120%;
+  right: 10%;
+  width: 170px;
+  border-radius: 10px;
+}
+
+.drop-down-tab {
+  text-decoration: none;
+  list-style: none;
+  color: inherit;
+  padding: 5px 0;
+}
+
+
+.drop-down-options li {
+  text-decoration: none;
+  list-style: none;
+  padding: 5px 0;
+}
+
 
 /* SETTINGS */
 .settings {

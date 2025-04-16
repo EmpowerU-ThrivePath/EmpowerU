@@ -1,13 +1,13 @@
+/*NAVBAR*/
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 26px 40px;
-  height: 25px;
+  height: 42px;
   background-color: #FFF;
   box-shadow: 0px 10px 25px 1px #00000017;
-
 }
 
 .navbar-left {
@@ -68,21 +68,35 @@
   padding: 5px 0;
 }
 
+/*NAVBAR END*/
+
 
 /* SETTINGS */
 .settings {
   display: flex;
+  margin: 40px 30px;
 }
 
+.settings h2 {
+  font-size: 2rem;
+}
+
+.settings-menu h2 {
+  font-size: 2rem;
+  padding-right: 70px;
+}
+
+
 .settings-menu {
-  width: 450px;
   padding: 0px 20px;
-  margin: 0px 24px;
+  margin: 0 40px 0 0;
   list-style: none;
+  font-size: 1.25rem;
 }
 
 .text-link {
   text-decoration: none;
+  color: inherit;
 }
 
 .settings-menu ul {
@@ -92,14 +106,63 @@
 .settings-menu li {
   list-style: none;
   text-decoration: none;
+  padding: 10px 0;
 }
 
+
+/*SETTINGS - PROFILE*/
+
+
 .profile-info {
-  background-color: gainsboro;
-  width: 900px;
-  height: 400px;
+  background-color: #F5F5F5;
+  padding: 48px 50px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.profile-info-pic {
+  vertical-align: top;
+}
+
+
+.profile-info-pfp {
+  width: 140px;
+  position: relative;
+  bottom: 50px;
+}
+
+.profile-info-text {
+  margin: 0 0 0 68px;
+}
+
+.profile-info-text h3{
+  margin: 0;
   padding: 0;
 }
+
+.profile-info-text h4{
+  font-size: 1rem;
+  color: #767676;
+  margin-bottom: 0;
+}
+
+.profile-info-text p{
+  font-size: 1rem;
+  margin: 0;
+}
+
+.profile-info-text-header {
+  margin: 0 50px 0 0;
+}
+
+
+/*SETTINGS - PROFILE END*/
+
+/*SETTINGS END*/
 
 
 @media only screen and (max-width: 480px) {

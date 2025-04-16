@@ -138,6 +138,12 @@
   border-radius: 20px;
   padding: 50px;
   position: relative;
+  display: flex;
+  position: relative;
+}
+
+.moduleContent {
+  flex: 1;
 }
 
 .moduleName {
@@ -170,5 +176,9 @@
 .moduleButtonDiv p {
   padding: 8px 50px;
   margin: 0;
+}
+
+.moduleImg img {
+  height: 250px;
 }
 /*END HOME*/

@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar";
 import ProfileSettings from "./screens/Settings/Profile";
 import Login from "./screens/Login";
 import Home from './screens/Home';
+import ChatBot from "./components/ChatBot";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -35,6 +36,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/Home" element={<Home />} />
+          <Route path="/ChatBot" element={<ChatBot />} />
           <Route path="/settings" element={<ProfileSettings />}>            
             <Route path="profile" element={<ProfileSettings/>} />
             <Route path="data" element={<ProfileSettings/>} />

@@ -6,13 +6,12 @@ import React from 'react'
 const Roadmap = () => {
     return (
         <>
-        <p className='back-btn'>&lt; Back</p>
-        
         <div className='flex-container'>
             <div className='item1'>
+            <p className='back-btn'>&lt; Back</p>
                 <div className='module-info'>
                     <div className='module-content'>
-                        <p className='home-heading'><b>Module name</b></p>
+                        <p className='home-heading'><b>Resume</b></p>
                         <p>Build a professional resume step-by-step with our guided tool.</p>
                         <div className='module-status-div'>
                             <p>In progress</p>

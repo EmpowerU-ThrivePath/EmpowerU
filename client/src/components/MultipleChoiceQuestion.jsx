@@ -6,11 +6,11 @@ const MultipleChoiceQuestion = ({ question, selectedValue, onAnswer }) => {
   };
 
   return (
-    <div className="multiple-choice-question">
-      <h2>{question.question}</h2>
-      <div className="options-container">
+    <div className="question-container">
+      <h2 className="question-text">{question.question}</h2>
+      <div className="options-grid">
         {question.options.map((option) => (
-          <label key={option.value} className="option-label">
+          <label key={option.value} className="option-card">
             <input
               type="radio"
               name={question.id}

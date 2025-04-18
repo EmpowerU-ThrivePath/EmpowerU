@@ -10,37 +10,24 @@ const SettingsMenu = () => {
     <div className="settings-menu">
       <h2>Settings</h2>
       <ul>
-        <Link to={"./Profile"} className="text-link">
+        <Link to="/profile" className="text-link">
           <li>Profile</li>
         </Link>
-        <Link to={"./Profile"} className="text-link">
+        <Link to="/data" className="text-link">
           <li>Data and Privacy</li>
         </Link>
-        <Link to={"./Profile"} className="text-link">
+        <Link to="/accessibility" className="text-link">
           <li>Accessibility</li>
         </Link>
-        <Link to={"./Profile"} className="text-link">
+        <Link to="/security" className="text-link">
           <li>Security</li>
         </Link>
-        <Link to={"./Profile"} className="text-link">
+        <Link to="/support" className="text-link">
           <li>Support</li>
         </Link>
       </ul>
     </div>
   );
 };
-    return (
-            <div className="settings-menu">
-                <h2>Settings</h2>
-                <ul>
-                    <Link to="/profile" className="text-link"><li>Profile</li></Link>
-                    <Link to="/data" className="text-link"><li>Data and Privacy</li></Link>
-                    <Link to="/accessibility" className="text-link"><li>Accessibility</li></Link>
-                    <Link to="/security" className="text-link"><li>Security</li></Link>
-                    <Link to="/support" className="text-link"><li>Support</li></Link>
-                </ul>
-            </div>
-    )
-}
 
 export default SettingsMenu;

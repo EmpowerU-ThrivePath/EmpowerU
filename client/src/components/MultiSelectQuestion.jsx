@@ -9,15 +9,13 @@ const MultiSelectQuestion = ({ question, selectedValue = [], onAnswer }) => {
   };
 
   return (
-    <div className="multi-select-container">
+    <div className="question-container">
       <h2 className="question-text">{question.question}</h2>
-      <div className="options-list">
+      <div className="options-grid">
         {question.options.map((option) => (
           <div
             key={option.value}
-            className={`option-card ${
-              selectedValue.includes(option.value) ? "selected" : ""
-            }`}
+            className="option-card"
             onClick={() => handleOptionClick(option.value)}
           >
             <input

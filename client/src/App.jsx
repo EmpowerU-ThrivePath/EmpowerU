@@ -5,15 +5,20 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 
 import NavBar from "./components/NavBar";
-import ProfileSettings from "./screens/Settings/Profile";
-import Login from "./screens/Login";
+import Profile from "./screens/Settings/Profile";
+import ProfileEdit from "./screens/Settings/Profile-Edit";
+import Data from "./screens/Settings/Data";
+import Accessibility from "./screens/Settings/Accessibility";
+import Security from "./screens/Settings/Security";
+import Support from "./screens/Settings/Support";
 
-// Deleting this later
-import OnboardingQuiz from "./components/OnboardingQuiz";
+import Login from "./screens/Login";
+import Home from "./screens/Home";
+import ChatBot from "./components/ChatBot";
+import Roadmap from "./screens/Roadmap";
+import Subtask from "./screens/subtask";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   //TEST
   const fetchAPI = async () => {
     await fetch("http://localhost:3000/api")
@@ -36,14 +41,16 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/settings" element={<ProfileSettings />}>
-          <Route path="profile" element={<ProfileSettings />} />
-          <Route path="data" element={<ProfileSettings />} />
-          <Route path="accessibility" element={<ProfileSettings />} />
-          <Route path="security" element={<ProfileSettings />} />
-          <Route path="support" element={<ProfileSettings />} />
-        </Route>
-        <Route path="/quiz" element={<OnboardingQuiz />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/roadmap" element={<Roadmap />} />
+        <Route path="/subtask" element={<Subtask />} />
+        <Route path="/chatBot" element={<ChatBot />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="profile/edit" element={<ProfileEdit />} />
+        <Route path="data" element={<Data />} />
+        <Route path="accessibility" element={<Accessibility />} />
+        <Route path="security" element={<Security />} />
+        <Route path="support" element={<Support />} />
       </Routes>
     </>
   );

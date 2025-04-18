@@ -233,21 +233,21 @@
 }
 
 /*HOME*/
-.homeHeader {
+.home-header {
   margin-left: 125px;
 }
 
-.homeHeading {
+.home-heading {
   font-size: 35px;
   margin-bottom: 0;
 }
 
-.homeText {
+.home-text {
   font-size: 18px;
   margin-bottom: 30px;
 }
 
-.allModulesDiv {
+.all-modules-div {
   display: flex;
   flex-wrap: wrap;
   gap: 40px;
@@ -265,59 +265,63 @@
   position: relative;
 }
 
-.moduleContent {
+.module-content {
   flex: 1;
+  margin: 20px;
 }
 
-.moduleName {
+.module-name {
   font-size: 28px;
   margin: 0;
 }
 
-.moduleStatusDiv {
+.module-status-div {
   background-color: #FBFFAF;
   border-radius: 10px;
   width: fit-content;
 }
 
-.moduleStatusDiv p {
+.module-status-div p {
   margin-bottom: 0;
   padding: 6px 15px;
   color: #9F7E1C;
 }
 
-.moduleButtonDiv {
+.home-button-div {
+  margin-bottom: 50px;
+  position: absolute;
+  bottom: 0;
+}
+
+.module-button-div {
   background-color: #095C13;
   color: white;
   border-radius: 20px;
   width: fit-content;
-  position: absolute;
-  bottom: 0;
-  margin-bottom: 50px;
 }
 
-.moduleButtonDiv p {
+.module-button-div p {
   padding: 8px 50px;
   margin: 0;
 }
 
-.moduleImg img {
+.module-img img {
   height: 250px;
 }
 /*END HOME*/
 
 /*ROADMAP*/
-.backBtn {
+.back-btn {
   margin-left: 30px;
 }
 
-.flexContainer {
+.flex-container {
   display: flex;
   gap: 40px;
   margin: 30px 70px;
 }
 
-.moduleInfo {
+.module-info {
   background-color: #F5F5F5;
   border-radius: 20px;
   height: 300px;
@@ -327,24 +331,69 @@
   margin-bottom: 40px;  
 }
 
-.moduleContent {
-  margin: 20px;
-}
-
-.taskCount {
+.task-count {
   padding-top: 20px;
 }
 
-.nextTask {
-  background-color: pink;
+.next-task {
+  background-color: #F5F5F5;
   border-radius: 20px;
-  height: 300px;
+  height: 400px;
   width: 500px;
 }
 
-.item2 {
-  background-color: lightgoldenrodyellow;
-  width: 400px;
+.next-task-content {
+  padding: 40px 25px;
+  height: 280px;
+  position: relative;
+}
+
+.next-task-button-div {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin-bottom: 20px;
+}
+
+.roadmap-steps {
+  width: 600px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step p {
+  text-align: center;
+}
+
+.step-bubble {
+  background-color: #E6E6E6;
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
+  box-shadow: 0 7px 5px rgba(0, 0, 0, .3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.green {
+  background-color: #095C13;
+}
+
+.bubble-img {
+  height: 40px;
 }
 
 .item3 {

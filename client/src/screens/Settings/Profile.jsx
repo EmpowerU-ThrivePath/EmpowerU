@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Link, Outlet } from 'react-router'
 
 import SettingsMenu from "../../components/SettingsMenu";
+import ProfileEdit from "./Profile-Edit";
 
-const ProfileSettings = () => {
+const Profile = () => {
   return (
     <div className="settings">
       <SettingsMenu />
@@ -28,12 +30,13 @@ const ProfileSettings = () => {
             </div>
           </div>
           <div className='profile-info-edit'>
-            edit
+            <Link to="/profile/edit" className="text-link"><li>edit</li></Link>
           </div>
         </div>
       </div>
     </div>
+    
   );
 };
 
-export default ProfileSettings;
+export default Profile;

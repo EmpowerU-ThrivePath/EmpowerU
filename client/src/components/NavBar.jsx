@@ -15,10 +15,10 @@ const NavBar = () => {
         </div>
         <div className="navbar-center"></div>
         <div className="navbar-right">
-          <Link to={"./Home"} className="tab">
+          <Link to="/home" className="tab">
             Dashboard{" "}
           </Link>
-          <Link to={"./Home"} className="tab">
+          <Link to="/home" className="tab">
             Next Step Navigator
           </Link>
           <div className="drop-down">
@@ -31,7 +31,7 @@ const NavBar = () => {
             {open && (
               <div className="drop-down-options">
                 <ul>
-                <li><Link to={"./settings"} className='drop-down-tab'>Profile</Link></li>
+                <li><Link to="/profile" className='drop-down-tab' onClick={toggleDropDown}>Profile</Link></li>
                   <li>Log out</li>
                 </ul>
               </div>

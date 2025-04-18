@@ -52,6 +52,7 @@
   right: 10%;
   width: 170px;
   border-radius: 10px;
+  box-shadow: 0px 10px 25px 1px #00000017;
 }
 
 .drop-down-tab {
@@ -158,6 +159,54 @@
 .profile-info-text-header {
   margin: 0 50px 0 0;
 }
+
+.profile-info-edit {
+  font-size: 1rem;
+  position: relative;
+  bottom: 160px;
+}
+
+.profile-info-edit li{
+  list-style: none;
+}
+
+.edit-profile-info {
+  display: block;
+  background-color: #00000017;
+  border-radius: 10px;
+}
+
+.edit-profile-info-pic {
+  display: flex;
+}
+
+.edit-profile-info-pfp {
+  width: 80px;
+}
+
+.edit-profile-info-text{
+  display: inline-block;
+}
+
+.data-use {
+  background-color: #00000017;
+  padding: 8px 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.data-ctrl {
+  background-color: #00000017;
+  padding: 8px 16px;
+  border-radius: 10px;
+}
+
+.password-change {
+  background-color: #00000017;
+  border-radius: 10px;
+  padding: 12px;
+}
+
 
 
 /*SETTINGS - PROFILE END*/

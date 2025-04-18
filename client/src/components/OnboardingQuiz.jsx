@@ -9,10 +9,6 @@ const questions = [
     id: "graduation-date",
     type: "dropdown",
     question: "What is your estimated graduation date?",
-    options: [
-      { label: "Graduation Year", value: "year", next: "long-term-goal" },
-      { label: "Month", value: "month", next: "long-term-goal" },
-    ],
   },
   {
     id: "long-term-goal",
@@ -138,34 +134,57 @@ const questions = [
 ];
 
 const OnboardingQuiz = () => {
-  const [currentQuestionId, setCurrentQuestionId] = useState("graduation-date");
-  const [answers, setAnswers] = useState([]);
+  const [currentQuestionId, setCurrentQuestionId] = useState(questions[0].id);
+  const [answers, setAnswers] = useState({});
   const [history, setHistory] = useState([]);
 
   const currentQuestion = questions.find((q) => q.id === currentQuestionId);
+  const currentIndex = questions.findIndex((q) => q.id === currentQuestionId);
 
   if (!currentQuestion) return <div>Question not found</div>;
 
-  const handleSelect = (value) => {
+  const handleAnswer = (answer) => {
     setAnswers((prev) => ({
       ...prev,
-      [currentQuestion.id]: value,
+      [currentQuestionId]: answer,
     }));
   };
 
   const handleContinue = () => {
-    const selectedValue = answers[currentQuestion.id];
-    const selectedOption = currentQuestion.options?.find(
-      (opt) => opt.value === selectedValue
-    );
-    const nextId = selectedOption?.next;
+    if (currentQuestion.type === "break") {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < questions.length) {
+        setHistory((prev) => [...prev, currentQuestionId]);
+        setCurrentQuestionId(questions[nextIndex].id);
+      }
+      return;
+    }
+
+    if (
+      !answers[currentQuestionId] ||
+      (Array.isArray(answers[currentQuestionId]) &&
+        answers[currentQuestionId].length === 0)
+    ) {
+      return;
+    }
 
     setHistory((prev) => [...prev, currentQuestionId]);
 
-    if (nextId) {
-      setCurrentQuestionId(nextId);
+    if (currentQuestion.type === "multiple") {
+      const selectedOption = currentQuestion.options.find(
+        (opt) => opt.value === answers[currentQuestionId]
+      );
+      if (selectedOption?.next) {
+        setCurrentQuestionId(selectedOption.next);
+        return;
+      }
+    }
+
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < questions.length) {
+      setCurrentQuestionId(questions[nextIndex].id);
     } else {
-      console.log("Done with Quiz!");
+      console.log("Quiz completed!", answers);
     }
   };
 
@@ -179,39 +198,76 @@ const OnboardingQuiz = () => {
     setCurrentQuestionId(previousId);
   };
 
-  let QuestionComponent;
-  switch (currentQuestion.type) {
-    case "multiple":
-      QuestionComponent = MultipleChoiceQuestion;
-      break;
-    case "multi":
-      QuestionComponent = MultiSelectQuestion;
-      break;
-    case "dropdown":
-      QuestionComponent = DropdownQuestion;
-      break;
-    case "break":
-      QuestionComponent = BreakQuestion;
-      break;
-    default:
-      return <div>Unfamiliar question type.</div>;
-  }
+  const renderQuestion = () => {
+    switch (currentQuestion.type) {
+      case "multiple":
+        return (
+          <MultipleChoiceQuestion
+            question={currentQuestion}
+            selectedValue={answers[currentQuestionId]}
+            onAnswer={handleAnswer}
+          />
+        );
+      case "multi":
+        return (
+          <MultiSelectQuestion
+            question={currentQuestion}
+            selectedValue={answers[currentQuestionId] || []}
+            onAnswer={handleAnswer}
+          />
+        );
+      case "dropdown":
+        return (
+          <DropdownQuestion
+            question={currentQuestion}
+            selectedValue={answers[currentQuestionId]}
+            onAnswer={handleAnswer}
+          />
+        );
+      case "break":
+        return <BreakQuestion question={currentQuestion} />;
+      default:
+        return <div>Unfamiliar question type.</div>;
+    }
+  };
 
   return (
-    <div>
-      <QuestionComponent
-        question={currentQuestion}
-        selectedValue={answers[currentQuestion.id]}
-        onSelect={handleSelect}
-      />
-      <div>
-        {history.length > 0 && <button onClick={handleBack}>Back</button>}
-        <button
-          onClick={handleContinue}
-          disabled={answers[currentQuestion.id == null]}
-        >
-          Continue
-        </button>
+    <div className="parent-container">
+      <div className="quiz-container">
+        <div className="quiz-content">
+          {renderQuestion()}
+
+          <div className="quiz-navigation">
+            {history.length > 0 && (
+              <button className="back-button" onClick={handleBack}>
+                Back
+              </button>
+            )}
+            {currentQuestion.type !== "break" && (
+              <button
+                className={`continue-button ${
+                  currentQuestion.type === "break" ? "break-continue" : ""
+                }`}
+                onClick={handleContinue}
+                disabled={
+                  currentQuestion.type !== "break" &&
+                  (!answers[currentQuestionId] ||
+                    (Array.isArray(answers[currentQuestionId]) &&
+                      answers[currentQuestionId].length === 0))
+                }
+              >
+                Continue
+              </button>
+            )}
+            {currentQuestion.type === "break" && (
+              <button className="continue-button" onClick={handleContinue}>
+                Continue
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="quiz-sidebar"></div>
       </div>
     </div>
   );

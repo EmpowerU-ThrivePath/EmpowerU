@@ -18,6 +18,8 @@ import ChatBot from "./components/ChatBot";
 import Roadmap from "./screens/Roadmap";
 import Subtask from "./screens/subtask";
 
+import OnboardingQuiz from "./components/OnboardingQuiz";
+
 function App() {
   //TEST
   const fetchAPI = async () => {
@@ -51,6 +53,7 @@ function App() {
         <Route path="accessibility" element={<Accessibility />} />
         <Route path="security" element={<Security />} />
         <Route path="support" element={<Support />} />
+        <Route path="/quiz" element={<OnboardingQuiz />} />
       </Routes>
     </>
   );

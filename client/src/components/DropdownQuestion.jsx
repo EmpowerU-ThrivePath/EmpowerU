@@ -38,16 +38,17 @@ const DropdownQuestion = ({ question, selectedValue, onAnswer }) => {
   };
 
   return (
-    <div className="dropdown-question">
-      <h2>{question.question}</h2>
+    <div className="question-container">
+      <h2 className="question-text">{question.question}</h2>
 
-      <div className="dropdown-group">
+      <div className="dropdown-question">
+        <p className="dropdown-description">Select Year</p>
         <select
           value={selections.year}
           onChange={(e) => handleChange("year", e.target.value)}
           className="dropdown-select"
         >
-          <option value="">Select Year</option>
+          <option value="">---</option>
           {years.map((year) => (
             <option key={year} value={year}>
               {year}
@@ -55,13 +56,14 @@ const DropdownQuestion = ({ question, selectedValue, onAnswer }) => {
           ))}
         </select>
 
+        <p className="dropdown-description">Select Month</p>
         <select
           value={selections.month}
           onChange={(e) => handleChange("month", e.target.value)}
           className="dropdown-select"
           disabled={!selections.year}
         >
-          <option value="">Select Month</option>
+          <option value="">---</option>
           {months.map((month) => (
             <option key={month} value={month}>
               {month}

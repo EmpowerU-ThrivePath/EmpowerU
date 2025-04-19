@@ -1,15 +1,34 @@
-const express = require("express")
-const app = express()
-const cors = require("cors")
-const OpenAI = require("openai")
-require("dotenv").config()
+import express from 'express';
+var app = express();
+import path from 'path'
+
+
+import router from './routes/api.js'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
+import cors from "cors"
+import OpenAI from 'openai'
+import dotenv from "dotenv/config"
+
 
 const corsOptions = {
     origin: ["http://localhost:5173"],
 }
-
 app.use(cors(corsOptions))
 app.use(express.json())
+
+import models from './models.js'
+app.use((req, res, next) => {
+    req.models = models
+    next()
+})
+
+app.use('/api', router)
 
 // Initialize OpenAI
 const openai = new OpenAI({

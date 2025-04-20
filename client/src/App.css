@@ -447,14 +447,67 @@
 /*END ROADMAP*/
 
 /* Subtask */
+
+.thirty-px {
+  font-size: 30px;
+}
+
 .subtask-div {
   margin: 30px 6%;
 }
 
 .progress-bar {
-  background-color: pink;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
   width: 100%;
-  height: 100px;
+  max-width: 1500px;
+  margin: 0 auto;
+  margin-top: 50px;
+  position: relative;
+}
+
+/*Need to fix length based on how many tasks there are. higher left and right %, shorter the line*/
+.progress-bar::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 10%;
+  right: 10%;
+  height: 4px;
+  background-color: #A0A0A0;
+  z-index: 0;
+}
+
+.progress-circle-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+.progress-circle {
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  z-index: 1
+}
+
+.progress-circle-incomplete {
+  border: 1px solid #095C13;
+}
+
+.progress-circle-inprogress {
+  border: 6px solid rgba(9, 92, 19, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inprogress-dot {
+  height: 40%;
 }
 
 .subtask-content {
@@ -462,8 +515,14 @@
 }
 
 .example-div {
-  background-color: lightblue;
+  background-color: #F5F5F5;
   height: 400px;
+  display: flex;
+  justify-content: center;
+}
+
+.example-img {
+  margin: 30px;
 }
 
 .all-tips {
@@ -472,7 +531,7 @@
 }
 
 .tip {
-  background-color: lightyellow;
+  background-color: #F5F5F5;
   width: 30%;
   height: 250px;
 }

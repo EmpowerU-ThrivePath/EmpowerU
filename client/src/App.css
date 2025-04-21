@@ -458,7 +458,7 @@
 
 .progress-bar {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   max-width: 1500px;
@@ -475,7 +475,7 @@
   left: 10%;
   right: 10%;
   height: 4px;
-  background-color: #A0A0A0;
+  background-color: #a0a0a0;
   z-index: 0;
 }
 
@@ -492,11 +492,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  z-index: 1
+  z-index: 1;
 }
 
 .progress-circle-incomplete {
-  border: 1px solid #095C13;
+  border: 1px solid #095c13;
 }
 
 .progress-circle-inprogress {
@@ -515,7 +515,7 @@
 }
 
 .example-div {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   height: 400px;
   display: flex;
   justify-content: center;
@@ -531,7 +531,7 @@
 }
 
 .tip {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   width: 30%;
   height: 250px;
 }
@@ -557,7 +557,7 @@
   padding: 0 20px;
   border-radius: 5%;
   border-style: solid;
-  border-color: #D9D9D9;
+  border-color: #d9d9d9;
   border-width: 2px;
 }
 
@@ -568,17 +568,18 @@
 .question-text {
   font-size: 3rem;
   color: #333;
-  align-items: center;
+  text-align: center;
   margin-left: 100px;
   margin-right: 100px;
 }
 
 .options-grid {
   display: grid;
-  justify-content: left;
-  flex-direction: column;
+  grid-template-columns: 1fr; /* Single column */
+  width: calc(100% - 300px); /* Full width minus 150px on each side */
+  margin: 0 auto; /* Centers the grid */
   gap: 25px;
-  margin-left: 150px;
+  padding: 0 150px; /* Creates the spacing */
 }
 
 .option-card {
@@ -589,6 +590,8 @@
   display: flex;
   align-items: center;
   font-size: 1.5rem;
+  width: 100%; /* Takes full width of its container */
+  box-sizing: border-box; /* Includes padding in width calculation */
 }
 
 .break-text {

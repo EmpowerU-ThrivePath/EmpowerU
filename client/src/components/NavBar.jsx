@@ -18,7 +18,7 @@ const NavBar = () => {
           <Link to="/home" className="tab">
             Dashboard{" "}
           </Link>
-          <Link to="/home" className="tab">
+          <Link to="/quiz" className="tab">
             Next Step Navigator
           </Link>
           <div className="drop-down">
@@ -31,7 +31,15 @@ const NavBar = () => {
             {open && (
               <div className="drop-down-options">
                 <ul>
-                <li><Link to="/profile" className='drop-down-tab' onClick={toggleDropDown}>Profile</Link></li>
+                  <li>
+                    <Link
+                      to="/profile"
+                      className="drop-down-tab"
+                      onClick={toggleDropDown}
+                    >
+                      Profile
+                    </Link>
+                  </li>
                   <li>Log out</li>
                 </ul>
               </div>

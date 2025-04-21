@@ -152,10 +152,16 @@ const OnboardingQuiz = () => {
 
   const handleContinue = () => {
     if (currentQuestion.type === "break") {
-      const nextIndex = currentIndex + 1;
-      if (nextIndex < questions.length) {
-        setHistory((prev) => [...prev, currentQuestionId]);
-        setCurrentQuestionId(questions[nextIndex].id);
+      setHistory((prev) => [...prev, currentQuestionId]);
+      const nextId = currentQuestion.options[0]?.next; // Always use the break's next path
+      if (nextId) {
+        setCurrentQuestionId(nextId);
+      } else {
+        // Fallback to sequential if next isn't specified
+        const nextIndex = currentIndex + 1;
+        if (nextIndex < questions.length) {
+          setCurrentQuestionId(questions[nextIndex].id);
+        }
       }
       return;
     }

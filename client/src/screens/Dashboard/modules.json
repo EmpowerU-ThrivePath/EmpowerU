@@ -1,0 +1,60 @@
+{
+    "resume": {
+        "id": "Resume",
+        "status": "Published",
+        "description": "Build a professional resume step-by-step with our guided tool.",
+        "subtasks": {
+            "Personal_Informtion": {
+                "task_title": "Add name and personal information",
+                "task_desc": {
+                    "p": ["Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your your information is accurate, professional, and up to date.", 
+                    "This should include:", 
+                    "Full name, Position, Location, Email, Phone number, Additional links"]
+                },
+                "example_img": "https://www.cvplaza.com/wp-content/uploads/2012/09/cv-personal-profile-statement.png",
+                "tips": [
+                    {
+                        "title": "Use a clear, readable font",
+                        "caption": "Choose a professional font to ensure your name and contact info are easy to read",
+                        "tip_img": "https://www.designyup.com/wp-content/uploads/2019/03/arial-font-sample.jpg"
+                    },
+                    {
+                        "title": "Have a professional email",
+                        "caption": "Use a simple, name-based email instead of a casual or outdated address",
+                        "tip_img": "https://pictarts.com/07/material/01-free/0054-clip-art-m.png"
+                    },
+                    {
+                        "title": "Include your LinkedIn/portfolio",
+                        "caption": "Add links to your LinkedIn or portfolio to showcase your work",
+                        "tip_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
+                    }
+                ],
+                "resources": [
+                    {
+                        "resource_title": "Including Personal Details on Your Resume",
+                        "resource_link": "https://www.indeed.com/career-advice/resumes-cover-letters/personal-details-on-resume"
+                    }, {
+                        "resource_title": "How to Write a Resume Personal Statement",
+                        "resource_link": "https://resume.io/blog/resume-personal-statement"
+                    }
+                ]
+            },
+            "Education": {
+                "task_desc": "Add education"
+            },
+            "Experience": {
+                "task_desc": "List work experience/projects"
+            },
+            "Skills": {
+                "task_desc": "Add skills"
+            },
+            "Proofread": {
+                "task_desc": "Proofread"
+            }
+        }
+    },
+    "portfolio": {
+        "id": "Portfolio",
+        "status": "In progress"
+    }
+}

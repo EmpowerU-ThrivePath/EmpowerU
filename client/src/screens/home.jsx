@@ -1,6 +1,15 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate();
+
+    const handleContinueClick = () => {
+        console.log('Continue clicked');
+        navigate('/roadmap');
+        //navigate('/roadmap', { state: { moduleName } });
+    };
+
     return (
         <>
         <div className='home-header'>
@@ -16,7 +25,7 @@ const Home = () => {
                         <p>In progress</p>
                     </div>
                     <div className='home-button-div'>
-                        <div className='module-button-div'>
+                        <div className='module-button-div' onClick={() => handleContinueClick()}>
                             <p>Continue</p>
                         </div>
                     </div>
@@ -29,19 +38,19 @@ const Home = () => {
 
             <div className='module'>
                 <div className='module-content'>
-                    <p className='module-name'><b>Module Name</b></p>
-                    <div className='module-status-div'>
-                        <p>User's Status</p>
+                    <p className='module-name'><b>Portfolio</b></p>
+                    <div className='module-status-div module-status-coming-soon'>
+                        <p>Coming soon</p>
                     </div>
                     <div className='home-button-div'>
-                        <div className='module-button-div'>
+                        <div className='module-button-div module-button-hidden'>
                             <p>Continue</p>
                         </div>
                     </div>
                     
                 </div>
                 <div className='module-img'>
-                    <img src='https://png.pngtree.com/element_our/20190530/ourmid/pngtree-white-spot-float-image_1256405.jpg'></img>
+                    <img src='https://png.pngtree.com/png-clipart/20220924/ourmid/pngtree-document-portfolio-png-image_6215067.png'></img>
                 </div>
             </div>
         </div>

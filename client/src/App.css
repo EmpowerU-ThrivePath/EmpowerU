@@ -289,19 +289,18 @@
 .all-modules-div {
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 4%;
   justify-content: center;
 }
 
 .module {
   background-color: #f5f5f5;
-  width: 550px;
+  width: 34%;
   height: 250px;
   border-radius: 20px;
   padding: 50px;
   position: relative;
   display: flex;
-  position: relative;
 }
 
 .module-content {
@@ -326,6 +325,18 @@
   color: #9f7e1c;
 }
 
+.module-status-coming-soon {
+  background-color: #D9D9D9;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.module-status-coming-soon p {
+  margin-bottom: 0;
+  padding: 6px 15px;
+  color: #3E3F40;
+}
+
 .home-button-div {
   margin-bottom: 50px;
   position: absolute;
@@ -342,6 +353,10 @@
 .module-button-div p {
   padding: 8px 50px;
   margin: 0;
+}
+
+.module-button-hidden {
+  display: none;
 }
 
 .module-img img {
@@ -371,6 +386,11 @@
 }
 
 .next-task {
+  background-color: #f5f5f5;
+  border-radius: 20px;
+}
+
+.next-task-info {
   background-color: #f5f5f5;
   border-radius: 20px;
   height: 400px;
@@ -447,7 +467,6 @@
 /*END ROADMAP*/
 
 /* Subtask */
-
 .thirty-px {
   font-size: 30px;
 }
@@ -475,7 +494,7 @@
   left: 10%;
   right: 10%;
   height: 4px;
-  background-color: #a0a0a0;
+  background-color: #A0A0A0;
   z-index: 0;
 }
 
@@ -492,11 +511,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  z-index: 1;
+  z-index: 1
 }
 
 .progress-circle-incomplete {
-  border: 1px solid #095c13;
+  border: 1px solid #095C13;
 }
 
 .progress-circle-inprogress {
@@ -515,7 +534,7 @@
 }
 
 .example-div {
-  background-color: #f5f5f5;
+  background-color: #F5F5F5;
   height: 400px;
   display: flex;
   justify-content: center;
@@ -531,7 +550,7 @@
 }
 
 .tip {
-  background-color: #f5f5f5;
+  background-color: #F5F5F5;
   width: 30%;
   height: 250px;
 }
@@ -557,10 +576,9 @@
   padding: 0 20px;
   border-radius: 5%;
   border-style: solid;
-  border-color: #d9d9d9;
+  border-color: #D9D9D9;
   border-width: 2px;
 }
-
 /* End Subtask */
 
 /* QUIZ */

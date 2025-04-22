@@ -1,14 +1,24 @@
 import React from 'react'
-
-// do tmrw: create standard className for text size only
-// redo className naming convention to "dash-separated"
+import { useNavigate } from 'react-router-dom';
 
 const Roadmap = () => {
+    const navigate = useNavigate();
+
+    const handleBackClick = () => {
+        navigate('/home');
+    };
+
+    const handleContinueClick = () => {
+        console.log('Continue clicked');
+        navigate('/subtask');
+        //navigate('/subtask', { state: { taskName } });
+    };
+
     return (
         <>
         <div className='flex-container'>
             <div className='item1'>
-            <p className='back-btn'>&lt; Back</p>
+            <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
                 <div className='module-info'>
                     <div className='module-content'>
                         <p className='home-heading'><b>Resume</b></p>
@@ -27,7 +37,7 @@ const Roadmap = () => {
                         <p>Include your full name, phone number, email address, and additional links</p>
                         
                         <div className='next-task-button-div'>
-                            <div className='module-button-div'>
+                            <div className='module-button-div' onClick={() => handleContinueClick()}>
                                 <p>Start task</p>
                             </div>
                         </div>

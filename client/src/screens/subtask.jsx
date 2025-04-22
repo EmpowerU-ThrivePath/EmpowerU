@@ -1,10 +1,18 @@
 import React from 'react'
+import {useNavigate} from 'react-router-dom'
 
 const Subtask = () => {
+    const navigate = useNavigate();
+
+    const handleBackClick = () => {
+        console.log(`Back clicked`);
+        navigate('/roadmap');
+    };
+    
     return (
         <>
         <div className='subtask-div'>
-            <p className='back-btn'>&lt; Back</p>
+            <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
             
             <div className='progress-bar'>
                 <div className='progress-circle-div'>
@@ -80,11 +88,11 @@ const Subtask = () => {
            <p className='thirty-px'><b>Resources</b></p>
            <div className='resource-div'>
                 <div className='resource'>
-                    <p>Free Resume Examples and Samples for 2025</p>
+                    <p><a href='https://www.indeed.com/career-advice/resumes-cover-letters/personal-details-on-resume' target='_blank'>Including Personal Details on Your Resume</a></p>
                 </div>
 
                 <div className='resource'>
-                    <p>Free Resume Examples and Samples for 2025</p>
+                    <p><a href='https://resume.io/blog/resume-personal-statement' target='_blank'>How to Write a Resume Personal Statement</a></p>
                 </div>
            </div>
            

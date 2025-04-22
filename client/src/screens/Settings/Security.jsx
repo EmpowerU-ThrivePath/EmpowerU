@@ -13,7 +13,7 @@ const Security = () => {
         <div className="password-change">
           <h3>Password</h3>
           <p>
-            Change password: Update your password to keep your account secure.
+            <span className="slight-bold">Change password:</span> Update your password to keep your account secure.
           </p>
           <form>
             <div className="form-group">
@@ -28,7 +28,7 @@ const Security = () => {
               <label htmlFor="reNewPass">Re-type new password</label>
               <input type="password" id="reNewPass" />
             </div>
-            <input type="submit" value="Change password" />
+            <input className="password-submit" type="submit" value="Change password" />
           </form>
         </div>
       </div>

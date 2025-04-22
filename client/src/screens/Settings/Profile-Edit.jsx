@@ -80,7 +80,7 @@ const ProfileEdit = () => {
                 <input type="text" id="job" />
               </div>
             </div>
-            <input className="save" type="submit" value="Save" />
+            <Link to="/profile"><input className="save" type="submit" value="Save" /></Link>
           </form>
         </div>
       </div>

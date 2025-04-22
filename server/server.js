@@ -27,7 +27,8 @@ app.post("/api/chat", async (req, res) => {
         const { message } = req.body
 
         const systemMessage = `
-            You are a supportive and professional resume mentor. The user's career goal is: ${careerGoal}.
+            You are a supportive and professional resume mentor. The user's career goal is: tech related.
+         
 
             Your job is to help the user improve their resume bullet points to better align with this goal.
 

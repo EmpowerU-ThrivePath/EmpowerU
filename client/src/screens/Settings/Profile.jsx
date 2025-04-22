@@ -30,7 +30,7 @@ const Profile = () => {
             </div>
           </div>
           <div className='profile-info-edit'>
-            <Link to="/profile/edit" className="text-link"><li>edit</li></Link>
+            <Link to="/profile/edit"><img src="\edit 1.png" className="profile-info-edit-icon"></img></Link>
           </div>
         </div>
       </div>

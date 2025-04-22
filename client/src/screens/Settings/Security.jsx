@@ -12,16 +12,24 @@ const Security = () => {
         <p>Your security is our priority.</p>
         <div className="password-change">
           <h3>Password</h3>
-          <p>Change password: Update your password to keep your account secure.</p>
-        <form>
-        <label for="currentPass">Current password</label>
-        <input type="text" id="currentPass" />
-        <label for="newPass">New password</label>
-        <input type="text" id="newPass" />
-        <label for="reNewPass">Re-type new password</label>
-        <input type="text" id="reNewPass" />
-        <input type="submit" value="Change password" />
-        </form>
+          <p>
+            Change password: Update your password to keep your account secure.
+          </p>
+          <form>
+            <div className="form-group">
+              <label htmlFor="currentPass">Current password</label>
+              <input type="password" id="currentPass" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newPass">New password</label>
+              <input type="password" id="newPass" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="reNewPass">Re-type new password</label>
+              <input type="password" id="reNewPass" />
+            </div>
+            <input type="submit" value="Change password" />
+          </form>
         </div>
       </div>
     </div>

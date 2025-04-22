@@ -40,7 +40,7 @@ const NavBar = () => {
                       Profile
                     </Link>
                   </li>
-                  <li>Log out</li>
+                  <Link to="/" className="drop-down-tab" onClick={toggleDropDown}><li>Log out</li></Link>
                 </ul>
               </div>
             )}

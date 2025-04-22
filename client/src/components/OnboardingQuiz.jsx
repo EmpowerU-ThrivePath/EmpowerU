@@ -266,9 +266,9 @@ const OnboardingQuiz = () => {
               </button>
             )}
             {currentQuestion.type === "break" && (
-              <button className="continue-button" onClick={handleContinue}>
+              <Link to="/home"><button className="continue-button" onClick={handleContinue}>
                 Continue
-              </button>
+              </button></Link>
             )}
           </div>
         </div>

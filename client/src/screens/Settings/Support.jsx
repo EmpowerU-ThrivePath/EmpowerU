@@ -12,9 +12,6 @@ const Support = () => {
         <p>Need help? We’re here for you! </p>
         <div className="password-change">
           <h3>Contact Support</h3>
-          <p>
-            Change password: Update your password to keep your account secure.
-          </p>
           <form>
             <div className="form-group">
               <label htmlFor="contact-name">Name</label>
@@ -26,9 +23,9 @@ const Support = () => {
             </div>
             <div className="form-group">
               <label htmlFor="message">Message</label>
-              <input type="text" id="message" />
+              <input className="message" type="text" id="message" />
             </div>
-            <input type="submit" value="Send" />
+            <input className="password-submit" type="submit" value="Send" />
           </form>
         </div>
       </div>

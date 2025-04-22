@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router";
 
-const Login = () => {
+const Signup = () => {
     return (
         <div className='login'>
             <div className='login-left'>
@@ -9,8 +9,12 @@ const Login = () => {
                     <img src="\ThrivePath.png" className="logo" alt="ThrivePath"></img>
                 </div>
                 <div className='login-left-text'>
-                    <h2>Welcome Back!</h2>
+                    <h2>Create Your Account</h2>
                     <form>
+                    <div className="form-group">
+                            <label for="full-name-login">Full name</label>
+                            <input type="text" id="full-name-login" />
+                        </div>
                         <div className="form-group">
                             <label for="email-login">Email</label>
                             <input type="text" id="email-login" />
@@ -19,9 +23,9 @@ const Login = () => {
                             <label for="password-login">Password</label>
                             <input type="text" id="password-login" />
                         </div>
-                        <Link to="/quiz"><input type="submit" value="Log In" className='login-submit' /></Link>
+                        <Link to="/quiz"><input type="submit" value="Sign Up" className='signup-submit' /></Link>
                     </form>
-                    <p>Don't have an account? <Link to="/signup" class="signup-link">Sign Up</Link></p>
+                    <p>Already have an account? <Link to="/" class="signup-link">Log In</Link></p>
                 </div>
             </div>
             <div className='login-right'>
@@ -34,4 +38,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Signup

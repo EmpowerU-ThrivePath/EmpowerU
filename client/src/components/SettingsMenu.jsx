@@ -16,9 +16,9 @@ const SettingsMenu = () => {
         <Link to="/data" className="text-link">
           <li>Data and Privacy</li>
         </Link>
-        <Link to="/accessibility" className="text-link">
+        {/* <Link to="/accessibility" className="text-link">
           <li>Accessibility</li>
-        </Link>
+        </Link> */}
         <Link to="/security" className="text-link">
           <li>Security</li>
         </Link>

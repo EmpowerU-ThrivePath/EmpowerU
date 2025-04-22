@@ -12,16 +12,24 @@ const Support = () => {
         <p>Need help? We’re here for you! </p>
         <div className="password-change">
           <h3>Contact Support</h3>
-          <p>Change password: Update your password to keep your account secure.</p>
-        <form>
-        <label for="contact-name">Name</label>
-        <input type="text" id="contact-name" />
-        <label for="contact-email">Email</label>
-        <input type="text" id="contact-email" />
-        <label for="message">Message</label>
-        <input type="text" id="message" />
-        <input type="submit" value="Send" />
-        </form>
+          <p>
+            Change password: Update your password to keep your account secure.
+          </p>
+          <form>
+            <div className="form-group">
+              <label htmlFor="contact-name">Name</label>
+              <input type="text" id="contact-name" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="contact-email">Email</label>
+              <input type="text" id="contact-email" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="message">Message</label>
+              <input type="text" id="message" />
+            </div>
+            <input type="submit" value="Send" />
+          </form>
         </div>
       </div>
     </div>

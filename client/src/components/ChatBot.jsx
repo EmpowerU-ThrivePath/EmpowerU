@@ -5,7 +5,7 @@ import './ChatBot.css'
 const ChatBot = () => {
     const [message, setMessage] = useState('')
     const [chatHistory, setChatHistory] = useState([
-        { role: 'assistant', content: 'Hello! I\'m your educational assistant. How can I help you today?' }
+        { role: 'assistant', content: 'ThriveBot is here to help! Paste your resume bullet points in the chat to get started.' }
     ])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
@@ -45,6 +45,9 @@ const ChatBot = () => {
 
     return (
         <div className="chatbot">
+            <div className="thrivebot-title">
+                <h1>ThriveBot</h1>
+            </div>
             <div className="chatbot-header">
                 <h2>Check Your Work!</h2>
             </div>
@@ -65,7 +68,7 @@ const ChatBot = () => {
                     type="text"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Type your message here..."
+                    placeholder="Paste your work experience here..."
                     disabled={isLoading}
                 />
                 <button type="submit" disabled={isLoading}>

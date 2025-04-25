@@ -40,7 +40,7 @@ function App() {
   //END TEST
 
   const location = useLocation();
-  const hideNavBarRoutes = ["/", "/signup", "/quiz"]; 
+  const hideNavBarRoutes = ["/", "/signup", "/quiz"];
   const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname);
 
   return (

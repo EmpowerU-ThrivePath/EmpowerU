@@ -20,11 +20,14 @@ const Home = () => {
 
     console.log(modulesData);
 
-    const handleContinueClick = () => {
-        console.log('Continue clicked');
-        navigate('/roadmap');
-        //navigate('/roadmap', { state: { moduleName } });
+    const handleContinueClick = (moduleId) => {
+        console.log('Clicked ' + moduleId);
+        navigate('/roadmap', { state: { moduleId } });
     };
+
+    if(!modulesData) {
+        return <div>Loading modules...</div>
+    }
 
     return (
         <>
@@ -34,42 +37,25 @@ const Home = () => {
         </div>
 
         <div className='all-modules-div'>
-            
-            <div className='module'>
-                <div className='module-content'>
-                    <p className='module-name'><b>Resume</b></p>
-                    <div className='module-status-div'>
-                        <p>In progress</p>
+            {modulesData.map((module, index) => (
+                <div className='module' key={index}>
+                    <div className='module-content'>
+                    <p className='module-name'><b>{ module.id }</b></p>
+                    <div className={`module-status-div ${module.status === 'Published' ? '' : 'module-status-coming-soon'}`}>
+                        <p>{module.status === 'Published' ? 'In Progress' : 'Coming Soon'}</p>
                     </div>
                     <div className='home-button-div'>
-                        <div className='module-button-div' onClick={() => handleContinueClick()}>
+                        <div className={`module-button-div ${module.status === 'Published' ? '' : 'module-button-hidden'}`} onClick={() => handleContinueClick(module.id)}>
                             <p>Continue</p>
                         </div>
                     </div>
                     
-                </div>
-                <div className='module-img'>
-                    <img src='https://media.istockphoto.com/id/1304527612/vector/resumes-cv-application-resume-filling-concept-writing-business-resume-job-search-resume.jpg?s=612x612&w=0&k=20&c=wKhHHikcoQJ1pEGaOgSUWsRoXEYr1TTbvbHcrpm1zGo='></img>
-                </div>
-            </div>
-
-            <div className='module'>
-                <div className='module-content'>
-                    <p className='module-name'><b>Portfolio</b></p>
-                    <div className='module-status-div module-status-coming-soon'>
-                        <p>Coming soon</p>
                     </div>
-                    <div className='home-button-div'>
-                        <div className='module-button-div module-button-hidden'>
-                            <p>Continue</p>
-                        </div>
+                    <div className='module-img'>
+                        <img src={ module.img } alt={`${module.id} module`}></img>
                     </div>
-                    
                 </div>
-                <div className='module-img'>
-                    <img src='https://png.pngtree.com/png-clipart/20220924/ourmid/pngtree-document-portfolio-png-image_6215067.png'></img>
-                </div>
-            </div>
+            ))}
         </div>
         </>
     )

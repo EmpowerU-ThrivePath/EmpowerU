@@ -1,8 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Roadmap = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const moduleId = location.state?.moduleId;
+    console.log("Opening " + moduleId);
 
     const handleBackClick = () => {
         navigate('/home');

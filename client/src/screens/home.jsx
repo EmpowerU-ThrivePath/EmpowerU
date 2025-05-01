@@ -1,8 +1,24 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Home = () => {
     const navigate = useNavigate();
+    const [modulesData, setModulesData] = useState(null);
+    let modulesArray = [];
+
+    useEffect(() => {
+        fetch('/Dashboard/modules.json')
+          .then(response => response.json())
+          .then((data) => {
+            modulesArray = Object.values(data); 
+            setModulesData(modulesArray);
+          })
+          .catch(error => console.error('Error fetching modules:', error));
+    }, []);
+
+    console.log(modulesData);
 
     const handleContinueClick = () => {
         console.log('Continue clicked');
@@ -18,6 +34,7 @@ const Home = () => {
         </div>
 
         <div className='all-modules-div'>
+            
             <div className='module'>
                 <div className='module-content'>
                     <p className='module-name'><b>Resume</b></p>

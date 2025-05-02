@@ -81,7 +81,7 @@ app.post("/api/chat", async (req, res) => {
                 }
             ],
             temperature: 0.7,
-            max_tokens: 80
+            max_tokens: 2000
         })
 
         console.log("OpenAI response received")

@@ -1,5 +1,6 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
+import ChatBot from '../components/ChatBot'
 
 const Subtask = () => {
     const navigate = useNavigate();
@@ -96,6 +97,7 @@ const Subtask = () => {
                 </div>
            </div>
            
+           <ChatBot />
         </div>
         </>
     )

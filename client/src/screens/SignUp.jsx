@@ -45,8 +45,7 @@ const Signup = () => {
                     email: '',
                     grad_year: '',
                     intended_career: '',
-                    password: '',
-                    signed_in: false
+                    password: ''
                 })
                 navigate("/");
             } else {

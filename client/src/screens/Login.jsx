@@ -19,13 +19,11 @@ const Login = ({ setUser, setIsLoggedIn }) => {
         event.preventDefault()
         console.log("sending this login info", loginInfo)
 
-        // Validate input fields
         if (!loginInfo.email || !loginInfo.password) {
             alert("Please fill in both email and password!");
         } else {
 
             try {
-                // Send the email and password to the backend
                 const response = await fetch('http://localhost:3000/api/login', {
                     method: 'POST',
                     headers: {

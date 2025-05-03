@@ -27,6 +27,7 @@ router.post('/signup', async (req, res) => {
     }
 })
 
+//verifying login
 router.post('/', async (req, res) => {
     console.log(req.body)
     const { email, password } = req.body;

@@ -1,11 +1,19 @@
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router";
+import { useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = (setIsLoggedIn) => {
+  const navigate = useNavigate()
+
   const [open, setOpen] = useState(false);
   const toggleDropDown = () => {
     setOpen(!open);
-  };
+  }
+
+  const signOut = () => {
+    setIsLoggedIn(false)
+    navigate("/")
+  }
 
   return (
     <>
@@ -40,7 +48,10 @@ const NavBar = () => {
                       Profile
                     </Link>
                   </li>
-                  <Link to="/" className="drop-down-tab" onClick={toggleDropDown}><li>Log out</li></Link>
+                  <Link to="/" className="drop-down-tab" onClick={() => {
+                    toggleDropDown();
+                    signOut();
+                  }}><li>Log out</li></Link>
                 </ul>
               </div>
             )}

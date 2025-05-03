@@ -1,7 +1,57 @@
-import React from 'react'
-import { Link } from "react-router";
+import React, { useState } from 'react';
+import { Link, useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUser, setIsLoggedIn }) => {
+
+
+    const navigate = useNavigate()
+    const [loginInfo, setLoginInfo] = useState({
+        email: '',
+        password: ''
+    })
+
+    const handleChange = (event) => {
+        setLoginInfo({ ...loginInfo, [event.target.name]: event.target.value });
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        console.log("sending this login info", loginInfo)
+
+        // Validate input fields
+        if (!loginInfo.email || !loginInfo.password) {
+            alert("Please fill in both email and password!");
+        } else {
+
+            try {
+                // Send the email and password to the backend
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify((loginInfo)),
+                });
+
+                if (response.ok) {
+                    console.log("Login successful")
+                    const data = await response.json();
+                    setUser(data.userId);
+                    setIsLoggedIn(true);
+                    console.log("this is id,", data.user)
+                    navigate("/home")
+                } else {
+
+                    alert(data.message || 'Invalid username or password.');
+                }
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert("An error occurred during login.");
+            }
+        }
+    }
+
     return (
         <div className='login'>
             <div className='login-left'>
@@ -10,16 +60,16 @@ const Login = () => {
                 </div>
                 <div className='login-left-text'>
                     <h2>Welcome Back!</h2>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label for="email-login">Email</label>
-                            <input type="text" id="email-login" />
+                            <input type="text" id="email-login" name="email" value={loginInfo.email} onChange={handleChange} />
                         </div>
                         <div className="form-group">
                             <label for="password-login">Password</label>
-                            <input type="text" id="password-login" />
+                            <input type="password" id="password-login" name="password" value={loginInfo.password} onChange={handleChange} />
                         </div>
-                        <Link to="/quiz"><input type="submit" value="Log In" className='login-submit' /></Link>
+                        <input type="submit" value="Log In" className='login-submit' />
                     </form>
                     <p>Don't have an account? <Link to="/signup" class="signup-link">Sign Up</Link></p>
                 </div>

@@ -14,7 +14,7 @@ const __dirname = dirname(__filename);
 import cors from "cors"
 import OpenAI from 'openai'
 import dotenv from "dotenv/config"
-
+    
 
 const corsOptions = {
     origin: ["http://localhost:5173"],
@@ -23,12 +23,15 @@ app.use(cors(corsOptions))
 app.use(express.json())
 
 import models from './models.js'
+
 app.use((req, res, next) => {
     req.models = models
     next()
 })
 
-app.use('/api', router)
+import apiRouter from "./routes/api.js"
+
+app.use('/api', apiRouter)
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -94,6 +97,8 @@ app.post("/api/chat", async (req, res) => {
         })
     }
 })
+
+app.use('/api', apiRouter);
 
 app.listen(3000, () => {
     console.log("Server listening on port 3000")

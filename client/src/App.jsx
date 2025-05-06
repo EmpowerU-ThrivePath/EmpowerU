@@ -23,23 +23,54 @@ import OnboardingQuiz from "./components/OnboardingQuiz";
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null)
+
+  const location = useLocation()
+  const hideNavBarRoutes = ["/", "/signup", "/quiz"]
+  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname)
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/login/loggedin', {
+          credentials: 'include'
+        })
+        const data = await res.json()
+        console.log("Session on or nah:", data.loggedIn)
+        setIsLoggedIn(data.loggedIn)
+        if (data.userId) setUser(data.userId)
+      } catch (error) {
+        console.error("error loading user info", error)
+      } finally {
+        setLoading(false)
+      }
+    };
+
+    checkLoggedIn();
+  }, []);
 
   const PrivateRoute = ({ children }) => {
-    return isLoggedIn ? children : <Navigate to="/" />;
+    if (loading) {
+      return null
+    } else {
+      return isLoggedIn ? children : <Navigate to="/" />
+    }
   }
-
-  const location = useLocation();
-  const hideNavBarRoutes = ["/", "/signup", "/quiz"];
-  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname)
 
 
   return (
     <>
       {!shouldHideNavBar && <NavBar setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
-        <Route path="/" element={<Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? <Navigate to="/home" /> : <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+          }
+        />
         <Route path="/signup" element={<Signup />} />
         <Route
           path="/home"
@@ -56,7 +87,7 @@ function App() {
           path="/profile"
           element={
             <PrivateRoute>
-              <Profile user="68156b3fb834217290977fa2" />
+              <Profile user={user} setIsLoggedIn={setIsLoggedIn} />
             </PrivateRoute>
           }
         />
@@ -64,7 +95,7 @@ function App() {
           path="/profile/edit"
           element={
             <PrivateRoute>
-              <ProfileEdit user="68156b3fb834217290977fa2" />
+              <ProfileEdit user={user} />
             </PrivateRoute>
           }
         />
@@ -75,7 +106,7 @@ function App() {
         <Route path="/quiz" element={<OnboardingQuiz />} />
       </Routes>
     </>
-  );
+  )
 }
 
 export default App;

@@ -26,9 +26,19 @@ router.post('/signup', async (req, res) => {
     }
 })
 
-//verifying login
+//verify if logged in
+router.get('/loggedin', async (req, res) => {
+    if (req.session.userId) {
+        res.send({loggedIn: true, userId: req.session.userId})
+    } else {
+        console.log("KICKED OUT")
+        res.send({loggedIn: false})
+    }
+})
+
+// login
 router.post('/', async (req, res) => {
-    console.log(req.body)
+    console.log("login info", req.body)
     const { email, password } = req.body;
     try {
         const user = await req.models.Profile.findOne({ email: email });
@@ -40,6 +50,9 @@ router.post('/', async (req, res) => {
                     return res.status(500).json({ "status": "error", "error": err });
                 }
                 if (isMatch) {
+                    req.session.userId = user._id
+                    console.log("check", req.session.userId)
+                    console.log("session info", req.session)
                     res.send({ "status": "success", "userId": user._id })
                     console.log("worked!")
                 } else {
@@ -53,8 +66,18 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.get("/logout", async (req, res) => {
-    req.session.destroy()
-})
+router.delete("/logout", (req, res) => {
+    req.session.destroy(err => {
+      if (err) {
+        console.error("Logout error:", err)
+        return res.status(500).send("Could not log out")
+      }
+  
+      res.clearCookie("connect.sid", {
+        path: "/"
+      })
+        res.send({ message: "Logged out successfully" })
+    })
+  });
 
 export default router;

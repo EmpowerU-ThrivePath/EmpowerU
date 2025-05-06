@@ -16,7 +16,8 @@ const profileSchema = new mongoose.Schema({
     email: String,
     grad_year: String,
     intended_career: String,
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    signed_in: Boolean
 })
 
      

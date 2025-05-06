@@ -33,6 +33,34 @@ import apiRouter from "./routes/api.js"
 
 app.use('/api', apiRouter)
 
+import cookieParser from 'cookie-parser';
+import sessions from 'express-session';
+
+
+// parsing the incoming data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+//serving public file
+app.use(express.static(__dirname));
+
+// cookie parser middleware
+app.use(cookieParser());
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(sessions({
+    secret: "secretkey1ibfvw983hf",
+    saveUninitialized:true,
+    cookie: { maxAge: oneDay },
+    resave: false 
+}))
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+var session
+
+
 // Initialize OpenAI
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY

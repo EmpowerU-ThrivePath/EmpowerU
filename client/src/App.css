@@ -402,6 +402,7 @@ body {
   padding: 50px;
   position: relative;
   display: flex;
+  margin-bottom: 3%;
 }
 
 .module-content {

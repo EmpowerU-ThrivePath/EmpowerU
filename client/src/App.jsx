@@ -23,8 +23,8 @@ import OnboardingQuiz from "./components/OnboardingQuiz";
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState()
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
   const PrivateRoute = ({ children }) => {
     return isLoggedIn ? children : <Navigate to="/" />;
@@ -52,8 +52,22 @@ function App() {
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/subtask" element={<Subtask />} />
         <Route path="/chatBot" element={<ChatBot />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/edit" element={<ProfileEdit />} />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile user="68156b3fb834217290977fa2" />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <PrivateRoute>
+              <ProfileEdit user="68156b3fb834217290977fa2" />
+            </PrivateRoute>
+          }
+        />
         <Route path="/data" element={<Data />} />
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/security" element={<Security />} />

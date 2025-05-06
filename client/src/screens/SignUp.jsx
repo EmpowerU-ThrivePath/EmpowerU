@@ -47,7 +47,7 @@ const Signup = () => {
                     intended_career: '',
                     password: ''
                 })
-                navigate("/");
+                navigate("/")
             } else {
                 throw new Error('Profile could not be saved');
             }

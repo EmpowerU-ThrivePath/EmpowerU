@@ -29,7 +29,7 @@ const Login = ({ setUser, setIsLoggedIn }) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify((loginInfo)),
+                    body: JSON.stringify((loginInfo))
                 });
 
                 if (response.ok) {

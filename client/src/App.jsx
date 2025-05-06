@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -21,40 +21,53 @@ import Subtask from "./screens/subtask";
 
 import OnboardingQuiz from "./components/OnboardingQuiz";
 
-function App() {
-  //TEST
-  const fetchAPI = async () => {
-    await fetch("http://localhost:3000/api")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("womp womp");
-      });
-  };
 
-  useEffect(() => {
-    fetchAPI();
-  }, []);
-  //END TEST
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const PrivateRoute = ({ children }) => {
+    return isLoggedIn ? children : <Navigate to="/" />;
+  }
 
   const location = useLocation();
   const hideNavBarRoutes = ["/", "/signup", "/quiz"];
-  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname);
+  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname)
+
 
   return (
     <>
-      {!shouldHideNavBar && <NavBar />}
+      {!shouldHideNavBar && <NavBar setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Home user={user} />
+            </PrivateRoute>
+          }
+        />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/subtask" element={<Subtask />} />
         <Route path="/chatBot" element={<ChatBot />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/edit" element={<ProfileEdit />} />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile user="68156b3fb834217290977fa2" />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <PrivateRoute>
+              <ProfileEdit user="68156b3fb834217290977fa2" />
+            </PrivateRoute>
+          }
+        />
         <Route path="/data" element={<Data />} />
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/security" element={<Security />} />

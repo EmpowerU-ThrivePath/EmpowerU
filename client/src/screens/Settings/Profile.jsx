@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router'
 import SettingsMenu from "../../components/SettingsMenu";
 import ProfileEdit from "./Profile-Edit";
 
-const Profile = (user) => {
+const Profile = (user, setIsLoggedIn) => {
   const userId = String(user)
 
   const [userProfile, setUserProfile] = useState({
@@ -20,7 +20,21 @@ const Profile = (user) => {
 
   useEffect(() => {
     loadUserProfile()
+    checkLogin()
   }, [])
+
+  const checkLogin = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/login/loggedin', {
+        credentials: 'include'
+      });
+      const data = await res.json()
+      console.log("HERE IS SESSION", data.loggedIn);
+      setIsLoggedIn(data.loggedIn)
+    } catch (error) {
+      console.error("error loading user info", error);
+    }
+  }
 
   const loadUserProfile = async () => {
     await fetch(`http://localhost:3000/api/user?userId=${user.user}`)

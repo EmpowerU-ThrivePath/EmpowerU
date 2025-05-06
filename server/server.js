@@ -2,6 +2,9 @@ import express from 'express';
 var app = express();
 import path from 'path'
 
+import models from './models.js'
+import apiRouter from "./routes/api.js"
+
 
 import router from './routes/api.js'
 import { fileURLToPath } from 'url';
@@ -14,51 +17,39 @@ const __dirname = dirname(__filename);
 import cors from "cors"
 import OpenAI from 'openai'
 import dotenv from "dotenv/config"
-    
+
+import cookieParser from 'cookie-parser';
+import sessions from 'express-session';
+import bodyParser from 'body-parser';
+
 
 const corsOptions = {
     origin: ["http://localhost:5173"],
+    credentials: true
 }
+
 app.use(cors(corsOptions))
 app.use(express.json())
-
-import models from './models.js'
 
 app.use((req, res, next) => {
     req.models = models
     next()
 })
 
-import apiRouter from "./routes/api.js"
 
-app.use('/api', apiRouter)
-
-import cookieParser from 'cookie-parser';
-import sessions from 'express-session';
-
-
-// parsing the incoming data
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-//serving public file
-app.use(express.static(__dirname));
-
-// cookie parser middleware
 app.use(cookieParser());
 
-const oneDay = 1000 * 60 * 60 * 24;
 app.use(sessions({
     secret: "secretkey1ibfvw983hf",
-    saveUninitialized:true,
-    cookie: { maxAge: oneDay },
-    resave: false 
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000, 
+        sameSite: 'lax', 
+        secure: false 
+    }
 }))
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-var session
 
 
 // Initialize OpenAI
@@ -93,7 +84,7 @@ app.post("/api/chat", async (req, res) => {
             3. Improved Bullet: [your improved version]
             4. Tips: [brief tip or reasoning]
         `;
-        
+
         if (!message) {
             return res.status(400).json({ error: "Message is required" })
         }
@@ -119,14 +110,15 @@ app.post("/api/chat", async (req, res) => {
         res.json({ response: completion.choices[0].message.content })
     } catch (error) {
         console.error("Detailed error:", error)
-        res.status(500).json({ 
+        res.status(500).json({
             error: "An error occurred while processing your request",
-            details: error.message 
+            details: error.message
         })
     }
 })
 
-app.use('/api', apiRouter);
+app.use('/api', apiRouter)
+
 
 app.listen(3000, () => {
     console.log("Server listening on port 3000")

@@ -48,8 +48,15 @@ profileSchema.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
+const messageSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    message: String
+})
+
+models.Message = mongoose.model('Message', messageSchema)
 models.Profile = mongoose.model('Profile', profileSchema)
-console.log("mongoose profile model created")
+console.log("mongoose models created")
 
 
 export default models;

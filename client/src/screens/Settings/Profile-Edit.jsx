@@ -1,14 +1,79 @@
 import { React, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Link, Outlet } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import SettingsMenu from "../../components/SettingsMenu";
 
-const ProfileEdit = () => {
+const ProfileEdit = (user) => {
+  const navigate = useNavigate()
+
   const [avatar, setAvatar] = useState(false);
   const toggleAvatar = () => {
     setAvatar(!avatar);
-  };
+  }
+
+  const [profile, setProfile] = useState({
+    _id: user.user,
+    fname: '',
+    lname: '',
+    pronouns: '',
+    email: '',
+    grad_year: '',
+    intended_career: '',
+  })
+
+  useEffect(() => {
+    loadUserProfile()
+  }, [])
+
+  const loadUserProfile = async () => {
+    await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setProfile(data)
+      })
+      .catch((error) => {
+        console.error("error loading user info")
+      })
+  }
+
+  const handleChange = (event) => {
+    setProfile({ ...profile, [event.target.name]: event.target.value })
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/user/change`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profile)
+      })
+      if (response.ok) {
+        setProfile({
+          fname: '',
+          lname: '',
+          pronouns: '',
+          email: '',
+          grad_year: '',
+          intended_career: '',
+        })
+        navigate("/profile")
+      } else {
+        throw new Error('Changes could not be saved');
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+      alert("Whoops! Changes could not be saved")
+    }
+  }
+
+
 
   return (
     <div className="settings">
@@ -40,27 +105,31 @@ const ProfileEdit = () => {
             )}
             <p>Remove</p>
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="edit-profile-info-text">
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="fname">First name</label>
-                  <input type="text" id="fname" />
+                  <input type="text" id="fname" name="fname" value={profile.fname}
+                    onChange={handleChange} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="lname">Last name</label>
-                  <input type="text" id="lname" />
+                  <input type="text" id="lname" name="lname" value={profile.lname}
+                    onChange={handleChange} />
                 </div>
               </div>
 
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="pronouns">Pronouns</label>
-                  <input type="text" id="pronouns" />
+                  <input type="text" id="pronouns" name="pronouns" value={profile.pronouns}
+                    onChange={handleChange} />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input type="text" id="email" />
+                  <input type="text" id="email" name="email" value={profile.email}
+                    onChange={handleChange} />
                 </div>
               </div>
 
@@ -71,21 +140,23 @@ const ProfileEdit = () => {
                 </div>
                 <div className="form-group">
                   <label htmlFor="grad-yr">Graduation year</label>
-                  <input type="text" id="grad-yr" />
+                  <input type="text" id="grad-yr" name="grad_year" value={profile.grad_year}
+                    onChange={handleChange} />
                 </div>
               </div>
 
               <div className="form-group">
                 <label htmlFor="job">Intended Career</label>
-                <input type="text" id="job" />
+                <input type="text" id="job" name="intended_career" value={profile.intended_career}
+                  onChange={handleChange} />
               </div>
             </div>
-            <Link to="/profile"><input className="save" type="submit" value="Save" /></Link>
+            <input className="save" type="submit" value="Save" />
           </form>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default ProfileEdit;

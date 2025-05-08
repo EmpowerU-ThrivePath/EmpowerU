@@ -1,9 +1,33 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Roadmap = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const moduleId = location.state?.moduleId;
+    console.log("Opening " + moduleId);
 
+    const [moduleData, setModuleData] = useState(null);
+
+    useEffect(() => {
+        fetch('/Dashboard/modules.json')
+            .then(response => response.json())
+            .then((data) => {
+                const selectedModule = data[moduleId.toLowerCase()];
+                setModuleData(selectedModule);
+            })
+            .catch(error => console.error('Error fetching modules:', error));
+    }, []);
+
+    console.log(moduleData);
+
+    if(!moduleData) {
+        return <div>Loading roadmap...</div>
+    }
+    
     const handleBackClick = () => {
         navigate('/home');
     };
@@ -21,8 +45,8 @@ const Roadmap = () => {
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
                 <div className='module-info'>
                     <div className='module-content'>
-                        <p className='home-heading'><b>Resume</b></p>
-                        <p>Build a professional resume step-by-step with our guided tool.</p>
+                        <p className='home-heading'><b> {moduleId} </b></p>
+                        <p> {moduleData["description"]} </p>
                         <div className='module-status-div'>
                             <p>In progress</p>
                         </div>

@@ -1,11 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { Link, Outlet } from 'react-router'
 
 import SettingsMenu from "../../components/SettingsMenu";
 import ProfileEdit from "./Profile-Edit";
 
-const Profile = () => {
+const Profile = (user, setIsLoggedIn) => {
+  const userId = String(user)
+
+  const [userProfile, setUserProfile] = useState({
+    fname: "",
+    lname: "",
+    pronouns: "",
+    email: "",
+    grad_year: "",
+    intended_career: ""
+  })
+
+
+  useEffect(() => {
+    loadUserProfile()
+    checkLogin()
+  }, [])
+
+  const checkLogin = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/login/loggedin', {
+        credentials: 'include'
+      });
+      const data = await res.json()
+      console.log("HERE IS SESSION", data.loggedIn);
+      setIsLoggedIn(data.loggedIn)
+    } catch (error) {
+      console.error("error loading user info", error);
+    }
+  }
+
+  const loadUserProfile = async () => {
+    await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUserProfile(data)
+      })
+      .catch((error) => {
+        console.error("error loading user info")
+      })
+  }
+
+
   return (
     <div className="settings">
       <SettingsMenu />
@@ -17,16 +59,16 @@ const Profile = () => {
           </div>
           <div className="profile-info-text">
             <div className="profile-info-text-header">
-              <h3>Jasmine Hernandez</h3>
+              <h3>{userProfile.fname} {userProfile.lname}</h3>
               <p>she/her</p>
             </div>
             <div className="profile-info-text-personal">
               <h4>Current Graduation Date</h4>
-              <p>December 2025</p>
+              <p>{userProfile.grad_year}</p>
               <h4>Intended Career</h4>
-              <p>Software Engineer</p>
+              <p>{userProfile.intended_career}</p>
               <h4>Email</h4>
-              <p>Jasminehernandez@gmail.com</p>
+              <p>{userProfile.email}</p>
             </div>
           </div>
           <div className='profile-info-edit'>
@@ -35,7 +77,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
-    
+
   );
 };
 

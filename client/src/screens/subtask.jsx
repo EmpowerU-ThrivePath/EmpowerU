@@ -1,11 +1,14 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
 
 const Subtask = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    //const taskId = location.state?.taskId;
+    //console.log("Opening " + taskId);
 
     const handleBackClick = () => {
-        console.log(`Back clicked`);
         navigate('/roadmap');
     };
     

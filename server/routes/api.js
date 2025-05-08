@@ -1,8 +1,15 @@
 import express from "express";
 import models from "../models.js";
 import slugify from "slugify";
+import loginRouter from "./controllers/login.js";
+import userRouter from "./controllers/users.js";
+import settingsRouter from "./controllers/settings.js";
 
 var router = express.Router();
+
+router.use("/login", loginRouter);
+router.use("/user", userRouter);
+router.use("/settings", settingsRouter);
 
 router.get("/quizzes", async (req, res) => {
   try {

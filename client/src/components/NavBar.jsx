@@ -1,11 +1,33 @@
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router";
+import { useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ setUser, setIsLoggedIn }) => {
+  const navigate = useNavigate()
+
   const [open, setOpen] = useState(false);
   const toggleDropDown = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
+
+  const signOut = async () => {
+
+    try {
+      const res = await fetch('http://localhost:3000/api/login/logout', {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+
+      const data = await res.json()
+      console.log("Logout response:", data)
+      setIsLoggedIn(false);
+      setUser(null);
+
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+    navigate("/")
+  }
 
   return (
     <>
@@ -40,7 +62,10 @@ const NavBar = () => {
                       Profile
                     </Link>
                   </li>
-                  <Link to="/" className="drop-down-tab" onClick={toggleDropDown}><li>Log out</li></Link>
+                  <div className="drop-down-tab" onClick={() => {
+                    toggleDropDown()
+                    signOut()
+                  }}><li>Log out</li></div>
                 </ul>
               </div>
             )}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -21,40 +21,84 @@ import Subtask from "./screens/subtask";
 
 import TakeQuiz from "./components/TakeQuiz";
 
+
 function App() {
-  //TEST
-  const fetchAPI = async () => {
-    await fetch("http://localhost:3000/api")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("womp womp");
-      });
-  };
+  const [user, setUser] = useState(null)
+
+  const location = useLocation()
+  const hideNavBarRoutes = ["/", "/signup", "/quiz"]
+  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname)
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchAPI();
-  }, []);
-  //END TEST
+    const checkLoggedIn = async () => {
+      try {
+        const res = await fetch('http://localhost:3000/api/login/loggedin', {
+          credentials: 'include'
+        })
+        const data = await res.json()
+        console.log("Session on or nah:", data.loggedIn)
+        setIsLoggedIn(data.loggedIn)
+        if (data.userId) setUser(data.userId)
+      } catch (error) {
+        console.error("error loading user info", error)
+      } finally {
+        setLoading(false)
+      }
+    };
 
-  const location = useLocation();
-  const hideNavBarRoutes = ["/", "/signup", "/quiz"];
-  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname);
+    checkLoggedIn();
+  }, []);
+
+  const PrivateRoute = ({ children }) => {
+    if (loading) {
+      return null
+    } else {
+      return isLoggedIn ? children : <Navigate to="/" />
+    }
+  }
+
 
   return (
     <>
-      {!shouldHideNavBar && <NavBar />}
+      {!shouldHideNavBar && <NavBar setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            isLoggedIn ? <Navigate to="/home" /> : <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+          }
+        />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Home user={user} />
+            </PrivateRoute>
+          }
+        />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/subtask" element={<Subtask />} />
         <Route path="/chatBot" element={<ChatBot />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/profile/edit" element={<ProfileEdit />} />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile user={user} setIsLoggedIn={setIsLoggedIn} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <PrivateRoute>
+              <ProfileEdit user={user} />
+            </PrivateRoute>
+          }
+        />
         <Route path="/data" element={<Data />} />
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/security" element={<Security />} />
@@ -62,7 +106,7 @@ function App() {
         <Route path="/quiz/:slug" element={<TakeQuiz />} />
       </Routes>
     </>
-  );
+  )
 }
 
 export default App;

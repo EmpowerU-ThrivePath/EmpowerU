@@ -19,7 +19,7 @@ import ChatBot from "./components/ChatBot";
 import Roadmap from "./screens/Roadmap";
 import Subtask from "./screens/subtask";
 
-import OnboardingQuiz from "./components/OnboardingQuiz";
+import TakeQuiz from "./components/TakeQuiz";
 
 function App() {
   //TEST
@@ -59,7 +59,7 @@ function App() {
         <Route path="/accessibility" element={<Accessibility />} />
         <Route path="/security" element={<Security />} />
         <Route path="/support" element={<Support />} />
-        <Route path="/quiz" element={<OnboardingQuiz />} />
+        <Route path="/quiz/:slug" element={<TakeQuiz />} />
       </Routes>
     </>
   );

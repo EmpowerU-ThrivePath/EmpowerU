@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './ChatBot.css'
 
@@ -9,6 +9,20 @@ const ChatBot = () => {
     ])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [userInfo, setUserInfo] = useState(null)
+
+    useEffect(() => {
+        // Fetch user information when component mounts
+        const fetchUserInfo = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/user/profile')
+                setUserInfo(response.data)
+            } catch (error) {
+                console.error('Error fetching user info:', error)
+            }
+        }
+        fetchUserInfo()
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -25,7 +39,8 @@ const ChatBot = () => {
         try {
             console.log('Sending message to server:', userMessage)
             const response = await axios.post('http://localhost:3000/api/chat', {
-                message: userMessage
+                message: userMessage,
+                userInfo: userInfo // Include user information in the request
             })
             console.log('Server response:', response.data)
 
@@ -49,8 +64,22 @@ const ChatBot = () => {
                 <h1>ThriveBot</h1>
             </div>
             <div className="chatbot-header">
-                <h2>Check Your Work!</h2>
+                <h2>Review Your Resume</h2>
+                <div className="disclaimer-tooltip">
+                    <span className="tooltip-icon">ℹ️</span>
+                    <div className="tooltip-content">
+                        <strong>Privacy Notice:</strong> Please do not enter any personal information such as:
+                        <ul>
+                            <li>Full name</li>
+                            <li>Address</li>
+                            <li>Phone number</li>
+                            <li>Email address</li>
+                            <li>Social security number</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
             <div className="chatbot-body">
                 {chatHistory.map((msg, index) => (
                     <div key={index} className={`chatbot-message ${msg.role}`}>
@@ -68,7 +97,7 @@ const ChatBot = () => {
                     type="text"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Paste your work experience here..."
+                    placeholder="Paste your work experience here"
                     disabled={isLoading}
                 />
                 <button type="submit" disabled={isLoading}>

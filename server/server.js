@@ -74,18 +74,23 @@ app.get("/api/test", (req, res) => {
 app.post("/api/chat", async (req, res) => {
     try {
         console.log("Received chat request:", req.body)
-        const { message } = req.body
+        const { message, userInfo } = req.body
 
         const systemMessage = `
-            You are a supportive and professional resume mentor. The user's career goal is: tech related.
-         
+            You are a supportive and professional resume mentor. 
+            ${userInfo ? `
+            User Information:
+            - Graduation Year: ${userInfo.grad_year}
+            - Intended Career: ${userInfo.intended_career}
+            ` : ''}
 
-            Your job is to help the user improve their resume bullet points to better align with this goal.
+            Your job is to help the user improve their resume bullet points to better align with their career goals.
 
-            - Rewrite weak bullets using Google’s XYZ format: "Accomplished [X] as measured by [Y], by doing [Z]".
+            - Rewrite weak bullets using Google's XYZ format: "Accomplished [X] as measured by [Y], by doing [Z]".
             - Provide clear, actionable advice.
             - Keep suggestions concise and professional.
             - Use a positive and encouraging tone.
+            - Consider the user's graduation year and intended career path when providing feedback.
 
             Format your response like this:
             1. Goal: [summarize the goal]

@@ -14,6 +14,7 @@ const profileSchema = new mongoose.Schema({
     lname: String,
     pronouns: String,
     email: String,
+    grad_month: String,
     grad_year: String,
     intended_career: String,
     password: { type: String, required: true },

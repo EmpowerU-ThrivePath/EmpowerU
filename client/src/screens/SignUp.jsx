@@ -26,6 +26,10 @@ const Signup = () => {
         console.log("Sending profile data:", profile)
         if (!profile.fname || !profile.lname || !profile.email || !profile.password) {
             alert("Please fill out all fields")
+        } else if (!profile.email.includes("@")) {
+            alert("Please enter valid email")
+        } else if (profile.password.length < 8) {
+            alert("Password must contain at least 8 characters")
         } else {
             try {
             console.log("Sending profile data:", profile)

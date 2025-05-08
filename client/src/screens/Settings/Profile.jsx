@@ -13,6 +13,7 @@ const Profile = (user, setIsLoggedIn) => {
     lname: "",
     pronouns: "",
     email: "",
+    grad_month: "",
     grad_year: "",
     intended_career: ""
   })
@@ -64,7 +65,7 @@ const Profile = (user, setIsLoggedIn) => {
             </div>
             <div className="profile-info-text-personal">
               <h4>Current Graduation Date</h4>
-              <p>{userProfile.grad_year}</p>
+              <p>{userProfile.grad_month} {userProfile.grad_year}</p>
               <h4>Intended Career</h4>
               <p>{userProfile.intended_career}</p>
               <h4>Email</h4>

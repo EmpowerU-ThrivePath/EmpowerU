@@ -8,9 +8,7 @@ const QuizProgress = ({ questions, currentId }) => {
 
   return (
     <div className="quiz-progress">
-      <div className="progress-bar">
-        <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-      </div>
+      <div className="progress-fill" style={{ width: `${progress}%` }}></div>
       <p>
         Question {currentIndex + 1} of {questions.length}
       </p>

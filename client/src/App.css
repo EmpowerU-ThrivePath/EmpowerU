@@ -824,6 +824,11 @@ body {
   margin-top: 100px;
 }
 
+.quiz-progress {
+  margin-left: 30px;
+  margin-top: 30px;
+}
+
 /* END QUIZ */
 
 /*LOGIN PAGE*/

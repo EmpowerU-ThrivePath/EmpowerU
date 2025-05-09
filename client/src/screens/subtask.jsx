@@ -5,11 +5,15 @@ import { useLocation } from 'react-router-dom';
 const Subtask = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    //const taskId = location.state?.taskId;
-    //console.log("Opening " + taskId);
+    
+    const taskId = location.state?.taskId;
+    console.log("Opening " + taskId);
 
+    let moduleId = "Resume";
+
+    // Need to pass the module name for back button 
     const handleBackClick = () => {
-        navigate('/roadmap');
+        navigate('/roadmap', { state: { moduleId } });
     };
     
     return (
@@ -49,17 +53,17 @@ const Subtask = () => {
             <div className='subtask-content'>
                 <p className='home-heading'><b>Add name & personal info</b></p>
                 <p>Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your your information is accurate, professional, and up to date.</p>
-                <p>
-                    This should Include:
-                    <ul>
-                        <li>Full name</li>
-                        <li>Position</li>
-                        <li>Location</li>
-                        <li>Email</li>
-                        <li>Phone number</li>
-                        <li>Additional links</li>
-                    </ul>
-                </p>
+
+                <p>This should Include: </p>
+                <ul>
+                    <li>Full name</li>
+                    <li>Position</li>
+                    <li>Location</li>
+                    <li>Email</li>
+                    <li>Phone number</li>
+                    <li>Additional links</li>
+                </ul>
+
             </div>
 
            <p className='thirty-px'><b>Example</b></p>

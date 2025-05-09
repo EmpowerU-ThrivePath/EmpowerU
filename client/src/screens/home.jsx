@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 const Home = () => {
     const navigate = useNavigate();
+
     const [modulesData, setModulesData] = useState(null);
     let modulesArray = [];
 

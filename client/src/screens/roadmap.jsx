@@ -10,6 +10,9 @@ const Roadmap = () => {
     const moduleId = location.state?.moduleId;
     console.log("Opening " + moduleId);
 
+    // User's current task
+    let taskId = "Personal_Informtion";
+
     const [moduleData, setModuleData] = useState(null);
 
     useEffect(() => {
@@ -27,15 +30,14 @@ const Roadmap = () => {
     if(!moduleData) {
         return <div>Loading roadmap...</div>
     }
-    
+
     const handleBackClick = () => {
         navigate('/home');
     };
 
     const handleContinueClick = () => {
         console.log('Continue clicked');
-        navigate('/subtask');
-        //navigate('/subtask', { state: { taskName } });
+        navigate('/subtask', { state: { taskId } });
     };
 
     return (
@@ -69,8 +71,6 @@ const Roadmap = () => {
                     </div>
                     
                 </div>
-
-                <p>Dont know where to start? Take our quiz!</p>
             </div>
             
             <div className='roadmap-steps'>

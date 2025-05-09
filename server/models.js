@@ -23,6 +23,20 @@ const profileSchema = new mongoose.Schema({
 
 profileSchema.pre("save", function (next) {
   var user = this;
+    fname: String,
+    lname: String,
+    pronouns: String,
+    email: String,
+    grad_month: String,
+    grad_year: String,
+    intended_career: String,
+    password: { type: String, required: true },
+    signed_in: Boolean
+})
+
+     
+profileSchema.pre('save', function(next) {
+    var user = this;
 
   // only hash the password if it has been modified (or is new)
   if (!user.isModified("password")) return next();

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const QuizNavigation = ({
   currentQuestion,
@@ -6,7 +7,10 @@ const QuizNavigation = ({
   onContinue,
   onBack,
   history,
+  prevPageBack,
 }) => {
+  const navigate = useNavigate();
+
   const isContinueDisabled =
     currentQuestion.type !== "break" &&
     (!answers[currentQuestion.id] ||
@@ -15,8 +19,11 @@ const QuizNavigation = ({
 
   return (
     <div className="quiz-navigation">
-      {history.length > 0 && (
-        <button className="back-button" onClick={onBack}>
+      {(prevPageBack || history.length > 0) && (
+        <button
+          className="back-button"
+          onClick={prevPageBack ? () => navigate(-1) : onBack}
+        >
           Back
         </button>
       )}

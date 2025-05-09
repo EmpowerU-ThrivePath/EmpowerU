@@ -14,7 +14,7 @@ router.get("/quizzes", async (req, res) => {
   }
 });
 
-router.get("/quizzes/:slug", async (req, res) => {
+router.get("/:slug", async (req, res) => {
   try {
     const quiz = await req.models.Quiz.findOne({
       slug: req.params.slug,
@@ -29,42 +29,6 @@ router.get("/quizzes/:slug", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// router.post("/quizzes/:slug/recommendation", async (req, res) => {
-//   try {
-//     const quiz = await models.Quiz.findOne({ slug: req.params.slug });
-//     const userScores = req.body.scores; // { resume: 5, interview: 3 } from frontend
-
-//     if (!quiz) {
-//       return res.status(404).json({ message: "Quiz not found" });
-//     }
-
-//     if (!userScores || Object.keys(userScores).length === 0) {
-//       return res.status(400).json({ message: "No scores provided." });
-//     }
-
-//     // 1. Find highest score
-//     const maxScore = Math.max(...Object.values(userScores));
-//     const winningResults = quiz.results.filter(
-//       (r) => userScores[r.id] === maxScore
-//     );
-
-//     // 2. Select result - use default if tie
-//     let recommendation;
-//     if (winningResults.length > 1) {
-//       recommendation = quiz.results.find((r) => r.default) || winningResults[0];
-//     } else {
-//       recommendation = winningResults[0];
-//     }
-
-//     res.json({
-//       message: recommendation.message,
-//     });
-//   } catch (err) {
-//     console.error("🔥 RECOMMENDATION ERROR:", err);
-//     res.status(500).json({ error: err.message });
-//   }
-// });
 
 router.post("/", async (req, res) => {
   try {

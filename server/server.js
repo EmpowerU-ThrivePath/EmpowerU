@@ -4,6 +4,7 @@ import path from "path";
 
 import models from "./models.js";
 import apiRouter from "./routes/api.js";
+import quizzesRouter from "./routes/controllers/quizzes.js";
 
 import router from "./routes/api.js";
 import { fileURLToPath } from "url";
@@ -115,6 +116,7 @@ app.post("/api/chat", async (req, res) => {
 });
 
 app.use("/api", apiRouter);
+app.use("/qpi", quizzesRouter);
 
 app.listen(3000, () => {
   console.log("Server listening on port 3000");

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import QuestionComponents from "./QuestionComponents";
 import Results from "./Results";
 import QuizNavigation from "./QuizNavigation";
 import QuizProgress from "./QuizProgress";
 
 const TakeQuiz = () => {
+  const navigate = useNavigate();
   const { slug } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [currentQuestionId, setCurrentQuestionId] = useState("");
@@ -70,11 +72,6 @@ const TakeQuiz = () => {
   if (error) return <div className="error-message">Error: {error}</div>;
   if (!quiz) return <div>Quiz not found</div>;
 
-  // const currentQuestion = quiz.questions.find(
-  //   (q) => q.id === currentQuestionId
-  // );
-  // const QuestionComponent = QuestionComponents[currentQuestion.type];
-
   const currentQuestion =
     currentQuestionId !== "results"
       ? quiz.questions.find((q) => q.id === currentQuestionId)
@@ -132,13 +129,17 @@ const TakeQuiz = () => {
   };
 
   const handleBack = () => {
-    if (history.length === 0) return;
+    if (history.length === 0) {
+      // If we're on the first question and the user presses "Back", go to the previous page
+      navigate(-1);
+    } else {
+      // Otherwise, pop the last question off the history and go back to it
+      const prevHistory = [...history];
+      const previousId = prevHistory.pop();
 
-    const prevHistory = [...history];
-    const previousId = prevHistory.pop();
-
-    setHistory(prevHistory);
-    setCurrentQuestionId(previousId);
+      setHistory(prevHistory);
+      setCurrentQuestionId(previousId);
+    }
   };
 
   return (
@@ -154,6 +155,7 @@ const TakeQuiz = () => {
                 selectedValue={answers[currentQuestionId]}
                 onAnswer={(answer) => handleAnswer(currentQuestionId, answer)}
               />
+              // </>
             )}
             <QuizNavigation
               currentQuestion={currentQuestion}
@@ -161,6 +163,7 @@ const TakeQuiz = () => {
               onContinue={handleContinue}
               onBack={handleBack}
               history={history}
+              prevPageBack={quiz.questions[0].id === currentQuestionId}
             />
           </div>
           <div className="quiz-sidebar">

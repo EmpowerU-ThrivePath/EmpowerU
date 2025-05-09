@@ -3,31 +3,29 @@ import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
 
 const NavBar = ({ setUser, setIsLoggedIn }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const toggleDropDown = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
   const signOut = async () => {
-
     try {
-      const res = await fetch('http://localhost:3000/api/login/logout', {
-        method: 'DELETE',
-        credentials: 'include'
-      })
+      const res = await fetch("http://localhost:3000/api/login/logout", {
+        method: "DELETE",
+        credentials: "include",
+      });
 
-      const data = await res.json()
-      console.log("Logout response:", data)
+      const data = await res.json();
+      console.log("Logout response:", data);
       setIsLoggedIn(false);
       setUser(null);
-
     } catch (error) {
       console.error("Logout failed:", error);
     }
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <>
@@ -40,7 +38,7 @@ const NavBar = ({ setUser, setIsLoggedIn }) => {
           <Link to="/home" className="tab">
             Dashboard{" "}
           </Link>
-          <Link to="/quiz" className="tab">
+          <Link to="/quiz/onboarding-quiz" className="tab">
             Next Step Navigator
           </Link>
           <div className="drop-down">
@@ -62,10 +60,15 @@ const NavBar = ({ setUser, setIsLoggedIn }) => {
                       Profile
                     </Link>
                   </li>
-                  <div className="drop-down-tab" onClick={() => {
-                    toggleDropDown()
-                    signOut()
-                  }}><li>Log out</li></div>
+                  <div
+                    className="drop-down-tab"
+                    onClick={() => {
+                      toggleDropDown();
+                      signOut();
+                    }}
+                  >
+                    <li>Log out</li>
+                  </div>
                 </ul>
               </div>
             )}

@@ -8,12 +8,19 @@ const Roadmap = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const moduleId = location.state?.moduleId;
-    console.log("Opening " + moduleId);
-
-    // User's current task
-    let taskId = "Personal_Informtion";
 
     const [moduleData, setModuleData] = useState(null);
+
+    // User's current task
+    const [taskId, setTaskId] = useState(null);
+
+    // Current users all completed subtasks
+    const completedSubtasks = ["Personal_Information"]; 
+
+    useEffect(() => {
+        // api call get users current task
+        setTaskId("Personal_Information");
+      }, []);
 
     useEffect(() => {
         fetch('/Dashboard/modules.json')
@@ -23,9 +30,9 @@ const Roadmap = () => {
                 setModuleData(selectedModule);
             })
             .catch(error => console.error('Error fetching modules:', error));
-    }, []);
+    });
 
-    console.log(moduleData);
+    const currentTask = moduleData && taskId && moduleData.subtasks?.[taskId];
 
     if(!moduleData) {
         return <div>Loading roadmap...</div>
@@ -37,7 +44,7 @@ const Roadmap = () => {
 
     const handleContinueClick = () => {
         console.log('Continue clicked');
-        navigate('/subtask', { state: { taskId } });
+        navigate('/subtask', { state: { moduleId, taskId } });
     };
 
     return (
@@ -52,15 +59,15 @@ const Roadmap = () => {
                         <div className='module-status-div'>
                             <p>In progress</p>
                         </div>
-                        <p className='task-count'>📓 <span className='num-articles'>5</span> articles</p>
+                        <p className='task-count'>📓 <span className='num-articles'>{moduleData?.subtasks ? Object.keys(moduleData.subtasks).length : 0}</span> articles</p>
                     </div>
                     
                 </div>
 
                 <div className='next-task'>
                     <div className='next-task-content'>
-                        <p className='module-name'><b>Add name & personal info</b></p>
-                        <p>Include your full name, phone number, email address, and additional links</p>
+                        <p className='module-name'><b>{currentTask?.task_title}</b></p>
+                        <p>{currentTask?.short_desc}</p>
                         
                         <div className='next-task-button-div'>
                             <div className='module-button-div' onClick={() => handleContinueClick()}>
@@ -74,27 +81,26 @@ const Roadmap = () => {
             </div>
             
             <div className='roadmap-steps'>
-                <div className='step'>
-                    <div className='step-bubble green'>
-                        <img className='bubble-img' src='https://www.freeiconspng.com/thumbs/white-arrow-png/white-arrow-image-png-14.png'></img>
-                    </div>
-                    <p>Add name and personal information</p>
-                </div>
+                {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData]) => {
+                    let isCompleted = completedSubtasks.includes(currentTask);
+                    let isLastCompleted = isCompleted && currentTask === taskId;
 
-                <div className='step'>
-                    <div className='step-bubble'></div>
-                    <p>Add education</p>
-                </div>
-
-                <div className='step'>
-                    <div className='step-bubble'></div>
-                    <p>List work experience/projects</p>
-                </div>
-
-                <div className='step'>
-                    <div className='step-bubble'></div>
-                    <p>Add skills</p>
-                </div>
+                    return (
+                        <div className='step' key={currentTask}>
+                            <div className={`step-bubble ${isCompleted ? 'green' : ''}`}>
+                            {isLastCompleted && (
+                                <img
+                                    className='bubble-img'
+                                    src='https://www.freeiconspng.com/thumbs/white-arrow-png/white-arrow-image-png-14.png'
+                                    alt='arrow'
+                                />
+                            )}
+                            </div>
+                            <p>{taskData.task_title}</p>
+                        </div>
+                    )
+                   
+                })}
             </div>
 
             <div className='item3'>

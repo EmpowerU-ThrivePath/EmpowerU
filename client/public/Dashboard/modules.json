@@ -5,8 +5,9 @@
         "description": "Build a professional resume step-by-step with our guided tool.",
         "img": "https://media.istockphoto.com/id/1304527612/vector/resumes-cv-application-resume-filling-concept-writing-business-resume-job-search-resume.jpg?s=612x612&w=0&k=20&c=wKhHHikcoQJ1pEGaOgSUWsRoXEYr1TTbvbHcrpm1zGo=",
         "subtasks": {
-            "Personal_Informtion": {
+            "Personal_Information": {
                 "task_title": "Add name and personal information",
+                "short_desc": "Include your full name, phone number, email address, and additional links",
                 "task_desc": {
                     "p": ["Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your your information is accurate, professional, and up to date.", 
                     "This should include:", 
@@ -41,16 +42,16 @@
                 ]
             },
             "Education": {
-                "task_desc": "Add education"
+                "task_title": "Add education"
             },
             "Experience": {
-                "task_desc": "List work experience/projects"
+                "task_title": "List work experience/projects"
             },
             "Skills": {
-                "task_desc": "Add skills"
+                "task_title": "Add skills"
             },
             "Proofread": {
-                "task_desc": "Proofread"
+                "task_title": "Proofread"
             }
         }
     },

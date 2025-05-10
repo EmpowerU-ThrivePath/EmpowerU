@@ -1,5 +1,7 @@
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const Subtask = () => {
@@ -7,9 +9,20 @@ const Subtask = () => {
     const location = useLocation();
     
     const taskId = location.state?.taskId;
-    console.log("Opening " + taskId);
+    const moduleId = location.state?.moduleId;
 
-    let moduleId = "Resume";
+    const [subtasks, setSubtasks] = useState(null);
+    
+    useEffect(() => {
+            fetch('/Dashboard/modules.json')
+                .then(response => response.json())
+                .then((data) => {
+                    const selectedModule = data[moduleId.toLowerCase()];
+                    setSubtasks(selectedModule.subtasks);
+                })
+                .catch(error => console.error('Error fetching modules:', error));
+    });
+
 
     // Need to pass the module name for back button 
     const handleBackClick = () => {

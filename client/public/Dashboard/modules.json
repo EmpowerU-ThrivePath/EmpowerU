@@ -10,8 +10,8 @@
                 "short_desc": "Include your full name, phone number, email address, and additional links",
                 "task_desc": {
                     "p": ["Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your your information is accurate, professional, and up to date.", 
-                    "This should include:", 
-                    "Full name, Position, Location, Email, Phone number, Additional links"]
+                    "This should include:"],
+                    "ul": ["Full name", "Position", "Location", "Email", "Phone number", "Additional links"]
                 },
                 "example_img": "https://www.cvplaza.com/wp-content/uploads/2012/09/cv-personal-profile-statement.png",
                 "tips": [
@@ -35,7 +35,8 @@
                     {
                         "resource_title": "Including Personal Details on Your Resume",
                         "resource_link": "https://www.indeed.com/career-advice/resumes-cover-letters/personal-details-on-resume"
-                    }, {
+                    }, 
+                    {
                         "resource_title": "How to Write a Resume Personal Statement",
                         "resource_link": "https://resume.io/blog/resume-personal-statement"
                     }

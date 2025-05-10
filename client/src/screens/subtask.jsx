@@ -8,21 +8,32 @@ const Subtask = () => {
     const navigate = useNavigate();
     const location = useLocation();
     
+    // Users current task
     const taskId = location.state?.taskId;
     const moduleId = location.state?.moduleId;
 
+    // all subtasks
     const [subtasks, setSubtasks] = useState(null);
     
+    // Current users all completed subtasks
+    const [completedSubtasks, setCompleted] = useState(null);
+    
     useEffect(() => {
-            fetch('/Dashboard/modules.json')
-                .then(response => response.json())
-                .then((data) => {
-                    const selectedModule = data[moduleId.toLowerCase()];
-                    setSubtasks(selectedModule.subtasks);
-                })
-                .catch(error => console.error('Error fetching modules:', error));
+        // api call get users current compelted tasks
+        setCompleted(["Personal_Information"]);
+    }, []);
+    
+    useEffect(() => {
+        fetch('/Dashboard/modules.json')
+            .then(response => response.json())
+            .then((data) => {
+                const selectedModule = data[moduleId.toLowerCase()];
+                setSubtasks(selectedModule.subtasks);
+            })
+            .catch(error => console.error('Error fetching modules:', error));
     });
 
+    const currentTask = subtasks?.[taskId];
 
     // Need to pass the module name for back button 
     const handleBackClick = () => {
@@ -34,88 +45,91 @@ const Subtask = () => {
         <div className='subtask-div'>
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
             
-            <div className='progress-bar'>
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-inprogress'>
-                        <img className='inprogress-dot' src='https://onedaycolor.com/cdn/shop/products/GPCX4030_650x.png?v=1533739257'></img>
+            <div className='progress-bar'>    
+                {subtasks && Object.entries(subtasks).map(([key, task], index) => (
+                <div className='progress-circle-div' key={key}>
+                    <div className={`progress-circle progress-circle-inprogress`}>
+                    {task.task === 0 && (
+                        <img
+                        className='inprogress-dot'
+                        src='https://onedaycolor.com/cdn/shop/products/GPCX4030_650x.png?v=1533739257'
+                        alt='dot'
+                        />
+                    )}
                     </div>
-                    <p className='progress-name'>Personal information</p>
+                    <p className='progress-name'>{key.replace(/_/g, ' ')}</p>
                 </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Education</p>
-                </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Experience</p>
-                </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Skills</p>
-                </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Proofread</p>
-                </div>
+                ))}
             </div>
 
             <div className='subtask-content'>
-                <p className='home-heading'><b>Add name & personal info</b></p>
-                <p>Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your your information is accurate, professional, and up to date.</p>
+                <p className='home-heading'><b>{currentTask?.task_title}</b></p>
 
-                <p>This should Include: </p>
-                <ul>
-                    <li>Full name</li>
-                    <li>Position</li>
-                    <li>Location</li>
-                    <li>Email</li>
-                    <li>Phone number</li>
-                    <li>Additional links</li>
-                </ul>
+                {currentTask?.task_desc && Object.entries(currentTask.task_desc).map(([key, value], index) => {
+                    if (key.includes("p")) {
+                        return value.map((paragraph, i) => <p key={`p-${index}-${i}`}>{paragraph}</p>);
+                    }
+
+                    if (key.includes("ul")) {
+                        return (
+                          <ul key={`ul-${index}`}>
+                            {value.map((item, i) => (
+                              <li key={`li-${index}-${i}`}>{item}</li>
+                            ))}
+                          </ul>
+                        );
+                    }
+
+                    if (key.includes("ol")) {
+                        return (
+                          <ol key={`ol-${index}`}>
+                            {value.map((item, i) => (
+                              <li key={`li-${index}-${i}`}>{item}</li>
+                            ))}
+                          </ol>
+                        );
+                    }
+                    return null;
+                })}
 
             </div>
 
-           <p className='thirty-px'><b>Example</b></p>
-            <div className='example-div'>
-                <img className='example-img' src='https://www.cvplaza.com/wp-content/uploads/2012/09/cv-personal-profile-statement.png'></img>
-            </div>
+            {currentTask?.example_img && (
+                <>
+                    <p className='thirty-px'><b>Example</b></p>
+                    <div className='example-div'>
+                    <img className='example-img' src={currentTask.example_img} alt='Example' />
+                    </div>
+                </>
+            )}
 
-            <p className='thirty-px'><b>Tips for success</b></p>
-            <div className='all-tips'>
-                <div className='tip'>
-                    <img className='tip-img' src='https://www.designyup.com/wp-content/uploads/2019/03/arial-font-sample.jpg'></img>
-                    <p><b>Use a clear, readable font</b></p>
-                    <p>Choose a professional font to ensure your name and contact info are easy to read</p>
-                </div>
+            {currentTask?.tips && (
+                <>
+                    <p className='thirty-px'><b>Tips for success</b></p>
+                    <div className='all-tips'>
+                        {currentTask?.tips?.map((tip) => (
+                            <div className='tip'>
+                                <img className='tip-img' src={tip.tip_img}></img>
+                                <p><b>{tip.title}</b></p>
+                                <p>{tip.caption}</p>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
 
-                <div className='tip'>
-                    <img className='tip-img' src='https://pictarts.com/07/material/01-free/0054-clip-art-m.png'></img>
-                    <p><b>Have a professional email</b></p>
-                    <p>Use a simple, name-based email instead of a casual or outdated address</p>
-                </div>
-
-                <div className='tip'>
-                    <img className='tip-img' src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png'></img>
-                    <p><b>Include your LinkedIn/portfolio</b></p>
-                    <p>Add links to your LinkedIn or portfolio to showcase your work</p>
-                </div>
-            </div>
-           
-           <p className='thirty-px'><b>Resources</b></p>
-           <div className='resource-div'>
-                <div className='resource'>
-                    <p><a href='https://www.indeed.com/career-advice/resumes-cover-letters/personal-details-on-resume' target='_blank'>Including Personal Details on Your Resume</a></p>
-                </div>
-
-                <div className='resource'>
-                    <p><a href='https://resume.io/blog/resume-personal-statement' target='_blank'>How to Write a Resume Personal Statement</a></p>
-                </div>
-           </div>
-           
+            {currentTask?.resources && (
+                <>
+                    <p className='thirty-px'><b>Resources</b></p>
+                    <div className='resource-div'>
+                        {currentTask?.resources?.map((resource) => (
+                            <div className='resource'>
+                                <p><a href={resource.resource_link} target='_blank'>{resource.resource_title}</a></p>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
         </>
     )

@@ -14,7 +14,7 @@ router.post('/signup', async (req, res) => {
             grad_year: req.body.grad_year,
             intended_career: req.body.intended_career,
             password: req.body.password,
-            signed_in: req.body.signed_in
+            avatar: req.body.avatar
         })
 
         await newProfile.save()
@@ -29,6 +29,7 @@ router.post('/signup', async (req, res) => {
 //verify if logged in
 router.get('/loggedin', async (req, res) => {
     if (req.session.userId) {
+      const user = await req.models.Profile.findOne({ _id: req.session.userId})
         res.send({loggedIn: true, userId: req.session.userId})
     } else {
         console.log("KICKED OUT")

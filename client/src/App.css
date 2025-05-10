@@ -913,4 +913,15 @@ body {
   font-size: 1.5rem;
 }
 
+.delete-acc {
+  margin-top: 5px;
+  width: 60px !important;
+  height: 30px !important;
+  background-color: red;
+  color: black;
+  border-radius: 40px !important;
+  border-style: none;
+  cursor: pointer;
+}
+
 /*END LOGIN*/

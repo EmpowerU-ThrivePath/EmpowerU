@@ -7,6 +7,7 @@ router.get('/', async (req, res) => {
     console.log("received user profile request")
     try {
         const userId = req.query.userId
+        console.log("this is passed query", userId)
         const user = await req.models.Profile.findOne({ _id: userId })
         res.json(user)
 
@@ -27,8 +28,10 @@ router.post('/change', async (req, res) => {
                 lname: req.body.lname,
                 pronouns: req.body.pronouns,
                 email: req.body.email,
+                grad_month: req.body.grad_month,
                 grad_year: req.body.grad_year,
-                intended_career: req.body.intended_career
+                intended_career: req.body.intended_career,
+                avatar: req.body.avatar
               }
             })
         res.send({ "status": "success" })
@@ -39,6 +42,18 @@ router.post('/change', async (req, res) => {
     }
 })
 
+router.delete('/', async (req, res) => {
+  console.log("deletinggg");
+  try {
+    const userId = req.query.userId
+    console.log("userrr", userId)
+    await req.models.Profile.deleteOne({ _id: userId })
+    res.send({ status: "success" })
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ status: "error", error });
+  }
+})
 
 
 export default router;

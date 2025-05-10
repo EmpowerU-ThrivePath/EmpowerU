@@ -1,14 +1,17 @@
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const NavBar = ({ setUser, setIsLoggedIn }) => {
-  const navigate = useNavigate();
+const NavBar = ({ user, setUser, setIsLoggedIn }) => {
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const [open, setOpen] = useState(false);
   const toggleDropDown = () => {
     setOpen(!open);
   };
+
+  const [avatar, setAvatar] = useState(null)
 
   const signOut = async () => {
     try {
@@ -27,6 +30,25 @@ const NavBar = ({ setUser, setIsLoggedIn }) => {
     navigate("/");
   };
 
+  useEffect(() => {
+  if (user || location.state?.refresh) {
+    loadUserProfile();
+  }
+}, [user, location]);
+
+  const loadUserProfile = async () => {
+    console.log("BRUH", user)
+    console.log(`this is user wowoow ${user}`)
+    await fetch(`http://localhost:3000/api/user?userId=${user}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAvatar(data.avatar)
+      })
+      .catch((error) => {
+        console.error("error loading user info")
+      })
+  }
+
   return (
     <>
       <div className="navbar">
@@ -43,7 +65,7 @@ const NavBar = ({ setUser, setIsLoggedIn }) => {
           </Link>
           <div className="drop-down">
             <img
-              src="\Avatar 5.png"
+              src={avatar}
               className="pfp"
               alt="profile picture"
               onClick={toggleDropDown}

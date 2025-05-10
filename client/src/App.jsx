@@ -44,6 +44,7 @@ function App() {
         });
         const data = await res.json();
         console.log("Session on or nah:", data.loggedIn);
+        console.log("Session ID:", data.userId);
         setIsLoggedIn(data.loggedIn);
         if (data.userId) setUser(data.userId);
       } catch (error) {
@@ -66,7 +67,7 @@ function App() {
 
   return (
     <>
-      {!shouldHideNavBar && <NavBar setIsLoggedIn={setIsLoggedIn} />}
+      {!shouldHideNavBar && <NavBar user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
         <Route
           path="/"
@@ -106,8 +107,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/data" element={<Data />} />
-        <Route path="/accessibility" element={<Accessibility />} />
+        <Route path="/data" element={<Data user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/security" element={<Security user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>} />
         <Route path="/support" element={<Support />} />
         <Route path="/quiz/:slug" element={<TakeQuiz />} />

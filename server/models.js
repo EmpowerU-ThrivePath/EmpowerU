@@ -19,7 +19,7 @@ const profileSchema = new mongoose.Schema({
   grad_year: String,
   intended_career: String,
   password: { type: String, required: true },
-  signed_in: Boolean,
+  avatar: String
 });
 
 profileSchema.pre("save", function (next) {

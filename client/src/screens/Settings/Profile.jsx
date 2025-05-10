@@ -5,9 +5,7 @@ import { Link, Outlet } from 'react-router'
 import SettingsMenu from "../../components/SettingsMenu";
 import ProfileEdit from "./Profile-Edit";
 
-const Profile = (user, setIsLoggedIn) => {
-  const userId = String(user)
-
+const Profile = ({ user }) => {
   const [userProfile, setUserProfile] = useState({
     fname: "",
     lname: "",
@@ -15,30 +13,18 @@ const Profile = (user, setIsLoggedIn) => {
     email: "",
     grad_month: "",
     grad_year: "",
-    intended_career: ""
+    intended_career: "",
+    avatar: ""
   })
 
-
   useEffect(() => {
-    loadUserProfile()
-    checkLogin()
-  }, [])
-
-  const checkLogin = async () => {
-    try {
-      const res = await fetch('http://localhost:3000/api/login/loggedin', {
-        credentials: 'include'
-      });
-      const data = await res.json()
-      console.log("HERE IS SESSION", data.loggedIn);
-      setIsLoggedIn(data.loggedIn)
-    } catch (error) {
-      console.error("error loading user info", error);
+    if (user) {
+      loadUserProfile();
     }
-  }
+  }, [user]);
 
   const loadUserProfile = async () => {
-    await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
+    await fetch(`http://localhost:3000/api/user?userId=${user}`)
       .then((res) => res.json())
       .then((data) => {
         setUserProfile(data)
@@ -56,7 +42,7 @@ const Profile = (user, setIsLoggedIn) => {
         <h2>Your Profile</h2>
         <div className="profile-info">
           <div className="profile-info-pic">
-            <img src="\Avatar 5.png" className="profile-info-pfp"></img>
+            <img src={userProfile.avatar} className="profile-info-pfp"></img>
           </div>
           <div className="profile-info-text">
             <div className="profile-info-text-header">

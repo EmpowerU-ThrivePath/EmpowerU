@@ -51,6 +51,12 @@ const Results = ({ slug, userScores }) => {
           <button className="result-button" onClick={() => navigate("/home")}>
             Go to Dashboard
           </button>
+          <button
+            className="result-button"
+            onClick={() => navigate("/roadmap")}
+          >
+            Go to Roadmap
+          </button>
         </div>
       </div>
       <div className="quiz-sidebar"></div>

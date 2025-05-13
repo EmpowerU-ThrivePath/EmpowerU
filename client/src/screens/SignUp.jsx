@@ -14,7 +14,7 @@ const Signup = () => {
         grad_year: '',
         intended_career: '',
         password: '',
-        signed_in: false
+        avatar: '\Avatar 1.png'
     })
 
     const handleChange = (event) => {
@@ -49,7 +49,8 @@ const Signup = () => {
                     email: '',
                     grad_year: '',
                     intended_career: '',
-                    password: ''
+                    password: '',
+                    avatar: '\Avatar 1.png'
                 })
                 navigate("/")
             } else {

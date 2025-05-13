@@ -108,7 +108,16 @@ function App() {
         />
         <Route path="/data" element={<Data />} />
         <Route path="/accessibility" element={<Accessibility />} />
-        <Route path="/security" element={<Security user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>} />
+        <Route
+          path="/security"
+          element={
+            <Security
+              user={user}
+              setUser={setUser}
+              setIsLoggedIn={setIsLoggedIn}
+            />
+          }
+        />
         <Route path="/support" element={<Support />} />
         <Route path="/quiz/:slug" element={<TakeQuiz />} />
       </Routes>

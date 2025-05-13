@@ -37,21 +37,23 @@ const Results = ({ slug, userScores }) => {
   if (error) return <div className="error">Error: {error}</div>;
 
   return (
-    <div>
-      <h2 className="result-text">
-        Based on your answers, we suggest the following:
-      </h2>
-      {recommendation && (
-        <div>
-          <p className="suggestions">{recommendation}</p>
+    <div className="quiz-container">
+      <div className="quiz-content">
+        <h2 className="result-text">
+          Based on your answers, we suggest the following:
+        </h2>
+        {recommendation && (
+          <div>
+            <p className="suggestions">{recommendation}</p>
+          </div>
+        )}
+        <div className="result-button-container">
+          <button className="result-button" onClick={() => navigate("/home")}>
+            Go to Dashboard
+          </button>
         </div>
-      )}
-
-      <div className="result-button-container">
-        <button className="result-button" onClick={() => navigate("/home")}>
-          Go to Dashboard
-        </button>
       </div>
+      <div className="quiz-sidebar"></div>
     </div>
   );
 };

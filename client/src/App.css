@@ -706,14 +706,10 @@ body {
 .options-grid {
   display: grid;
   grid-template-columns: 1fr;
-  /* Single column */
   width: calc(100% - 300px);
-  /* Full width minus 150px on each side */
   margin: 0 auto;
-  /* Centers the grid */
   gap: 25px;
   padding: 0 150px;
-  /* Creates the spacing */
 }
 
 .option-card {
@@ -725,9 +721,7 @@ body {
   align-items: center;
   font-size: 1.5rem;
   width: 100%;
-  /* Takes full width of its container */
   box-sizing: border-box;
-  /* Includes padding in width calculation */
 }
 
 .break-text {
@@ -786,7 +780,8 @@ body {
 
 .quiz-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  width: 100vw;
 }
 
 .quiz-content {
@@ -796,16 +791,18 @@ body {
 
 .quiz-sidebar {
   flex: 1;
-  height: 100%;
   background-color: #e9f7e8;
 }
 
 .suggestions {
   margin-left: 100px;
   margin-bottom: 30px;
+  font-size: 1.5rem;
 }
 
 .result-text {
+  font-size: 3rem;
+  color: #333;
   text-align: center;
   margin-left: 100px;
   margin-right: 100px;
@@ -823,12 +820,6 @@ body {
   cursor: pointer;
   margin-top: 100px;
 }
-
-.quiz-progress {
-  margin-left: 30px;
-  margin-top: 30px;
-}
-
 /* END QUIZ */
 
 /*LOGIN PAGE*/

@@ -82,9 +82,25 @@ router.post("/:slug/recommendation", async (req, res) => {
 
   // Basic logic to find the top scoring category
   const topCategory = Object.entries(scores).sort((a, b) => b[1] - a[1])[0];
-  const message = `You scored highest in "${topCategory[0]}" – consider exploring tasks in that area!`;
+  const message = `We recommend working on the "${topCategory[0]}" category – consider exploring tasks in that area!`;
 
   return res.json({ message });
+});
+
+router.delete("/:slug", async (req, res) => {
+  try {
+    const quiz = await req.models.Quiz.findOneAndDelete({
+      slug: req.params.slug,
+    });
+
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz not found" });
+    }
+
+    res.json({ message: "Quiz deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 export default router;

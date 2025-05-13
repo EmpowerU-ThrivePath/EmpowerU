@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import QuestionComponents from "./QuestionComponents";
 import Results from "./Results";
 import QuizNavigation from "./QuizNavigation";
-import QuizProgress from "./QuizProgress";
 
 const TakeQuiz = () => {
   const navigate = useNavigate();
@@ -166,12 +165,7 @@ const TakeQuiz = () => {
               prevPageBack={quiz.questions[0].id === currentQuestionId}
             />
           </div>
-          <div className="quiz-sidebar">
-            <QuizProgress
-              questions={quiz.questions}
-              currentId={currentQuestionId}
-            />
-          </div>
+          <div className="quiz-sidebar"></div>
         </>
       )}
     </div>

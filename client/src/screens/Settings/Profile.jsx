@@ -47,7 +47,7 @@ const Profile = ({ user }) => {
           <div className="profile-info-text">
             <div className="profile-info-text-header">
               <h3>{userProfile.fname} {userProfile.lname}</h3>
-              <p>she/her</p>
+              <p>{userProfile.pronouns}</p>
             </div>
             <div className="profile-info-text-personal">
               <h4>Current Graduation Date</h4>

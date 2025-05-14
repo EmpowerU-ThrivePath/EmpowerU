@@ -115,7 +115,6 @@ const ProfileEdit = ({ user }) => {
                 </div>
               </div>
             )}
-            <p>Remove</p>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="edit-profile-info-text">

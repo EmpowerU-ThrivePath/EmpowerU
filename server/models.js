@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 import bcrypt from "bcrypt";
 const SALT_WORK_FACTOR = 10;
+import dotenv from "dotenv/config";
 
 let models = {};
-console.log("connecting to mongodb");
+console.log("connecting to mongodb")
 await mongoose.connect(
-  "mongodb+srv://websharerUser:greenapples2@cluster0.jv2tfzr.mongodb.net/capstone?retryWrites=true&w=majority&appName=Cluster0"
-  // "mongodb+srv://easy:info441@paullohh.emcha.mongodb.net/websharerApp?retryWrites=true&w=majority&appName=paullohh"
+process.env.MONGODB_KEY
 );
 console.log("successfully connected to mongodb!");
 
@@ -16,6 +16,7 @@ const profileSchema = new mongoose.Schema({
   lname: String,
   pronouns: String,
   email: String,
+  grad_month: String,
   grad_year: String,
   intended_career: String,
   password: { type: String, required: true },

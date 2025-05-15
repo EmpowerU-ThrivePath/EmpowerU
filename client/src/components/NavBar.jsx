@@ -33,7 +33,8 @@ const NavBar = ({ setUser, setIsLoggedIn }) => {
     <>
       <div className="navbar">
         <div className="navbar-left">
-          <img src="\ThrivePath.png" className="logo" alt="ThrivePath"></img>
+          {/* <img src="\ThrivePath.png" className="logo" alt="ThrivePath"></img> */}
+          <h1>ThrivePath</h1>
         </div>
         <div className="navbar-center"></div>
         <div className="navbar-right">

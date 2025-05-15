@@ -63,5 +63,25 @@
         "id": "Networking",
         "Status": "In progress",
         "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
-    }
+    },
+    "applying_for_jobs": {
+        "id": "Applying for Jobs",
+        "status": "In progress",
+        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+    },  
+    "behavioral_interview": {
+        "id": "Behavioral Interview",
+        "status": "In progress",
+        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+    }, 
+    "technical_interview": {
+        "id": "Technical Interview",
+        "status": "In progress",
+        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+    },
+    "product_case_interview": {
+        "id": "Product Case Interview",
+        "status": "In progress",
+        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+    }   
 }

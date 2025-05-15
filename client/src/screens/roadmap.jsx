@@ -50,7 +50,9 @@ const Roadmap = () => {
                         <div className='module-status-div'>
                             <p>In progress</p>
                         </div>
-                        <p className='task-count'>📓 <span className='num-articles'>5</span> articles</p>
+                        <p className='task-count'>📓 <span className='num-articles'>5</span> subtasks</p>
+                        
+
                     </div>
                     
                 </div>
@@ -65,12 +67,12 @@ const Roadmap = () => {
                                 <p>Start task</p>
                             </div>
                         </div>
-                        
+
                     </div>
-                    
+                    <p>Dont know where to start? Take our quiz!</p>
                 </div>
 
-                <p>Dont know where to start? Take our quiz!</p>
+                {/* <p>Dont know where to start? Take our quiz!</p> */}
             </div>
             
             <div className='roadmap-steps'>

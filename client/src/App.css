@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Modern Abstract Serif';
+  src: url('./font/ModernAbstract-Serif.otf') format('opentype'),
+       url('./font/ModernAbstract-Serif.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: "Poppins";
 }
@@ -18,11 +26,15 @@ body {
   justify-content: left;
   justify-content: center;
   align-items: center;
+  font-family: 'Modern Abstract Serif', serif;
+  color: #095c13;
+  font-size: 1rem;
 }
 
 .navbar-left h1 {
   margin: 0;
   padding: 0;
+  font-family: 'Modern Abstract Serif', serif;
 }
 
 .navbar-right {

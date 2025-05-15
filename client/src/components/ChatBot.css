@@ -1,14 +1,82 @@
 .chatbot {
-    width: 100%;
-    margin: 40px 0;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 450px;
+    height: 500px;
     border-radius: 16px;
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); */
-    /* background-color: #f8f9fa; */
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
-    height: 600px;
     font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+h2 {
+    margin: 0;
+}
+
+.chatbot.maximized {
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    right: 0;
+    border-radius: 0;
+}
+
+.chatbot.minimized {
+    height: 60px;
+    cursor: pointer;
+}
+
+.chatbot.minimized .chatbot-body,
+.chatbot.minimized .chatbot-input,
+.chatbot.minimized .chatbot-header {
+    display: none;
+}
+
+.thrivebot-title {
+    background-color: #095C13;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.thrivebot-title h1 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.title-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.minimize-button,
+.maximize-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.minimize-button:hover,
+.maximize-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
 }
 
 .chatbot-header {
@@ -18,7 +86,6 @@
     position: relative;
     padding: 20px 0;
     z-index: 1000;
-    margin-bottom: 20px;
 }
 
 .chatbot-body {
@@ -30,6 +97,10 @@
     gap: 15px;
     background-color: #F5F5F5;
     border-radius: 10px 10px 0 0;
+}
+
+.chatbot.maximized .chatbot-body {
+    border-radius: 0;
 }
 
 .chatbot-message {
@@ -56,6 +127,54 @@
     color: #095C13;
 }
 
+.chatbot-message p {
+    margin: 0;
+    white-space: pre-line;
+}
+
+.chatbot-message p strong {
+    color: #095C13;
+    font-weight: 600;
+}
+
+.chatbot-message p em {
+    font-style: italic;
+    color: #666;
+}
+
+.chatbot-message p h1 {
+    font-size: 1.8rem;
+    margin: 1.5rem 0 1rem;
+    color: #095C13;
+}
+
+.chatbot-message p h2 {
+    font-size: 1.5rem;
+    margin: 1.3rem 0 0.8rem;
+    color: #095C13;
+}
+
+.chatbot-message p h3 {
+    font-size: 1.2rem;
+    margin: 1rem 0 0.6rem;
+    color: #095C13;
+}
+
+.chatbot-message p ul {
+    margin: 0.1rem 0;
+    padding-left: 1.5rem;
+}
+
+.chatbot-message p li {
+    margin: 0;
+    line-height: 1.2;
+    padding: 0.05rem 0;
+}
+
+.chatbot-message.assistant p {
+    line-height: 1.6;
+}
+
 .chatbot-input {
     padding: 20px;
     border-top: 1px solid #dee2e6;
@@ -80,7 +199,7 @@
 }
 
 .chatbot-input button {
-    padding: 12px 20px;
+    padding: 12px 16px;
     background-color: #095C13;
     color: white;
     border: none;
@@ -88,6 +207,11 @@
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.2s;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 45px;
 }
 
 .chatbot-input button:hover {

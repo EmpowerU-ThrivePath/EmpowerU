@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -18,34 +24,33 @@ import Home from "./screens/Home";
 import ChatBot from "./components/ChatBot";
 import Roadmap from "./screens/Roadmap";
 import Subtask from "./screens/subtask";
-
-import OnboardingQuiz from "./components/OnboardingQuiz";
-
+import TakeQuiz from "./components/TakeQuiz";
 
 function App() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  const location = useLocation()
-  const hideNavBarRoutes = ["/", "/signup", "/quiz"]
-  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname)
+  const location = useLocation();
+  const hideNavBarRoutes = ["/", "/signup", "/quiz"];
+  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/login/loggedin', {
-          credentials: 'include'
-        })
-        const data = await res.json()
-        console.log("Session on or nah:", data.loggedIn)
-        setIsLoggedIn(data.loggedIn)
-        if (data.userId) setUser(data.userId)
+        const res = await fetch("http://localhost:3000/api/login/loggedin", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        console.log("Session on or nah:", data.loggedIn);
+        console.log("Session ID:", data.userId);
+        setIsLoggedIn(data.loggedIn);
+        if (data.userId) setUser(data.userId);
       } catch (error) {
-        console.error("error loading user info", error)
+        console.error("error loading user info", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -54,21 +59,26 @@ function App() {
 
   const PrivateRoute = ({ children }) => {
     if (loading) {
-      return null
+      return null;
     } else {
-      return isLoggedIn ? children : <Navigate to="/" />
+      return isLoggedIn ? children : <Navigate to="/" />;
     }
-  }
-
+  };
 
   return (
     <>
-      {!shouldHideNavBar && <NavBar setIsLoggedIn={setIsLoggedIn} />}
+      {!shouldHideNavBar && (
+        <NavBar user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+      )}
       <Routes>
         <Route
           path="/"
           element={
-            isLoggedIn ? <Navigate to="/home" /> : <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+            isLoggedIn ? (
+              <Navigate to="/home" />
+            ) : (
+              <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+            )
           }
         />
         <Route path="/signup" element={<Signup />} />
@@ -101,12 +111,37 @@ function App() {
         />
         <Route path="/data" element={<Data />} />
         <Route path="/accessibility" element={<Accessibility />} />
-        <Route path="/security" element={<Security />} />
+        <Route
+          path="/security"
+          element={
+            <Security
+              user={user}
+              setUser={setUser}
+              setIsLoggedIn={setIsLoggedIn}
+            />
+          }
+        />
+        <Route
+          path="/data"
+          element={
+            <Data user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+          }
+        />
+        <Route
+          path="/security"
+          element={
+            <Security
+              user={user}
+              setUser={setUser}
+              setIsLoggedIn={setIsLoggedIn}
+            />
+          }
+        />
         <Route path="/support" element={<Support />} />
-        <Route path="/quiz" element={<OnboardingQuiz />} />
+        <Route path="/quiz/:slug" element={<TakeQuiz />} />
       </Routes>
     </>
-  )
+  );
 }
 
 export default App;

@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 import SettingsMenu from "../../components/SettingsMenu";
 
-const ProfileEdit = (user) => {
+const ProfileEdit = ({ user }) => {
   const navigate = useNavigate()
 
-  const [avatar, setAvatar] = useState(false);
+  const [chooseAvatar, setChooseAvatar] = useState(false);
   const toggleAvatar = () => {
-    setAvatar(!avatar);
+    setChooseAvatar(!chooseAvatar);
   }
 
   const [profile, setProfile] = useState({
@@ -19,18 +19,23 @@ const ProfileEdit = (user) => {
     lname: '',
     pronouns: '',
     email: '',
+    grad_month: '',
     grad_year: '',
     intended_career: '',
+    avatar: ''
   })
 
   useEffect(() => {
-    loadUserProfile()
-  }, [])
+    if (user) {
+      loadUserProfile();
+    }
+  }, [user]);
 
   const loadUserProfile = async () => {
-    await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
+    await fetch(`http://localhost:3000/api/user?userId=${user}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log("this is what i got", data)
         setProfile(data)
       })
       .catch((error) => {
@@ -42,9 +47,14 @@ const ProfileEdit = (user) => {
     setProfile({ ...profile, [event.target.name]: event.target.value })
   }
 
+  const handleClick = (avatarNumber) => {
+    const newAvatar = `Avatar ${avatarNumber}.png`
+    setProfile({ ...profile, avatar: newAvatar })
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-
+    console.log("profile afterrr", profile)
     try {
       const response = await fetch(`http://localhost:3000/api/user/change`, {
         method: "POST",
@@ -61,8 +71,9 @@ const ProfileEdit = (user) => {
           email: '',
           grad_year: '',
           intended_career: '',
+          avatar: ''
         })
-        navigate("/profile")
+        navigate("/profile", { state: { refresh: true } })
       } else {
         throw new Error('Changes could not be saved');
       }
@@ -82,20 +93,21 @@ const ProfileEdit = (user) => {
         <h2>Your Profile</h2>
         <div className="edit-profile-info">
           <div className="edit-profile-info-pic">
-            <img src="\Avatar 5.png" className="edit-profile-info-pfp"></img>
+            <img src={`/${profile.avatar}`} className="edit-profile-info-pfp" alt="profile pic"></img>
             <button className="edit-photo" onClick={toggleAvatar}>
               Edit photo
             </button>
-            {avatar && (
+            {chooseAvatar && (
               <div className="avatar-overlay">
                 <div className="choose-avatar">
                   <h3>Select Your Avatar</h3>
                   <div className="avatars">
-                    <img src="\Avatar 5.png" className="choose-avatar-pfp" />
-                    <img src="\Avatar 5.png" className="choose-avatar-pfp" />
-                    <img src="\Avatar 5.png" className="choose-avatar-pfp" />
-                    <img src="\Avatar 5.png" className="choose-avatar-pfp" />
-                    <img src="\Avatar 5.png" className="choose-avatar-pfp" />
+                    <img src="\Avatar 1.png" className="choose-avatar-pfp" onClick={() => handleClick(1)} />
+                    <img src="\Avatar 2.png" className="choose-avatar-pfp" onClick={() => handleClick(2)} />
+                    <img src="\Avatar 3.png" className="choose-avatar-pfp" onClick={() => handleClick(3)} />
+                    <img src="\Avatar 4.png" className="choose-avatar-pfp" onClick={() => handleClick(4)} />
+                    <img src="\Avatar 5.png" className="choose-avatar-pfp" onClick={() => handleClick(5)} />
+                    <img src="\Avatar 6.png" className="choose-avatar-pfp" onClick={() => handleClick(6)} />
                   </div>
                   <button className="choose-avatar-save" onClick={toggleAvatar}>
                     Save
@@ -103,7 +115,6 @@ const ProfileEdit = (user) => {
                 </div>
               </div>
             )}
-            <p>Remove</p>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="edit-profile-info-text">
@@ -136,11 +147,11 @@ const ProfileEdit = (user) => {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="grad-m">Graduation month</label>
-                  <input type="text" id="grad-m" />
+                  <input type="text" id="grad-month" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="grad-yr">Graduation year</label>
-                  <input type="text" id="grad-yr" name="grad_year" value={profile.grad_year}
+                  <input type="text" id="grad-year" name="grad_year" value={profile.grad_year}
                     onChange={handleChange} />
                 </div>
               </div>

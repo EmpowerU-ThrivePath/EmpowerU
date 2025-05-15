@@ -1,66 +1,64 @@
-import express from 'express';
+import express from "express";
 var app = express();
-import path from 'path'
+import path from "path";
 
-import models from './models.js'
-import apiRouter from "./routes/api.js"
+import models from "./models.js";
+import apiRouter from "./routes/api.js";
+import quizzesRouter from "./routes/controllers/quizzes.js";
 
-
-import router from './routes/api.js'
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import router from "./routes/api.js";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+import cors from "cors";
+import OpenAI from "openai";
+import dotenv from "dotenv/config";
 
-import cors from "cors"
-import OpenAI from 'openai'
-import dotenv from "dotenv/config"
-
-import cookieParser from 'cookie-parser';
-import sessions from 'express-session';
-import bodyParser from 'body-parser';
-
+import cookieParser from "cookie-parser";
+import sessions from "express-session";
+import bodyParser from "body-parser";
 
 const corsOptions = {
-    origin: ["http://localhost:5173"],
-    credentials: true
-}
+  origin: ["http://localhost:5173"],
+  credentials: true,
+};
 
-app.use(cors(corsOptions))
-app.use(express.json())
+app.use(cors(corsOptions));
+app.use(express.json());
 
 app.use((req, res, next) => {
-    req.models = models
-    next()
-})
-
+  req.models = models;
+  next();
+});
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(sessions({
+app.use(
+  sessions({
     secret: "secretkey1ibfvw983hf",
     saveUninitialized: false,
     resave: false,
     cookie: {
-        maxAge: 24 * 60 * 60 * 1000, 
-        sameSite: 'lax', 
-        secure: false 
-    }
-}))
-
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "lax",
+      secure: false,
+    },
+  })
+);
 
 // Initialize OpenAI
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-})
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 // Test endpoint
 app.get("/api/test", (req, res) => {
-    res.json({ message: "Server is working!" })
-})
+  res.json({ message: "Server is working!" });
+});
 
 app.post("/api/chat", async (req, res) => {
     try {
@@ -139,9 +137,9 @@ app.post("/api/chat", async (req, res) => {
 
         `;
 
-        if (!message) {
-            return res.status(400).json({ error: "Message is required" })
-        }
+    if (!message) {
+      return res.status(400).json({ error: "Message is required" });
+    }
 
         console.log("Sending request to OpenAI...")
         const completion = await openai.chat.completions.create({
@@ -160,21 +158,20 @@ app.post("/api/chat", async (req, res) => {
             max_tokens: 1000
         })
 
-        console.log("OpenAI response received")
-        res.json({ response: completion.choices[0].message.content })
-    } catch (error) {
-        console.error("Detailed error:", error)
-        res.status(500).json({
-            error: "An error occurred while processing your request",
-            details: error.message
-        })
-    }
-})
+    console.log("OpenAI response received");
+    res.json({ response: completion.choices[0].message.content });
+  } catch (error) {
+    console.error("Detailed error:", error);
+    res.status(500).json({
+      error: "An error occurred while processing your request",
+      details: error.message,
+    });
+  }
+});
 
-app.use('/api', apiRouter)
-
+app.use("/api", apiRouter);
+app.use("/qpi", quizzesRouter);
 
 app.listen(3000, () => {
-    console.log("Server listening on port 3000")
-})
-
+  console.log("Server listening on port 3000");
+});

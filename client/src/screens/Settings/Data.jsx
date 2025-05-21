@@ -9,7 +9,7 @@ const Data = ({ user, setUser, setIsLoggedIn }) => {
   console.log("testing what user is at data", user)
 
   const deleteAcc = async () => {
-    await fetch(`http://localhost:3000/api/user?userId=${user}`, {
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`, {
       method: "DELETE"
     })
       .then((res) => res.json())
@@ -23,7 +23,7 @@ const Data = ({ user, setUser, setIsLoggedIn }) => {
 
   const signOut = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/login/logout", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/logout`, {
         method: "DELETE",
         credentials: "include",
       });

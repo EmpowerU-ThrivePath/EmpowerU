@@ -11,7 +11,7 @@ const Results = ({ slug, userScores }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/login/loggedin", {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/loggedin`, {
           credentials: "include",
         });
         const data = await response.json();
@@ -30,7 +30,7 @@ const Results = ({ slug, userScores }) => {
     const fetchRecommendation = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/quizzes/${slug}/recommendation`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/quizzes/${slug}/recommendation`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -63,7 +63,7 @@ const Results = ({ slug, userScores }) => {
       console.log('Updating quiz status for user:', userId);
       
       // Update quiz completion status in database
-      const response = await fetch('http://localhost:3000/api/user/update-quiz-status', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/update-quiz-status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

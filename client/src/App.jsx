@@ -20,9 +20,9 @@ import Support from "./screens/Settings/Support";
 
 import Login from "./screens/Login";
 import Signup from "./screens/SignUp";
-import Home from "./screens/Home";
+import Home from "./screens/home";
 import ChatBot from "./components/ChatBot";
-import Roadmap from "./screens/Roadmap";
+import Roadmap from "./screens/roadmap";
 import Subtask from "./screens/subtask";
 import TakeQuiz from "./components/TakeQuiz";
 
@@ -40,7 +40,7 @@ function App() {
   useEffect(() => {
     const checkLoggedIn = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/login/loggedin", {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/loggedin`, {
           credentials: "include",
         });
         const data = await res.json();

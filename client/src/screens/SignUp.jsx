@@ -1,4 +1,4 @@
-import { set } from 'mongoose';
+
 import React, { useState } from 'react'
 import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +33,7 @@ const Signup = () => {
         } else {
             try {
             console.log("Sending profile data:", profile)
-            const response = await fetch('http://localhost:3000/api/login/signup', {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/signup`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

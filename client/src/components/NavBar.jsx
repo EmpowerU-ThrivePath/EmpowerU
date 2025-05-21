@@ -15,7 +15,7 @@ const NavBar = ({ user, setUser, setIsLoggedIn }) => {
 
   const signOut = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/login/logout", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/logout`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -39,7 +39,7 @@ const NavBar = ({ user, setUser, setIsLoggedIn }) => {
   const loadUserProfile = async () => {
     console.log("BRUH", user)
     console.log(`this is user wowoow ${user}`)
-    await fetch(`http://localhost:3000/api/user?userId=${user}`)
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`)
       .then((res) => res.json())
       .then((data) => {
         setAvatar(data.avatar)

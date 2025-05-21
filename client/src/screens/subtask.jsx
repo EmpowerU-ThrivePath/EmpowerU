@@ -14,7 +14,6 @@ const Subtask = () => {
     };
     
     return (
-        <>
         <div className='subtask-div'>
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
             
@@ -102,7 +101,6 @@ const Subtask = () => {
            
            <ChatBot />
         </div>
-        </>
     )
 }
 

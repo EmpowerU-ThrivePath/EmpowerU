@@ -84,6 +84,7 @@ const ChatBot = () => {
     const handleEntryClick = () => {
         setIsVisible(true)
         setIsSessionActive(true)
+        setIsMinimized(false)
     }
 
     return (

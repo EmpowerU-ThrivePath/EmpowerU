@@ -14,7 +14,8 @@ router.post('/signup', async (req, res) => {
             grad_year: req.body.grad_year,
             intended_career: req.body.intended_career,
             password: req.body.password,
-            avatar: req.body.avatar
+            avatar: req.body.avatar,
+            hasCompletedQuiz: false  // Explicitly set to false for new users
         })
 
         await newProfile.save()
@@ -30,7 +31,12 @@ router.post('/signup', async (req, res) => {
 router.get('/loggedin', async (req, res) => {
     if (req.session.userId) {
       const user = await req.models.Profile.findOne({ _id: req.session.userId})
-        res.send({loggedIn: true, userId: req.session.userId})
+      console.log("User quiz status:", user.hasCompletedQuiz);
+      res.send({
+        loggedIn: true, 
+        userId: req.session.userId,
+        hasCompletedQuiz: user.hasCompletedQuiz || false
+      })
     } else {
         console.log("KICKED OUT")
         res.send({loggedIn: false})
@@ -54,7 +60,11 @@ router.post('/', async (req, res) => {
                     req.session.userId = user._id
                     console.log("check", req.session.userId)
                     console.log("session info", req.session)
-                    res.send({ "status": "success", "userId": user._id })
+                    res.send({ 
+                        "status": "success", 
+                        "userId": user._id,
+                        "hasCompletedQuiz": user.hasCompletedQuiz || false 
+                    })
                     console.log("worked!")
                 } else {
                     return res.status(400).json({ message: 'Invalid password' });

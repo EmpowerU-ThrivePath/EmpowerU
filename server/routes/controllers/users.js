@@ -55,5 +55,31 @@ router.delete('/', async (req, res) => {
   }
 })
 
+router.post('/update-quiz-status', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    console.log("Updating quiz status for user:", userId);
+    
+    if (!userId) {
+      return res.status(400).json({ status: "error", message: "User ID is required" });
+    }
+
+    const result = await req.models.Profile.updateOne(
+      { _id: userId },
+      { $set: { hasCompletedQuiz: true } }
+    );
+
+    console.log("Update result:", result);
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ status: "error", message: "User not found" });
+    }
+
+    res.json({ status: "success", message: "Quiz status updated" });
+  } catch (error) {
+    console.log("Error updating quiz status:", error);
+    res.status(500).json({ status: "error", error: error.message });
+  }
+});
 
 export default router;

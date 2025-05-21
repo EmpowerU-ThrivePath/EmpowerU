@@ -15,6 +15,7 @@ const TakeQuiz = () => {
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState({});
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -33,7 +34,23 @@ const TakeQuiz = () => {
         setLoading(false);
       }
     };
+
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/login/loggedin", {
+          credentials: "include",
+        });
+        const data = await response.json();
+        if (data.loggedIn) {
+          setUser(data.userId);
+        }
+      } catch (err) {
+        console.error("Error fetching user:", err);
+      }
+    };
+
     fetchQuiz();
+    fetchUser();
   }, [slug]);
 
   const handleAnswer = (questionId, answer) => {
@@ -144,7 +161,7 @@ const TakeQuiz = () => {
   return (
     <div className="quiz-container">
       {currentQuestionId === "results" ? (
-        <Results quizId={slug} userScores={results} />
+        <Results quizId={slug} userScores={results} user={user} />
       ) : (
         <>
           <div className="quiz-content">
@@ -154,7 +171,6 @@ const TakeQuiz = () => {
                 selectedValue={answers[currentQuestionId]}
                 onAnswer={(answer) => handleAnswer(currentQuestionId, answer)}
               />
-              // </>
             )}
             <QuizNavigation
               currentQuestion={currentQuestion}

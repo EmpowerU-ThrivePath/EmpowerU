@@ -20,7 +20,8 @@ const profileSchema = new mongoose.Schema({
   grad_year: String,
   intended_career: String,
   password: { type: String, required: true },
-  avatar: String
+  avatar: String,
+  hasCompletedQuiz: { type: Boolean, default: false }
 });
 
 profileSchema.pre("save", function (next) {

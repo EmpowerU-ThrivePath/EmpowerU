@@ -28,6 +28,7 @@ import TakeQuiz from "./components/TakeQuiz";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [hasCompletedQuiz, setHasCompletedQuiz] = useState(false);
 
   const location = useLocation();
   const hideNavBarRoutes = ["/", "/signup", "/quiz"];
@@ -43,10 +44,12 @@ function App() {
           credentials: "include",
         });
         const data = await res.json();
-        console.log("Session on or nah:", data.loggedIn);
-        console.log("Session ID:", data.userId);
+        console.log("Session data:", data);
         setIsLoggedIn(data.loggedIn);
-        if (data.userId) setUser(data.userId);
+        if (data.userId) {
+          setUser(data.userId);
+          setHasCompletedQuiz(data.hasCompletedQuiz === true);
+        }
       } catch (error) {
         console.error("error loading user info", error);
       } finally {
@@ -59,10 +62,20 @@ function App() {
 
   const PrivateRoute = ({ children }) => {
     if (loading) {
-      return null;
-    } else {
-      return isLoggedIn ? children : <Navigate to="/" />;
+      return <div>Loading...</div>;
     }
+    
+    if (!isLoggedIn) {
+      return <Navigate to="/" />;
+    }
+
+    // Only redirect to quiz if not already on quiz page and hasn't completed it
+    if (hasCompletedQuiz !== true && !location.pathname.startsWith('/quiz/')) {
+      console.log("Redirecting to quiz, hasCompletedQuiz:", hasCompletedQuiz);
+      return <Navigate to="/quiz/onboarding-quiz" />;
+    }
+
+    return children;
   };
 
   return (

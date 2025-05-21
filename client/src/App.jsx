@@ -90,9 +90,9 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/roadmap" element={<Roadmap />} />
-        <Route path="/subtask" element={<Subtask />} />
-        <Route path="/chatBot" element={<ChatBot />} />
+        <Route path="/roadmap" element={<PrivateRoute><Roadmap /> </PrivateRoute>} />
+        <Route path="/subtask" element={<PrivateRoute><Subtask /> </PrivateRoute>} />
+        <Route path="/chatBot" element={<PrivateRoute><ChatBot /> </PrivateRoute>} />
         <Route
           path="/profile"
           element={
@@ -109,36 +109,26 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/data" element={<Data />} />
-        <Route path="/accessibility" element={<Accessibility />} />
-        <Route
-          path="/security"
-          element={
-            <Security
-              user={user}
-              setUser={setUser}
-              setIsLoggedIn={setIsLoggedIn}
-            />
-          }
-        />
+        <Route path="/accessibility" element={<PrivateRoute> <Accessibility /> </PrivateRoute>}  />
+
         <Route
           path="/data"
           element={
-            <Data user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+            <PrivateRoute><Data user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} /></PrivateRoute>
           }
         />
         <Route
           path="/security"
           element={
-            <Security
+            <PrivateRoute><Security
               user={user}
               setUser={setUser}
               setIsLoggedIn={setIsLoggedIn}
-            />
+            /></PrivateRoute>
           }
         />
-        <Route path="/support" element={<Support />} />
-        <Route path="/quiz/:slug" element={<TakeQuiz />} />
+        <Route path="/support" element={<PrivateRoute><Support /> </PrivateRoute>} />
+        <Route path="/quiz/:slug" element={<PrivateRoute><TakeQuiz /></PrivateRoute>} />
       </Routes>
     </>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -6,6 +6,7 @@ import SettingsMenu from "../../components/SettingsMenu";
 
 const Data = ({ user, setUser, setIsLoggedIn }) => {
   const navigate = useNavigate()
+  console.log("testing what user is at data", user)
 
   const deleteAcc = async () => {
     await fetch(`http://localhost:3000/api/user?userId=${user}`, {

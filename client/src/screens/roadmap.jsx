@@ -14,13 +14,14 @@ const Roadmap = () => {
     // User's current task
     const [taskId, setTaskId] = useState(null);
 
+    // need to create user's completed subtasks array that holds all completed subtasks
     // Current users all completed subtasks
     const completedSubtasks = ["Personal_Information"]; 
 
     useEffect(() => {
         // api call get users current task
         setTaskId("Personal_Information");
-      }, []);
+    }, []);
 
     useEffect(() => {
         fetch('/Dashboard/modules.json')

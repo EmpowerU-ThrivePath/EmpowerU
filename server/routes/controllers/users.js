@@ -42,6 +42,24 @@ router.post('/change', async (req, res) => {
     }
 })
 
+//update quiz status
+router.post('/quizstatus', async (req, res) => {
+    console.log("quiz status user", req.body)
+    try {
+        await req.models.Profile.updateOne({ _id: req.body.userId },
+            {
+              $set: {
+                hasCompletedQuiz: true
+              }
+            })
+        res.send({ "status": "success" })
+
+    } catch (error) {
+        console.log("Error updating quiz status", error)
+        res.status(500).json({ "status": "error", "error": error })
+    }
+})
+
 router.delete('/', async (req, res) => {
   console.log("deletinggg");
   try {

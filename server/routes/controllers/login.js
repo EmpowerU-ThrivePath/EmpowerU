@@ -6,21 +6,27 @@ var router = express.Router()
 router.post('/signup', async (req, res) => {
     try {
         console.log(req.body)
+        const user = await req.models.Profile.findOne({ email: req.body.email})
+        if (!user) {
         const newProfile = new req.models.Profile({
             fname: req.body.fname,
             lname: req.body.lname,
-            pronouns: req.body.prnouns,
+            pronouns: req.body.pronouns,
             email: req.body.email,
             grad_year: req.body.grad_year,
             intended_career: req.body.intended_career,
             password: req.body.password,
             avatar: req.body.avatar,
-            hasCompletedQuiz: false  // Explicitly set to false for new users
+            hasCompletedQuiz: req.body.hasCompletedQuiz  
         })
 
         await newProfile.save()
+        console.log("made prof!")
         res.send({ "status": "success" })
-
+      } else {
+        console.log("Email already taken")
+        res.status(500).json({ "status": "error w email", "error": "Email already taken!" })
+      }
     } catch (error) {
         console.log("Error creating profile", error)
         res.status(500).json({ "status": "error", "error": error })
@@ -35,7 +41,7 @@ router.get('/loggedin', async (req, res) => {
       res.send({
         loggedIn: true, 
         userId: req.session.userId,
-        hasCompletedQuiz: user.hasCompletedQuiz || false
+        hasCompletedQuiz: user.hasCompletedQuiz 
       })
     } else {
         console.log("KICKED OUT")

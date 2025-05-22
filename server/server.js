@@ -6,7 +6,6 @@ import models from "./models.js";
 import apiRouter from "./routes/api.js";
 import quizzesRouter from "./routes/controllers/quizzes.js";
 
-import router from "./routes/api.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -22,7 +21,7 @@ import sessions from "express-session";
 import bodyParser from "body-parser";
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://nobrainer-thrivepath.onrender.com"],
+  origin: ["http://localhost:5173"],
   credentials: true,
 };
 

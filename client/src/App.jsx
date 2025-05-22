@@ -29,9 +29,10 @@ import TakeQuiz from "./components/TakeQuiz";
 function App() {
   const [user, setUser] = useState(null);
   const [hasCompletedQuiz, setHasCompletedQuiz] = useState(false);
+  const [hasTakenQuiz, setHasTakenQuiz] = useState(false);
 
   const location = useLocation();
-  const hideNavBarRoutes = ["/", "/signup", "/quiz"];
+  const hideNavBarRoutes = ["/", "/signup", "/quiz/onboarding-quiz"];
   const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,7 +49,7 @@ function App() {
         setIsLoggedIn(data.loggedIn);
         if (data.userId) {
           setUser(data.userId);
-          setHasCompletedQuiz(data.hasCompletedQuiz === true);
+          setHasTakenQuiz(data.hasCompletedQuiz);
         }
       } catch (error) {
         console.error("error loading user info", error);
@@ -64,19 +65,11 @@ function App() {
     if (loading) {
       return <div>Loading...</div>;
     }
-    
     if (!isLoggedIn) {
       return <Navigate to="/" />;
     }
-
-    // Only redirect to quiz if not already on quiz page and hasn't completed it
-    if (hasCompletedQuiz !== true && !location.pathname.startsWith('/quiz/')) {
-      console.log("Redirecting to quiz, hasCompletedQuiz:", hasCompletedQuiz);
-      return <Navigate to="/quiz/onboarding-quiz" />;
-    }
-
     return children;
-  };
+  }
 
   return (
     <>
@@ -88,9 +81,17 @@ function App() {
           path="/"
           element={
             isLoggedIn ? (
-              <Navigate to="/home" />
+              hasTakenQuiz ? (
+                <Navigate to="/home" />
+              ) : (
+                <Navigate to="/quiz/onboarding-quiz" />
+              )
             ) : (
-              <Login setUser={setUser} setIsLoggedIn={setIsLoggedIn} />
+              <Login
+                setUser={setUser}
+                setIsLoggedIn={setIsLoggedIn}
+                setHasTakenQuiz={setHasTakenQuiz}
+              />
             )
           }
         />
@@ -122,7 +123,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/accessibility" element={<PrivateRoute> <Accessibility /> </PrivateRoute>}  />
+        <Route path="/accessibility" element={<PrivateRoute> <Accessibility /> </PrivateRoute>} />
 
         <Route
           path="/data"
@@ -141,7 +142,7 @@ function App() {
           }
         />
         <Route path="/support" element={<PrivateRoute><Support /> </PrivateRoute>} />
-        <Route path="/quiz/:slug" element={<PrivateRoute><TakeQuiz /></PrivateRoute>} />
+        <Route path="/quiz/:slug" element={<PrivateRoute><TakeQuiz userPass={user} setHasTakenQuiz={setHasTakenQuiz} /></PrivateRoute>} />
       </Routes>
     </>
   );

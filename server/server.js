@@ -1,6 +1,7 @@
 import express from "express";
 var app = express();
 import path from "path";
+import MongoStore from "connect-mongo"
 
 import models from "./models.js";
 import apiRouter from "./routes/api.js";
@@ -45,10 +46,14 @@ app.use(
     secret: "secretkey1ibfvw983hf",
     saveUninitialized: false,
     resave: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_KEY, 
+      collectionName: "sessions",
+    }),
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite: isProduction ? "none" : "lax", 
-      secure: isProduction, 
+      sameSite: isProduction ? "none" : "lax",
+      secure: isProduction,
     }
   })
 )

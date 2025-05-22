@@ -31,8 +31,26 @@ const NavBar = ({ user, setUser, setIsLoggedIn }) => {
   };
 
   useEffect(() => {
+
+    const checkLoggedIn = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/loggedin`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+        console.log("Session data:", data);
+        setIsLoggedIn(data.loggedIn);
+        if (data.userId) {
+          setUser(data.userId)
+        }
+      } catch (error) {
+        console.error("error loading user info", error);
+      }
+    };
+
     if (user || location.state?.refresh) {
-      loadUserProfile();
+      checkLoggedIn()
+      loadUserProfile()
     }
   }, [user, location]);
 

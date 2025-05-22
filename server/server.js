@@ -21,7 +21,7 @@ import sessions from "express-session";
 import bodyParser from "body-parser";
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://https://nobrainer-thrivepath.onrender.com"],
+  origin: ["http://localhost:5173", "https://nobrainer-thrivepath.onrender.com"],
   credentials: true,
 };
 

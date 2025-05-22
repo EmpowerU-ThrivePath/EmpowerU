@@ -36,6 +36,8 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const isProduction = process.env.NODE_ENV === "production"
+
 app.use(
   sessions({
     secret: "secretkey1ibfvw983hf",
@@ -43,11 +45,11 @@ app.use(
     resave: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite: "lax",
-      secure: false,
-    },
+      sameSite: isProduction ? "none" : "lax", 
+      secure: isProduction, 
+    }
   })
-);
+)
 
 // Initialize OpenAI
 const openai = new OpenAI({

@@ -35,18 +35,27 @@ router.post('/signup', async (req, res) => {
 
 //verify if logged in
 router.get('/loggedin', async (req, res) => {
-    if (req.session.userId) {
-      const user = await req.models.Profile.findOne({ _id: req.session.userId})
+  if (req.session.userId) {
+    try {
+      const user = await req.models.Profile.findOne({ _id: req.session.userId });
+      if (!user) {
+        console.log("User not found for session userId");
+        return res.send({ loggedIn: false });
+      }
       console.log("User quiz status:", user.hasCompletedQuiz);
       res.send({
-        loggedIn: true, 
+        loggedIn: true,
         userId: req.session.userId,
-        hasCompletedQuiz: user.hasCompletedQuiz 
-      })
-    } else {
-        console.log("KICKED OUT")
-        res.send({loggedIn: false})
+        hasCompletedQuiz: user.hasCompletedQuiz,
+      });
+    } catch (err) {
+      console.error("Error fetching user in /loggedin:", err);
+      res.status(500).send({ loggedIn: false, error: "Internal error" });
     }
+  } else {
+    console.log("KICKED OUT");
+    res.send({ loggedIn: false });
+  }
 })
 
 // login

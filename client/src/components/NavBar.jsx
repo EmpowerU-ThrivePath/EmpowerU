@@ -31,15 +31,17 @@ const NavBar = ({ user, setUser, setIsLoggedIn }) => {
   };
 
   useEffect(() => {
-  if (user || location.state?.refresh) {
-    loadUserProfile();
-  }
-}, [user, location]);
+    if (user || location.state?.refresh) {
+      loadUserProfile();
+    }
+  }, [user, location]);
 
   const loadUserProfile = async () => {
     console.log("BRUH", user)
     console.log(`this is user wowoow ${user}`)
-    await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`)
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`, {
+      credentials: "include"
+    })
       .then((res) => res.json())
       .then((data) => {
         setAvatar(data.avatar)

@@ -47,16 +47,16 @@ app.use(
     saveUninitialized: false,
     resave: false,
     store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_KEY, 
+      mongoUrl: process.env.MONGODB_KEY,
       collectionName: "sessions",
     }),
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: isProduction ? "none" : "lax",
-      secure: isProduction,
-    }
+      maxAge: 24 * 60 * 60 * 1000, 
+      sameSite: isProduction ? "none" : "lax", 
+      secure: isProduction ? true : false,    
+    },
   })
-)
+);
 
 // Initialize OpenAI
 const openai = new OpenAI({

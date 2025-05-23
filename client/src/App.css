@@ -577,16 +577,32 @@ body {
 
 .item3 {
   background-color: white;
-  outline: auto;
+  color: #095c13;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 40px;
   width: 150px;
-  border-radius: 40px;
+  border-radius: 20px;
   position: absolute;
   right: 0;
   margin-right: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #095c13;
+}
+
+.item3:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f5f5f5;
+}
+
+.item3 p {
+  margin: 0;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 /*END ROADMAP*/
@@ -709,11 +725,12 @@ body {
 /* QUIZ */
 
 .question-text {
-  font-size: 3rem;
+  font-size: 35px;
   color: #333;
   text-align: center;
   margin-left: 100px;
   margin-right: 100px;
+  padding-bottom: 20px;
 }
 
 .options-grid {
@@ -732,9 +749,33 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 18px;
   width: 100%;
   box-sizing: border-box;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.option-card:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.option-card.selected {
+  background-color: #e9f7e8;
+  border-color: #095c13;
+  box-shadow: 0 2px 4px rgba(9, 92, 19, 0.1);
+}
+
+.option-label {
+  margin-left: 10px;
+  font-family: "Poppins";
+  color: #333;
+}
+
+.hidden-checkbox {
+  display: none;
 }
 
 .break-text {
@@ -748,12 +789,47 @@ body {
   margin-left: 150px;
   margin-bottom: 5px;
   font-size: 1.5rem;
+  color: #333;
+  font-weight: 500;
 }
 
 .dropdown-select {
   margin-left: 150px;
   margin-bottom: 15px;
-  padding: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: "Poppins";
+  color: #333;
+  background-color: white;
+  border: 2px solid #095c13;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 300px;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23095c13' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 15px;
+  padding-right: 40px;
+}
+
+.dropdown-select:hover {
+  border-color: #0a6b15;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-select:focus {
+  outline: none;
+  border-color: #095c13;
+  box-shadow: 0 0 0 3px rgba(9, 92, 19, 0.1);
+}
+
+.dropdown-select option {
+  font-family: "Poppins";
+  padding: 10px;
+  background-color: white;
+  color: #333;
 }
 
 .quiz-navigation {
@@ -769,14 +845,25 @@ body {
   flex: 1;
   max-width: 175px;
   padding: 8px 50px;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: "Poppins";
 }
 
 .back-button {
   background: white;
   color: #606060;
-  border-style: solid #606060;
+  border: 2px solid #606060;
   border-radius: 20px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f5f5f5;
 }
 
 .continue-button {
@@ -784,41 +871,57 @@ body {
   color: white;
   border-radius: 20px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.continue-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #0a6b15;
 }
 
 .continue-button:disabled {
   background: #cccccc;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .quiz-container {
   display: flex;
   min-height: 100vh;
   width: 100vw;
+  padding-top: 0;
 }
 
 .quiz-content {
   flex: 2;
   height: 100%;
+  padding: 50px 40px 0 40px;
 }
 
 .quiz-sidebar {
   flex: 1;
   background-color: #e9f7e8;
+  padding-top: 0;
 }
 
 .suggestions {
   margin-left: 100px;
   margin-bottom: 30px;
   font-size: 1.5rem;
+  padding-top: 20px;
 }
 
 .result-text {
-  font-size: 3rem;
+  font-size: 35px;
   color: #333;
   text-align: center;
   margin-left: 100px;
   margin-right: 100px;
+  padding-top: 40px;
 }
 
 .result-button-container {

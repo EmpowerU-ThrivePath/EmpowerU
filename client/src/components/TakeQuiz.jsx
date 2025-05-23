@@ -129,6 +129,7 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
       if (nextId) {
         setHistory((prev) => [...prev, currentQuestionId]);
         setCurrentQuestionId(nextId);
+        window.scrollTo(0, 0);
         return;
       }
     }
@@ -151,6 +152,7 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
       if (selectedOption?.next) {
         setHistory((prev) => [...prev, currentQuestionId]);
         setCurrentQuestionId(selectedOption.next);
+        window.scrollTo(0, 0);
         return;
       }
     }
@@ -161,9 +163,11 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
     if (nextIndex < quiz.questions.length) {
       setHistory((prev) => [...prev, currentQuestionId]);
       setCurrentQuestionId(quiz.questions[nextIndex].id);
+      window.scrollTo(0, 0);
     } else {
       // Quiz completed - show results
       setCurrentQuestionId("results");
+      window.scrollTo(0, 0);
     }
   };
 

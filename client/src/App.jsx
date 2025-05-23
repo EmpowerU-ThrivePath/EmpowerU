@@ -32,8 +32,9 @@ function App() {
   const [hasTakenQuiz, setHasTakenQuiz] = useState(false);
 
   const location = useLocation();
-  const hideNavBarRoutes = ["/", "/signup", "/quiz/onboarding-quiz"];
-  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname);
+  const hideNavBarRoutes = ["/", "/signup"];
+  const shouldHideNavBar = hideNavBarRoutes.includes(location.pathname) || 
+    location.pathname.startsWith("/quiz/");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);

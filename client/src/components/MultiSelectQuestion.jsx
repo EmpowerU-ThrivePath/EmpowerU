@@ -15,15 +15,9 @@ const MultiSelectQuestion = ({ question, selectedValue = [], onAnswer }) => {
         {question.options.map((option) => (
           <div
             key={option.value}
-            className="option-card"
+            className={`option-card ${selectedValue.includes(option.value) ? 'selected' : ''}`}
             onClick={() => handleOptionClick(option.value)}
           >
-            <input
-              type="checkbox"
-              checked={selectedValue.includes(option.value)}
-              readOnly // We handle clicks via the parent div
-              className="hidden-checkbox"
-            />
             <span className="option-label">{option.label}</span>
           </div>
         ))}

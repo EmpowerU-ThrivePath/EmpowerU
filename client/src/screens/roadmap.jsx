@@ -134,7 +134,7 @@ const Roadmap = () => {
           </div>
 
           <div className="item3" onClick={handleCompleteModule}>
-            <p>Complete module</p>
+            <p>Complete Module</p>
           </div>
         </div>
       )}

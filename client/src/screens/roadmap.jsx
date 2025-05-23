@@ -17,13 +17,36 @@ const Roadmap = () => {
 
     // need to create user's completed subtasks array that holds all completed subtasks
     // Current users all completed subtasks
-    const completedSubtasks = ["Personal_Information"]; 
+    const subtasksComplete = ["Personal_Information"]; 
+
+    // Fetch the user info using user.user
+    const [currentUser, setCurrentUser] = useState({
+        fname: "",
+        modulesInProgress: [],
+        modulesComplete: [],
+    });
 
     useEffect(() => {
-        // api call get users current task
+        loadUserProfile();
+    }, []);
+
+    const loadUserProfile = async () => {
+        await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setCurrentUser(data)
+          })
+          .catch((error) => {
+            console.error(error)
+        })
+    }
+
+    // api call get users current task
+    useEffect(() => {
         setTaskId("Personal_Information");
     }, []);
 
+    // fetch data for current module
     useEffect(() => {
         fetch('/Dashboard/modules.json')
             .then(response => response.json())
@@ -90,7 +113,8 @@ const Roadmap = () => {
             
             <div className='roadmap-steps'>
                 {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData]) => {
-                    let isCompleted = completedSubtasks.includes(currentTask);
+                    let isCompleted = subtasksComplete.includes(currentTask);
+                    //let isCompleted = currentUser.subtasksComplete.includes(currentTask);
                     let isLastCompleted = isCompleted && currentTask === taskId;
 
                     return (

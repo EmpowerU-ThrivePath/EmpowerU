@@ -3,12 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const Home = () => {
+const Home = ({ user }) => {
     const navigate = useNavigate();
     const [modulesData, setModulesData] = useState(null);
+    const [userName, setUserName] = useState('');
     let modulesArray = [];
 
     useEffect(() => {
+        // Fetch user profile data
+        const fetchUserProfile = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`);
+                const data = await response.json();
+                setUserName(data.fname);
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+            }
+        };
+
+        if (user) {
+            fetchUserProfile();
+        }
+
+        // Fetch modules data
         fetch('/Dashboard/modules.json')
           .then(response => response.json())
           .then((data) => {
@@ -16,7 +33,7 @@ const Home = () => {
             setModulesData(modulesArray);
           })
           .catch(error => console.error('Error fetching modules:', error));
-    }, []);
+    }, [user]);
 
     console.log(modulesData);
 
@@ -32,8 +49,8 @@ const Home = () => {
     return (
         <>
         <div className='home-header'>
-            <p className='home-heading'><b>Good morning, <span>User!</span></b></p>
-            <p className='home-text'>Let’s begin working on your journey.</p>
+            <p className='home-heading'><b>Good morning, <span>{userName}</span></b></p>
+            <p className='home-text'>Let's begin working on your journey.</p>
         </div>
 
         <div className='all-modules-div'>

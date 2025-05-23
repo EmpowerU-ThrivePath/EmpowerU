@@ -24,7 +24,7 @@ const Profile = ({ user }) => {
   }, [user]);
 
   const loadUserProfile = async () => {
-    await fetch(`http://localhost:3000/api/user?userId=${user}`)
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`)
       .then((res) => res.json())
       .then((data) => {
         setUserProfile(data)

@@ -1,12 +1,12 @@
 import express from "express";
 var app = express();
 import path from "path";
+import MongoStore from "connect-mongo"
 
 import models from "./models.js";
 import apiRouter from "./routes/api.js";
 import quizzesRouter from "./routes/controllers/quizzes.js";
 
-import router from "./routes/api.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -22,7 +22,7 @@ import sessions from "express-session";
 import bodyParser from "body-parser";
 
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "https://nobrainer-thrivepath.onrender.com"],
   credentials: true,
 };
 
@@ -37,15 +37,23 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const isProduction = process.env.NODE_ENV === "production"
+
+app.set("trust proxy", 1)
+
 app.use(
   sessions({
     secret: "secretkey1ibfvw983hf",
     saveUninitialized: false,
     resave: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_KEY,
+      collectionName: "sessions",
+    }),
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: "lax",
-      secure: false,
+      maxAge: 24 * 60 * 60 * 1000, 
+      sameSite: isProduction ? "none" : "lax", 
+      secure: isProduction ? true : false,    
     },
   })
 );

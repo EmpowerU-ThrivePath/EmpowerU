@@ -6,21 +6,27 @@ var router = express.Router()
 router.post('/signup', async (req, res) => {
     try {
         console.log(req.body)
+        const user = await req.models.Profile.findOne({ email: req.body.email})
+        if (!user) {
         const newProfile = new req.models.Profile({
             fname: req.body.fname,
             lname: req.body.lname,
-            pronouns: req.body.prnouns,
+            pronouns: req.body.pronouns,
             email: req.body.email,
             grad_year: req.body.grad_year,
             intended_career: req.body.intended_career,
             password: req.body.password,
             avatar: req.body.avatar,
-            hasCompletedQuiz: false  // Explicitly set to false for new users
+            hasCompletedQuiz: req.body.hasCompletedQuiz  
         })
 
         await newProfile.save()
+        console.log("made prof!")
         res.send({ "status": "success" })
-
+      } else {
+        console.log("Email already taken")
+        res.status(500).json({ "status": "error w email", "error": "Email already taken!" })
+      }
     } catch (error) {
         console.log("Error creating profile", error)
         res.status(500).json({ "status": "error", "error": error })
@@ -29,18 +35,27 @@ router.post('/signup', async (req, res) => {
 
 //verify if logged in
 router.get('/loggedin', async (req, res) => {
-    if (req.session.userId) {
-      const user = await req.models.Profile.findOne({ _id: req.session.userId})
+  if (req.session.userId) {
+    try {
+      const user = await req.models.Profile.findOne({ _id: req.session.userId });
+      if (!user) {
+        console.log("User not found for session userId");
+        return res.send({ loggedIn: false });
+      }
       console.log("User quiz status:", user.hasCompletedQuiz);
       res.send({
-        loggedIn: true, 
+        loggedIn: true,
         userId: req.session.userId,
-        hasCompletedQuiz: user.hasCompletedQuiz || false
-      })
-    } else {
-        console.log("KICKED OUT")
-        res.send({loggedIn: false})
+        hasCompletedQuiz: user.hasCompletedQuiz,
+      });
+    } catch (err) {
+      console.error("Error fetching user in /loggedin:", err);
+      res.status(500).send({ loggedIn: false, error: "Internal error" });
     }
+  } else {
+    console.log("KICKED OUT");
+    res.send({ loggedIn: false });
+  }
 })
 
 // login

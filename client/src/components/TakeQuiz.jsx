@@ -5,7 +5,7 @@ import QuestionComponents from "./QuestionComponents";
 import Results from "./Results";
 import QuizNavigation from "./QuizNavigation";
 
-const TakeQuiz = () => {
+const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
   const navigate = useNavigate();
   const { slug } = useParams();
   const [quiz, setQuiz] = useState(null);
@@ -18,10 +18,32 @@ const TakeQuiz = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const updateQuizStat = async () => {
+      try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/quizstatus`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userId: userPass})
+      })
+      if (response.ok) {
+       setHasTakenQuiz(true)
+      } else {
+        throw new Error('Changes could not be saved');
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+      alert("Could not update quiz status")
+    }
+    }
+
+
     const fetchQuiz = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/quizzes/${slug}`
+          `${import.meta.env.VITE_API_BASE_URL}/api/quizzes/${slug}`
         );
         if (!response.ok) throw new Error("Quiz not found");
         const data = await response.json();
@@ -37,7 +59,7 @@ const TakeQuiz = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/login/loggedin", {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/loggedin`, {
           credentials: "include",
         });
         const data = await response.json();
@@ -51,6 +73,7 @@ const TakeQuiz = () => {
 
     fetchQuiz();
     fetchUser();
+    updateQuizStat()
   }, [slug]);
 
   const handleAnswer = (questionId, answer) => {

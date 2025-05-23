@@ -32,7 +32,7 @@ const ProfileEdit = ({ user }) => {
   }, [user]);
 
   const loadUserProfile = async () => {
-    await fetch(`http://localhost:3000/api/user?userId=${user}`)
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("this is what i got", data)
@@ -56,7 +56,7 @@ const ProfileEdit = ({ user }) => {
     event.preventDefault()
     console.log("profile afterrr", profile)
     try {
-      const response = await fetch(`http://localhost:3000/api/user/change`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/change`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

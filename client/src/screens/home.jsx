@@ -49,7 +49,7 @@ const Home = ({ user }) => {
     return (
         <>
         <div className='home-header'>
-            <p className='home-heading'><b>Good morning, <span>{userName}</span></b></p>
+            <p className='home-heading'><b>Good morning, <span>{userName}!</span></b></p>
             <p className='home-text'>Let's begin working on your journey.</p>
         </div>
 

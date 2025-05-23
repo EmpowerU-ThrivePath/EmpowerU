@@ -9,26 +9,17 @@ const Home = (user) => {
     const [modulesData, setModulesData] = useState(null);
     let modulesArray = [];
 
-    // If module is in modulesInProgress, module-button text should be continue, if not, begin 
-    const [modulesInProgress, setInProgress] = useState(null);
-
-    // if module is in modulesComplete, module-button should be grey with text start over, with module-status-div
-    // saying "completed"
-    const [modulesComplete, setComplete] = useState(null);
-
-    // if a user clicks start, add the module to the user's modulesInProgress array
-
     const [currentUser, setCurrentUser] = useState({
         fname: "",
-        modulesInProgress: []
+        modulesInProgress: [],
+        modulesComplete: [],
     });
 
     useEffect(() => {
         loadUserProfile();
-        setInProgress(['resume']);
-        setComplete([]);
     }, []);
 
+    // Fetch current user data
     const loadUserProfile = async () => {
         await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
           .then((res) => res.json())
@@ -36,23 +27,11 @@ const Home = (user) => {
             setCurrentUser(data)
           })
           .catch((error) => {
-            console.error("error loading user info")
+            console.error(error)
         })
     }
 
-    /* 
-    const loadUserCurrentModules = async () => {
-        await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
-          .then((res) => res.json())
-          .then((data) => {
-            setCurrentUser(data)
-          })
-          .catch((error) => {
-            console.error("error loading user info")
-        })
-    }
-    */
-
+    // Fetch all modules data
     useEffect(() => {
         fetch('/Dashboard/modules.json')
           .then(response => response.json())
@@ -63,9 +42,36 @@ const Home = (user) => {
           .catch(error => console.error('Error fetching modules:', error));
     }, []);
 
-    const handleContinueClick = (moduleId) => {
-        console.log('Clicked ' + moduleId);
-        navigate('/roadmap', { state: { moduleId } });
+    // Handles click event for button moving onto roadmap
+    // If a user clicks start, add the module to the user's modulesInProgress array
+    const handleContinueClick = async (moduleId) => {
+        // update user's modulesInProgress to add moduleId here
+        const userId = user.user; 
+        try {
+            const response = await fetch('http://localhost:3000/api/user/addModuleInProgress', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ userId, moduleId }),
+            });
+    
+            const data = await response.json();
+
+            if (data.success) {
+                // Optionally update local state if you want immediate UI update
+                // setCurrentUser(prev => ({
+                //     ...prev,
+                //     modulesInProgress: data.modulesInProgress
+                // }));
+                navigate('/roadmap', { state: { moduleId, user } });
+                console.log(user.modulesInProgress);
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.log(error);
+            alert('Error updating module progress.');
+        }
     };
 
     if(!modulesData) {
@@ -85,15 +91,15 @@ const Home = (user) => {
                     <div className='module-content'>
                     <p className='module-name'><b>{ module.id }</b></p>
                     <div className={`module-status-div ${module.status !== 'Published' ? 'module-status-coming-soon'
-                        : modulesComplete.includes(module.id.toLowerCase()) ? 'module-status-coming-soon'
-                        : modulesInProgress.includes(module.id.toLowerCase()) ? '' : 'hidden'
+                        : currentUser.modulesComplete.includes(module.id) ? 'module-status-coming-soon'
+                        : currentUser.modulesInProgress.includes(module.id) ? '' : 'hidden'
                         }`}>
-                        <p>{module.status !== 'Published' ? 'Coming soon' : (modulesComplete.includes(module.id.toLowerCase())) 
-                        ? 'Completed' : (modulesInProgress.includes(module.id.toLowerCase()) ? 'In Progress' : '') }</p>
+                        <p>{module.status !== 'Published' ? 'Coming soon' : (currentUser.modulesComplete.includes(module.id)) 
+                        ? 'Completed' : (currentUser.modulesInProgress.includes(module.id) ? 'In Progress' : '') }</p>
                     </div>
                     <div className='home-button-div'>
                         <div className={`module-button-div ${module.status === 'Published' ? '' : 'hidden'}`} onClick={() => handleContinueClick(module.id)}>
-                            <p>{modulesInProgress.includes(module.id.toLowerCase()) ? 'Continue' : modulesComplete.includes(module.id.toLowerCase()) ? 'Start Over' : 'Start'}</p>
+                            <p>{currentUser.modulesInProgress.includes(module.id) ? 'Continue' : currentUser.modulesComplete.includes(module.id) ? 'Start Over' : 'Start'}</p>
                         </div>
                     </div>
                     

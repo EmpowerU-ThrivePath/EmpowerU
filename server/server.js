@@ -117,10 +117,36 @@ app.post("/api/chat", async (req, res) => {
     }
 })
 
+app.post('/api/user/addModuleInProgress', async (req, res) => {
+    try {
+        const { userId, moduleId } = req.body;
+
+        // handle missing parameters
+        if (!userId || !moduleId) {
+            return res.status(400).json({ error: "Missing userId or moduleId" });
+        }
+
+        // check if userId exists, if it does not, throw an error
+        const user = await models.Profile.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // if the moduleId is not in the array, add it
+        if (!user.modulesInProgress.includes(moduleId)) {
+            user.modulesInProgress.push(moduleId);
+            await user.save();
+        }
+        res.json({ success: true, modulesInProgress: user.modulesInProgress });
+    } catch (error) {
+        console.error("Error updating modulesInProgress:", error);
+        res.status(500).json({ error: "Failed to update modulesInProgress" });
+    }
+});
+
 app.use('/api', apiRouter)
 
 
 app.listen(3000, () => {
     console.log("Server listening on port 3000")
 })
-

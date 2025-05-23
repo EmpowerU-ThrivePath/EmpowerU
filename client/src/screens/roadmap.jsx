@@ -8,6 +8,7 @@ const Roadmap = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const moduleId = location.state?.moduleId;
+    const user = location.state?.user;
 
     const [moduleData, setModuleData] = useState(null);
 
@@ -44,9 +45,15 @@ const Roadmap = () => {
     };
 
     const handleContinueClick = () => {
-        console.log('Continue clicked');
         navigate('/subtask', { state: { moduleId, taskId } });
     };
+
+    const handleCompleteClick = async (moduleId) => {
+        console.log(user.user);
+        console.log(moduleId);
+        console.log(user.modulesInProgress);
+        // navigate('/home');
+    }
 
     return (
         <>
@@ -104,7 +111,7 @@ const Roadmap = () => {
                 })}
             </div>
 
-            <div className='item3'>
+            <div className='item3' onClick={() => handleCompleteClick(moduleId)}>
                 <p>Complete module</p>
             </div>
         </div>

@@ -18,7 +18,10 @@ const profileSchema = new mongoose.Schema({
     intended_career: String,
     password: { type: String, required: true },
     signed_in: Boolean,
-    modulesInProgress: Array
+    modulesInProgress: Array,
+    modulesComplete: Array,
+    subtasksInProgress: Array,
+    subtasksComplete: Array
 })
 
      

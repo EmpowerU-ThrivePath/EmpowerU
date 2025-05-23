@@ -16,11 +16,11 @@ const Subtask = () => {
     const [subtasks, setSubtasks] = useState(null);
     
     // Current users all completed subtasks
-    const [completedSubtasks, setCompleted] = useState(null);
+    // const [completedSubtasks, setCompleted] = useState(null);
     
     useEffect(() => {
         // api call get users current compelted tasks
-        setCompleted(["Personal_Information"]);
+        // setCompleted(["Personal_Information"]);
     }, []);
     
     useEffect(() => {
@@ -46,7 +46,7 @@ const Subtask = () => {
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
             
             <div className='progress-bar'>    
-                {subtasks && Object.entries(subtasks).map(([key, task], index) => (
+                {subtasks && Object.entries(subtasks).map(([key, task]) => ( // ], index
                 <div className='progress-circle-div' key={key}>
                     <div className={`progress-circle progress-circle-inprogress`}>
                     {task.task === 0 && (

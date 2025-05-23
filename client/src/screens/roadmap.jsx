@@ -29,12 +29,11 @@ const Roadmap = () => {
   }
 
   const handleBackClick = () => {
-    navigate("/home");
+    navigate('/home', { state: { moduleId } });
   };
 
   const handleContinueClick = () => {
-    console.log("Continue clicked");
-    navigate("/subtask");
+    navigate('/subtask', { state: { moduleId } });
   };
 
   const handleCompleteModule = () => {

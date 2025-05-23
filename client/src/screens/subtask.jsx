@@ -9,8 +9,10 @@ const Subtask = () => {
     //const taskId = location.state?.taskId;
     //console.log("Opening " + taskId);
 
+    const moduleId = location.state?.moduleId;
+
     const handleBackClick = () => {
-        navigate('/roadmap');
+        navigate('/roadmap', { state: { moduleId } });
     };
     
     return (

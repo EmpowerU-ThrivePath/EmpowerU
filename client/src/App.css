@@ -482,7 +482,8 @@ body {
 }
 
 .module-img img {
-  height: 250px;
+  height: auto;
+  width: 250px;
 }
 
 /*END HOME*/

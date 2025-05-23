@@ -3,7 +3,7 @@
         "id": "Resume",
         "status": "Published",
         "description": "Build a professional resume step-by-step with our guided tool.",
-        "img": "https://media.istockphoto.com/id/1304527612/vector/resumes-cv-application-resume-filling-concept-writing-business-resume-job-search-resume.jpg?s=612x612&w=0&k=20&c=wKhHHikcoQJ1pEGaOgSUWsRoXEYr1TTbvbHcrpm1zGo=",
+        "img": "/Dashboard/attachedFile.png",
         "subtasks": {
             "Personal_Informtion": {
                 "task_title": "Add name and personal information",
@@ -57,31 +57,31 @@
     "portfolio": {
         "id": "Portfolio",
         "status": "In progress",
-        "img": "https://png.pngtree.com/png-clipart/20220924/ourmid/pngtree-document-portfolio-png-image_6215067.png"
+        "img": "/Dashboard/personalWebsite.png"
     },
     "network": {
         "id": "Networking",
         "Status": "In progress",
-        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+        "img": "/Dashboard/chatting.png"
     },
     "applying_for_jobs": {
         "id": "Applying for Jobs",
         "status": "In progress",
-        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+        "img": "/Dashboard/productivity.png"
     },  
     "behavioral_interview": {
         "id": "Behavioral Interview",
         "status": "In progress",
-        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+        "img": "/Dashboard/workspace.png"
     }, 
     "technical_interview": {
         "id": "Technical Interview",
         "status": "In progress",
-        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+        "img": "/Dashboard/education.png"
     },
     "product_case_interview": {
         "id": "Product Case Interview",
         "status": "In progress",
-        "img": "https://www.investopedia.com/thmb/G5H8epAD2VooUEqgfq-AKyeNRzo=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/networking-Final-77a45edc6a2447ada51cb38929b69cbd.jpg"
+        "img": "/Dashboard/process.png"
     }   
 }

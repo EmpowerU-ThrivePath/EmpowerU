@@ -20,8 +20,7 @@ const profileSchema = new mongoose.Schema({
     signed_in: Boolean,
     modulesInProgress: Array,
     modulesComplete: Array,
-    subtasksInProgress: Array,
-    subtasksComplete: Array
+    subtasksInProgress: Array
 })
 
      

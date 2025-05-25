@@ -12,7 +12,7 @@ const Home = (user) => {
     const [currentUser, setCurrentUser] = useState({
         fname: "",
         modulesInProgress: [],
-        modulesComplete: [],
+        modulesComplete: []
     });
 
     useEffect(() => {

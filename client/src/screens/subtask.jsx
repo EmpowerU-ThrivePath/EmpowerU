@@ -15,14 +15,6 @@ const Subtask = () => {
     // all subtasks
     const [subtasks, setSubtasks] = useState(null);
     
-    // Current users all completed subtasks
-    // const [completedSubtasks, setCompleted] = useState(null);
-    
-    useEffect(() => {
-        // api call get users current compelted tasks
-        // setCompleted(["Personal_Information"]);
-    }, []);
-    
     useEffect(() => {
         fetch('/Dashboard/modules.json')
             .then(response => response.json())
@@ -33,33 +25,57 @@ const Subtask = () => {
             .catch(error => console.error('Error fetching modules:', error));
     });
 
+    const taskKeys = subtasks ? Object.keys(subtasks) : [];
+    const currentIndex = taskKeys.indexOf(taskId);
+    const lastSubtask = currentIndex === taskKeys.length - 1;
     const currentTask = subtasks?.[taskId];
 
     // Need to pass the module name for back button 
     const handleBackClick = () => {
         navigate('/roadmap', { state: { moduleId } });
     };
-    
+
+    // when the user clicks next, the next subtask is opened
+    const handleNextClick = () => {
+        // change task id to the next task
+        const nextIndex = currentIndex + 1;
+
+        if (lastSubtask) {
+            navigate('/home');
+        } else {
+            console.log("move to next");
+            const nextTaskId = taskKeys[nextIndex];
+            navigate('/subtask', { state: { moduleId, taskId: nextTaskId } });
+        }
+    };
+
     return (
         <>
         <div className='subtask-div'>
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
             
             <div className='progress-bar'>    
-                {subtasks && Object.entries(subtasks).map(([key, task]) => ( // ], index
-                <div className='progress-circle-div' key={key}>
-                    <div className={`progress-circle progress-circle-inprogress`}>
-                    {task.task === 0 && (
-                        <img
-                        className='inprogress-dot'
-                        src='https://onedaycolor.com/cdn/shop/products/GPCX4030_650x.png?v=1533739257'
-                        alt='dot'
-                        />
-                    )}
-                    </div>
-                    <p className='progress-name'>{key.replace(/_/g, ' ')}</p>
-                </div>
-                ))}
+                {subtasks && Object.entries(subtasks).map(([key, task], index) => {                    
+                    // to do: 
+                    // when a user clicks next, add the subtask to subtaskInProgress
+                    // then roadmap, show correct next task and timeline
+                    // roadmap can use the same technique
+                    
+                    return(
+                        <div className='progress-circle-div' key={key}>
+                            <div className={`progress-circle progress-circle-inprogress`}>
+                            {index == currentIndex && (
+                                <img
+                                className='inprogress-dot'
+                                src='https://onedaycolor.com/cdn/shop/products/GPCX4030_650x.png?v=1533739257'
+                                alt='dot'
+                                />
+                            )}
+                            </div>
+                            <p className='progress-name'>{key.replace(/_/g, ' ')}</p>
+                        </div>
+                    );
+                })}
             </div>
 
             <div className='subtask-content'>
@@ -130,6 +146,10 @@ const Subtask = () => {
                     </div>
                 </>
             )}
+
+            <div className='item3' onClick={() => handleNextClick()}>
+                <p>{ lastSubtask ? "Complete module" : "Next" }</p>
+            </div>
         </div>
         </>
     )

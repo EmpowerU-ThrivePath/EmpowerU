@@ -117,6 +117,7 @@ app.post("/api/chat", async (req, res) => {
     }
 })
 
+// Add a module to modulesInProgress array
 app.post('/api/user/addModuleInProgress', async (req, res) => {
     try {
         const { userId, moduleId } = req.body;

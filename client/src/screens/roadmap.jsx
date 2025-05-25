@@ -7,25 +7,21 @@ import { useLocation } from 'react-router-dom';
 const Roadmap = () => {
     const navigate = useNavigate();
     const location = useLocation();
+
+    // current module
     const moduleId = location.state?.moduleId;
+
+    // current user
     const user = location.state?.user;
-
-    const [moduleData, setModuleData] = useState(null);
-
-    // User's current task
-    const [taskId, setTaskId] = useState(null);
-
-    // need to create user's completed subtasks array that holds all completed subtasks
-    // Current users all completed subtasks
-    const subtasksComplete = ["Personal_Information"]; 
-
+    
     // Fetch the user info using user.user
     const [currentUser, setCurrentUser] = useState({
         fname: "",
         modulesInProgress: [],
         modulesComplete: [],
+        subtasksInProgress: []
     });
-
+    
     useEffect(() => {
         loadUserProfile();
     }, []);
@@ -41,10 +37,19 @@ const Roadmap = () => {
         })
     }
 
+    const [moduleData, setModuleData] = useState(null);
+
+    // user's current task
+    const [taskId, setTaskId] = useState(null); 
+    
     // api call get users current task
     useEffect(() => {
         setTaskId("Personal_Information");
     }, []);
+
+    // need to create user's completed subtasks array that holds all completed subtasks
+    // Current users all completed subtasks
+    const subtasksComplete = ["Personal_Information"]; 
 
     // fetch data for current module
     useEffect(() => {
@@ -114,8 +119,18 @@ const Roadmap = () => {
             <div className='roadmap-steps'>
                 {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData]) => {
                     let isCompleted = subtasksComplete.includes(currentTask);
+                    
                     //let isCompleted = currentUser.subtasksComplete.includes(currentTask);
                     let isLastCompleted = isCompleted && currentTask === taskId;
+
+                    // const taskKeys = subtasks ? Object.keys(subtasks) : [];
+                    // const currentIndex = taskKeys.indexOf(taskId);
+                    // const lastSubtask = currentIndex === taskKeys.length - 1;
+                    // const currentTask = subtasks?.[taskId];
+                    
+                    // const completed = taskKeys.slice(0, currentIndex);
+                    // const completed = ["Personal_Information", "Education"];
+                    // let isCompleted = completed.includes(key);
 
                     return (
                         <div className='step' key={currentTask}>

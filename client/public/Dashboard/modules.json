@@ -43,16 +43,32 @@
                 ]
             },
             "Education": {
-                "task_title": "Add education"
+                "task_title": "Add education",
+                "short_desc": "Include your education history",
+                "task_desc": {
+                    "p": ["Create an education section and list your recent or current school"]
+                }
             },
             "Experience": {
-                "task_title": "List work experience/projects"
+                "task_title": "List work experience/projects",
+                "short_desc": "Show your work experience",
+                "task_desc": {
+                    "p": ["Create an experience section that shows your relevant work experience"]
+                }
             },
             "Skills": {
-                "task_title": "Add skills"
+                "task_title": "Add skills",
+                "short_desc": "Create a skills section",
+                "task_desc": {
+                    "p": ["Add a skills header", "List relevant skills"]
+                }
             },
             "Proofread": {
-                "task_title": "Proofread"
+                "task_title": "Proofread",
+                "short_desc": "Proofread",
+                "task_desc": {
+                    "p": ["Proofread"]
+                }
             }
         }
     },

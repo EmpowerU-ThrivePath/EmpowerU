@@ -120,18 +120,16 @@ app.post("/api/chat", async (req, res) => {
 // Add a module to modulesInProgress array
 app.post('/api/user/addModuleInProgress', async (req, res) => {
     try {
+        console.log("adding module in progress")
         const { userId, moduleId } = req.body;
 
         // handle missing parameters
         if (!userId || !moduleId) {
-            return res.status(400).json({ error: "Missing userId or moduleId" });
+            return res.status(400).json({ error: "Missing parameter" });
         }
 
-        // check if userId exists, if it does not, throw an error
+        // find user data
         const user = await models.Profile.findById(userId);
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
 
         // if the moduleId is not in the array, add it
         if (!user.modulesInProgress.includes(moduleId)) {
@@ -140,13 +138,43 @@ app.post('/api/user/addModuleInProgress', async (req, res) => {
         }
         res.json({ success: true, modulesInProgress: user.modulesInProgress });
     } catch (error) {
-        console.error("Error updating modulesInProgress:", error);
+        console.error(error);
         res.status(500).json({ error: "Failed to update modulesInProgress" });
     }
 });
 
-app.use('/api', apiRouter)
+// update users subtaskInProgress array
+app.post('/api/user/addSubtaskInProgress', async (req, res) => {
+    console.log('addsubtask triggered');
+    try {
+        const { userId, moduleId, taskId } = req.body;
+        if (!userId || !moduleId || !taskId) {
+            return res.status(400).json({ error: "Missing parameter" })
+        }
 
+        const updated = await req.models.Profile.updateOne({ _id: userId },
+            {
+                $set: { [`subtasksInProgress.${moduleId}`]: taskId } 
+            }
+        );
+
+        if (!updated) {
+            return res.status(400).json({ error: "Cant find user" })
+        }
+
+        const result = await req.models.Profile.findById(userId, 'subtasksInProgress');
+            return res.json({
+            success: true,
+            subtasksInProgress: result.subtasksInProgress
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: error.message })
+    }
+});
+
+app.use('/api', apiRouter)
 
 app.listen(3000, () => {
     console.log("Server listening on port 3000")

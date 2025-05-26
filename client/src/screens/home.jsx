@@ -58,11 +58,6 @@ const Home = (user) => {
             const data = await response.json();
 
             if (data.success) {
-                // Optionally update local state if you want immediate UI update
-                // setCurrentUser(prev => ({
-                //     ...prev,
-                //     modulesInProgress: data.modulesInProgress
-                // }));
                 navigate('/roadmap', { state: { moduleId, user } });
                 console.log(user.modulesInProgress);
             } else {
@@ -70,7 +65,6 @@ const Home = (user) => {
             }
         } catch (error) {
             console.log(error);
-            alert('Error updating module progress.');
         }
     };
 

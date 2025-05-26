@@ -20,7 +20,7 @@ const profileSchema = new mongoose.Schema({
     signed_in: Boolean,
     modulesInProgress: Array,
     modulesComplete: Array,
-    subtasksInProgress: Array
+    subtasksInProgress: { type: Map, of: String, default: {} }
 })
 
      

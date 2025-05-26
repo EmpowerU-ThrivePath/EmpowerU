@@ -6,11 +6,9 @@ import { useLocation } from 'react-router-dom';
 
 const Subtask = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    
-    // Users current task
-    const taskId = location.state?.taskId;
-    const moduleId = location.state?.moduleId;
+
+    const { moduleId, user, taskId } = useLocation().state;
+    let updatedUser = user;
 
     // all subtasks
     const [subtasks, setSubtasks] = useState(null);
@@ -32,20 +30,47 @@ const Subtask = () => {
 
     // Need to pass the module name for back button 
     const handleBackClick = () => {
-        navigate('/roadmap', { state: { moduleId } });
+        navigate('/roadmap', { state: { moduleId, user: updatedUser } });
     };
 
     // when the user clicks next, the next subtask is opened
-    const handleNextClick = () => {
-        // change task id to the next task
-        const nextIndex = currentIndex + 1;
-
+    const handleNextClick = async () => {
+        console.log("next clicked");
         if (lastSubtask) {
             navigate('/home');
-        } else {
-            console.log("move to next");
-            const nextTaskId = taskKeys[nextIndex];
-            navigate('/subtask', { state: { moduleId, taskId: nextTaskId } });
+        } else { 
+            const nextTaskId = taskKeys[currentIndex + 1];
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/user/addSubtaskInProgress', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ userId: updatedUser.user, moduleId, taskId: nextTaskId}),
+                });
+                console.log("  Fetch sent, awaiting response…");
+
+                if (!response.ok) {
+                    console.error("  Response not OK:", response.status, response.statusText);
+                    return;
+                }
+    
+                const data = await response.json();
+
+                if (data.success) {
+                    console.log("data success: " + data.subtasksInProgress);
+                    updatedUser = {
+                        ...user,
+                        subtasksInProgress: data.subtasksInProgress
+                    };
+
+                    navigate('/subtask', { state: { moduleId, user: updatedUser, taskId: nextTaskId } });
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
@@ -55,12 +80,7 @@ const Subtask = () => {
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
             
             <div className='progress-bar'>    
-                {subtasks && Object.entries(subtasks).map(([key, task], index) => {                    
-                    // to do: 
-                    // when a user clicks next, add the subtask to subtaskInProgress
-                    // then roadmap, show correct next task and timeline
-                    // roadmap can use the same technique
-                    
+                {subtasks && Object.entries(subtasks).map(([key], index) => {                    
                     return(
                         <div className='progress-circle-div' key={key}>
                             <div className={`progress-circle progress-circle-inprogress`}>
@@ -124,7 +144,7 @@ const Subtask = () => {
                     <p className='thirty-px'><b>Tips for success</b></p>
                     <div className='all-tips'>
                         {currentTask?.tips?.map((tip) => (
-                            <div className='tip'>
+                            <div className='tip' key={tip.title}>
                                 <img className='tip-img' src={tip.tip_img}></img>
                                 <p><b>{tip.title}</b></p>
                                 <p>{tip.caption}</p>
@@ -139,7 +159,7 @@ const Subtask = () => {
                     <p className='thirty-px'><b>Resources</b></p>
                     <div className='resource-div'>
                         {currentTask?.resources?.map((resource) => (
-                            <div className='resource'>
+                            <div className='resource' key={ resource.resource_title }>
                                 <p><a href={resource.resource_link} target='_blank'>{resource.resource_title}</a></p>
                             </div>
                         ))}
@@ -147,7 +167,7 @@ const Subtask = () => {
                 </>
             )}
 
-            <div className='item3' onClick={() => handleNextClick()}>
+            <div className='item3' onClick={handleNextClick}>
                 <p>{ lastSubtask ? "Complete module" : "Next" }</p>
             </div>
         </div>

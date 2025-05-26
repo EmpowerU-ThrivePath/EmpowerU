@@ -1,81 +1,95 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Roadmap = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { moduleId, user } = location.state;
 
-    // current module
-    const moduleId = location.state?.moduleId;
+    // all module data
+    const [moduleData, setModuleData] = useState(null);
 
-    // current user
-    const user = location.state?.user;
+    // user's current task
+    const [taskId, setTaskId] = useState(null); 
     
     // Fetch the user info using user.user
     const [currentUser, setCurrentUser] = useState({
         fname: "",
         modulesInProgress: [],
         modulesComplete: [],
-        subtasksInProgress: []
+        subtasksInProgress: {}
     });
-    
+
     useEffect(() => {
-        loadUserProfile();
-    }, []);
+        fetch(`http://localhost:3000/api/user?userId=${user.user}`, {credentials: 'include'})
+          .then(r => r.json()).then(setCurrentUser);
+    }, [location.key]);
 
-    const loadUserProfile = async () => {
-        await fetch(`http://localhost:3000/api/user?userId=${user.user}`)
-          .then((res) => res.json())
-          .then((data) => {
-            setCurrentUser(data)
-          })
-          .catch((error) => {
-            console.error(error)
-        })
-    }
-
-    const [moduleData, setModuleData] = useState(null);
-
-    // user's current task
-    const [taskId, setTaskId] = useState(null); 
-    
-    // api call get users current task
-    useEffect(() => {
-        setTaskId("Personal_Information");
-    }, []);
-
-    // need to create user's completed subtasks array that holds all completed subtasks
-    // Current users all completed subtasks
-    const subtasksComplete = ["Personal_Information"]; 
-
-    // fetch data for current module
     useEffect(() => {
         fetch('/Dashboard/modules.json')
-            .then(response => response.json())
-            .then((data) => {
-                const selectedModule = data[moduleId.toLowerCase()];
-                setModuleData(selectedModule);
-            })
-            .catch(error => console.error('Error fetching modules:', error));
-    });
+          .then(r => r.json())
+          .then(data => setModuleData(data[moduleId.toLowerCase()]))
+          .catch(console.error);
+    }, [moduleId]);
 
-    const currentTask = moduleData && taskId && moduleData.subtasks?.[taskId];
+    // get users current task
+    useEffect(() => {
+        if (!currentUser || !moduleData) return;
+    
+        // check if there is a task the user already started in this module. returns taskId
+        const task = currentUser.subtasksInProgress[moduleId];
+    
+        // if there is a task in progress, set taskId to that task
+        if (task) {
+          setTaskId(task);
+          return;
+        } else {
+          // pick the very first subtask key
+          const firstTask = Object.keys(moduleData.subtasks)[0];
+
+          fetch('http://localhost:3000/api/user/addSubtaskInProgress', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: user.user, moduleId, taskId: firstTask }),
+          })
+            .then(r => r.json())
+            .then(data => {
+              if (data.success) {
+                setCurrentUser(prev => ({
+                    ...prev,
+                    subtasksInProgress: data.subtasksInProgress
+                }));
+                setTaskId(firstTask);
+              } else {
+                console.error("Failed to add subtask:", data.error);
+              }
+            })
+            .catch(console.error);
+        }
+    }, [currentUser, moduleData]);
 
     if(!moduleData) {
         return <div>Loading roadmap...</div>
     }
+
+    const taskKey = currentUser?.subtasksInProgress?.[moduleId];
+    const currentTask = taskKey && moduleData?.subtasks?.[taskKey];
+
+    // need to create user's completed subtasks array that holds all completed subtasks
+    // Current users all completed subtasks
+    const subtasksComplete = ["Personal_Information"]; 
 
     const handleBackClick = () => {
         navigate('/home');
     };
 
     const handleContinueClick = () => {
-        navigate('/subtask', { state: { moduleId, taskId } });
+        navigate('/subtask', { state: { moduleId, user, taskId } });
     };
 
+    // move complete to subtask only
     const handleCompleteClick = async (moduleId) => {
         console.log(user.user);
         console.log(moduleId);
@@ -87,7 +101,7 @@ const Roadmap = () => {
         <>
         <div className='flex-container'>
             <div className='item1'>
-            <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
+                <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
                 <div className='module-info'>
                     <div className='module-content'>
                         <p className='home-heading'><b> {moduleId} </b></p>
@@ -127,7 +141,7 @@ const Roadmap = () => {
                     // const currentIndex = taskKeys.indexOf(taskId);
                     // const lastSubtask = currentIndex === taskKeys.length - 1;
                     // const currentTask = subtasks?.[taskId];
-                    
+
                     // const completed = taskKeys.slice(0, currentIndex);
                     // const completed = ["Personal_Information", "Education"];
                     // let isCompleted = completed.includes(key);
@@ -146,7 +160,6 @@ const Roadmap = () => {
                             <p>{taskData.task_title}</p>
                         </div>
                     )
-                   
                 })}
             </div>
 

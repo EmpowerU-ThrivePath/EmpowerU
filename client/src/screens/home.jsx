@@ -59,7 +59,6 @@ const Home = (user) => {
 
             if (data.success) {
                 navigate('/roadmap', { state: { moduleId, user } });
-                console.log(user.modulesInProgress);
             } else {
                 alert(data.error);
             }

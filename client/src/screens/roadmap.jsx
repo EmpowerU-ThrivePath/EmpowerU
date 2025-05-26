@@ -36,16 +36,39 @@ const Roadmap = () => {
     // get users current task
     useEffect(() => {
         if (!currentUser || !moduleData) return;
+/*
+        const fetchSubtasks = async () => {
+            const res = await fetch(`http://localhost:3000/api/user/subtasksInProgress?userId=${currentUser._id}`,
+            { credentials: 'include' });
+
+            if (res.ok) {
+              const { subtasksInProgress } = await res.json();
+              setCurrentUser(prev => ({
+                ...prev,
+                subtasksInProgress
+              }));
+            } else {
+              console.error("Failed to load subtasksInProgress", res.status);
+            }
+        };
+
+        if (currentUser) {
+            console.log("fetched: " + currentUser.subtasksInProgress[moduleId]);
+        }
+*/
+        
+        if (!currentUser || !moduleData) return;
     
         // check if there is a task the user already started in this module. returns taskId
         const task = currentUser.subtasksInProgress[moduleId];
     
         // if there is a task in progress, set taskId to that task
-        if (task) {
+        if (task !== "") {
           setTaskId(task);
           return;
         } else {
           // pick the very first subtask key
+          console.log("else block");
           const firstTask = Object.keys(moduleData.subtasks)[0];
 
           fetch('http://localhost:3000/api/user/addSubtaskInProgress', {
@@ -67,7 +90,7 @@ const Roadmap = () => {
               }
             })
             .catch(console.error);
-        }
+        } 
     }, [currentUser, moduleData]);
 
     if(!moduleData) {

@@ -136,6 +136,7 @@ app.post('/api/user/addModuleInProgress', async (req, res) => {
             user.modulesInProgress.push(moduleId);
             await user.save();
         }
+        console.log("user's current modulesInProgress: " + user.modulesInProgress);
         res.json({ success: true, modulesInProgress: user.modulesInProgress });
     } catch (error) {
         console.error(error);
@@ -158,6 +159,8 @@ app.post('/api/user/addSubtaskInProgress', async (req, res) => {
             }
         );
 
+        console.log("addSubtask called" + await req.models.Profile.findById(userId, 'subtasksInProgress'));
+
         if (!updated) {
             return res.status(400).json({ error: "Cant find user" })
         }
@@ -173,6 +176,26 @@ app.post('/api/user/addSubtaskInProgress', async (req, res) => {
         return res.status(500).json({ error: error.message })
     }
 });
+
+router.get('/subtasksInProgress', async (req, res) => {
+    try {
+        console.log('getting subtasksinprogress')
+        const { userId } = req.body;
+        if (!userId) {
+            return res.status(400).json({ error: "Missing userId parameter" })
+        }
+
+        const result = await req.models.Profile.findById(userId, 'subtasksInProgress');
+        if (!result) {
+            return res.status(404).json({ error: "Not found" });
+        }
+
+        res.json({ subtasksInProgress: result.subtasksInProgress });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: error.message })
+    }
+})
 
 app.use('/api', apiRouter)
 

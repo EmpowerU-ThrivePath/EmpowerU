@@ -5,10 +5,8 @@ const SALT_WORK_FACTOR = 10;
 import dotenv from "dotenv/config";
 
 let models = {};
-console.log("connecting to mongodb")
-await mongoose.connect(
-process.env.MONGODB_KEY
-);
+console.log("connecting to mongodb");
+await mongoose.connect(process.env.MONGODB_KEY);
 console.log("successfully connected to mongodb!");
 
 const profileSchema = new mongoose.Schema({
@@ -21,7 +19,7 @@ const profileSchema = new mongoose.Schema({
   intended_career: String,
   password: { type: String, required: true },
   avatar: String,
-  hasCompletedQuiz: { type: Boolean, default: false }
+  hasCompletedQuiz: { type: Boolean, default: false },
 });
 
 profileSchema.pre("save", function (next) {
@@ -89,6 +87,18 @@ const quizSchema = new mongoose.Schema({
       message: { type: String, required: true },
     },
   ],
+  isOnboarding: { type: String, required: true },
+});
+
+const resultSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Profile",
+    required: true,
+  },
+  quiz: { type: mongoose.Schema.Types.ObjectId, ref: "Quiz", required: true },
+  resultId: { type: String, required: true },
+  completedAt: { type: Date, default: Date.now },
 });
 
 models.Message = mongoose.model("Message", messageSchema);
@@ -96,6 +106,7 @@ models.Profile = mongoose.model("Profile", profileSchema);
 models.Option = mongoose.model("Option", optionSchema);
 models.Question = mongoose.model("Question", questionSchema);
 models.Quiz = mongoose.model("Quiz", quizSchema);
+models.Result = mongoose.model("Result", resultSchema);
 console.log("mongoose models created");
 
 export default models;

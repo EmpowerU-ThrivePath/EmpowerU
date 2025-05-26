@@ -5,7 +5,7 @@ import QuestionComponents from "./QuestionComponents";
 import Results from "./Results";
 import QuizNavigation from "./QuizNavigation";
 
-const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
+const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
   const navigate = useNavigate();
   const { slug } = useParams();
   const [quiz, setQuiz] = useState(null);
@@ -16,29 +16,31 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
   const [results, setResults] = useState({});
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     const updateQuizStat = async () => {
       try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/quizstatus`, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({userId: userPass})
-      })
-      if (response.ok) {
-       setHasTakenQuiz(true)
-      } else {
-        throw new Error('Changes could not be saved');
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/user/quizstatus`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId: userPass }),
+          }
+        );
+        if (response.ok) {
+          setHasTakenQuiz(true);
+        } else {
+          throw new Error("Changes could not be saved");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Could not update quiz status");
       }
-
-    } catch (error) {
-      console.error('Error:', error);
-      alert("Could not update quiz status")
-    }
-    }
-
+    };
 
     const fetchQuiz = async () => {
       try {
@@ -59,9 +61,12 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
 
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/login/loggedin`, {
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/login/loggedin`,
+          {
+            credentials: "include",
+          }
+        );
         const data = await response.json();
         if (data.loggedIn) {
           setUser(data.userId);
@@ -73,7 +78,7 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
 
     fetchQuiz();
     fetchUser();
-    updateQuizStat()
+    updateQuizStat();
   }, [slug]);
 
   const handleAnswer = (questionId, answer) => {
@@ -166,8 +171,7 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
       window.scrollTo(0, 0);
     } else {
       // Quiz completed - show results
-      setCurrentQuestionId("results");
-      window.scrollTo(0, 0);
+      handleCompleteQuiz();
     }
   };
 
@@ -183,6 +187,52 @@ const TakeQuiz = ({userPass, setHasTakenQuiz}) => {
       setHistory(prevHistory);
       setCurrentQuestionId(previousId);
     }
+  };
+
+  const submitQuizResult = async (finalResultId) => {
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/api/quizzes/${slug}/submit-result`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // include cookie session
+          body: JSON.stringify({ resultId: finalResultId, userId: user }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit quiz result");
+      }
+
+      console.log("✅ Quiz result submitted");
+    } catch (error) {
+      console.error("Error submitting result:", error);
+    }
+  };
+
+  const handleCompleteQuiz = () => {
+    // Determine the final resultId
+    let finalResultId = null;
+    let highestPoints = -Infinity;
+    for (const [key, value] of Object.entries(results)) {
+      if (value > highestPoints) {
+        highestPoints = value;
+        finalResultId = key;
+      }
+    }
+
+    if (finalResultId && !hasSubmitted) {
+      submitQuizResult(finalResultId);
+      setHasSubmitted(true);
+    }
+
+    setCurrentQuestionId("results");
+    window.scrollTo(0, 0);
   };
 
   return (

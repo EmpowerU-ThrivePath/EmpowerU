@@ -32,7 +32,8 @@ router.get("/:slug", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { title, description, slug, questions, results } = req.body;
+    const { title, description, slug, questions, results, isOnboarding } =
+      req.body;
 
     if (!title || !questions || !Array.isArray(questions)) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -64,6 +65,7 @@ router.post("/", async (req, res) => {
       description,
       questions: createdQuestions.map((q) => q._id),
       results,
+      isOnboarding: Boolean(isOnboarding),
     });
 
     res.status(201).json(quiz);
@@ -85,6 +87,42 @@ router.post("/:slug/recommendation", async (req, res) => {
   const message = `We recommend working on the "${topCategory[0]}" category – consider exploring tasks in that area!`;
 
   return res.json({ message });
+});
+
+router.post("/:slug/submit-result", async (req, res) => {
+  const { resultId } = req.body;
+  const { slug } = req.params;
+  const userId = req.session?.userId || "anonymous"; // Replace with actual user ID if available
+
+  if (!resultId) {
+    return res.status(400).json({ error: "Missing resultId in request body." });
+  }
+
+  try {
+    const quiz = await req.models.Quiz.findOne({ slug });
+
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz not found" });
+    }
+
+    // Only save if quiz is marked as onboarding
+    if (quiz.isOnboarding) {
+      await req.models.Result.create({
+        user: userId,
+        quiz: quiz._id,
+        resultId,
+      });
+
+      console.log("✅ Onboarding quiz result saved");
+    } else {
+      console.log("⏭ Not onboarding — result not saved");
+    }
+
+    res.json({ message: "Result processed." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to save quiz result." });
+  }
 });
 
 router.delete("/:slug", async (req, res) => {

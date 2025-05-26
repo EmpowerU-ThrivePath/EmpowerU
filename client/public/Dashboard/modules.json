@@ -74,8 +74,8 @@
         "status": "In progress",
         "img": "/Dashboard/workspace.png"
     }, 
-    "technical_interview": {
-        "id": "Technical Interview",
+    "interview": {
+        "id": "Interview",
         "status": "In progress",
         "img": "/Dashboard/education.png"
     },

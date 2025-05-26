@@ -56,6 +56,8 @@ const Profile = ({ user }) => {
               <p>{userProfile.intended_career}</p>
               <h4>Email</h4>
               <p>{userProfile.email}</p>
+              <h4>Next Step Navigator Result:</h4>
+              <p>{userProfile.onboardingResultText || "Not completed yet"}</p>
             </div>
           </div>
           <div className='profile-info-edit'>

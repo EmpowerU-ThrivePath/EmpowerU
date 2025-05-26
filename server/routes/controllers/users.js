@@ -9,7 +9,22 @@ router.get('/', async (req, res) => {
         const userId = req.query.userId
         console.log("this is passed query", userId)
         const user = await req.models.Profile.findOne({ _id: userId })
-        res.json(user)
+
+        const onboardingResult = await req.models.Result.findOne({
+          user: userId
+        }).populate({
+          path: "quiz",
+          match: { isOnboarding: true },
+        }).sort({completedAt: -1});
+
+        // If there's a match, add resultId to the response
+        const onboardingResultText = onboardingResult?.resultId || null;
+
+        res.json({
+          ...user.toObject(), // convert Mongoose doc to plain JS object
+          onboardingResultText
+        });
+        // res.json(user)
 
     } catch (error) {
         console.log("Error fetching user", error)
@@ -99,5 +114,7 @@ router.delete('/', async (req, res) => {
 //     res.status(500).json({ status: "error", error: error.message });
 //   }
 // });
+
+
 
 export default router;

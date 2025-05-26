@@ -7,7 +7,7 @@ const resultToModuleId = {
   network: "Network",
   applying_for_jobs: "Applying for Jobs",
   behavioral_interview: "Behavioral Interview",
-  interview: "Technical Interview",
+  interview: "Interview",
   product_case_interview: "Product Case Interview",
 };
 

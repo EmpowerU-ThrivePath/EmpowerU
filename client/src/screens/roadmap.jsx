@@ -36,47 +36,25 @@ const Roadmap = () => {
     // get users current task
     useEffect(() => {
         if (!currentUser || !moduleData) return;
-/*
-        const fetchSubtasks = async () => {
-            const res = await fetch(`http://localhost:3000/api/user/subtasksInProgress?userId=${currentUser._id}`,
-            { credentials: 'include' });
-
-            if (res.ok) {
-              const { subtasksInProgress } = await res.json();
-              setCurrentUser(prev => ({
-                ...prev,
-                subtasksInProgress
-              }));
-            } else {
-              console.error("Failed to load subtasksInProgress", res.status);
-            }
-        };
-
-        if (currentUser) {
-            console.log("fetched: " + currentUser.subtasksInProgress[moduleId]);
-        }
-*/
-        
-        if (!currentUser || !moduleData) return;
     
         // check if there is a task the user already started in this module. returns taskId
         const task = currentUser.subtasksInProgress[moduleId];
     
         // if there is a task in progress, set taskId to that task
         if (task !== "") {
-          setTaskId(task);
-          return;
+            setTaskId(task);
+            return;
         } else {
-          // pick the very first subtask key
-          console.log("else block");
-          const firstTask = Object.keys(moduleData.subtasks)[0];
+            // pick the very first subtask key
+            console.log("else block");
+            const firstTask = Object.keys(moduleData.subtasks)[0];
 
-          fetch('http://localhost:3000/api/user/addSubtaskInProgress', {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: user.user, moduleId, taskId: firstTask }),
-          })
+            fetch('http://localhost:3000/api/user/addSubtaskInProgress', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: user.user, moduleId, taskId: firstTask }),
+            })
             .then(r => r.json())
             .then(data => {
               if (data.success) {
@@ -99,10 +77,6 @@ const Roadmap = () => {
 
     const taskKey = currentUser?.subtasksInProgress?.[moduleId];
     const currentTask = taskKey && moduleData?.subtasks?.[taskKey];
-
-    // need to create user's completed subtasks array that holds all completed subtasks
-    // Current users all completed subtasks
-    const subtasksComplete = ["Personal_Information"]; 
 
     const handleBackClick = () => {
         navigate('/home');
@@ -154,20 +128,19 @@ const Roadmap = () => {
             </div>
             
             <div className='roadmap-steps'>
-                {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData]) => {
-                    let isCompleted = subtasksComplete.includes(currentTask);
-                    
-                    //let isCompleted = currentUser.subtasksComplete.includes(currentTask);
-                    let isLastCompleted = isCompleted && currentTask === taskId;
+                {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData], index) => {
+                    // all subtask names
+                    const allKeys = moduleData ? Object.keys(moduleData.subtasks) : [];
 
-                    // const taskKeys = subtasks ? Object.keys(subtasks) : [];
-                    // const currentIndex = taskKeys.indexOf(taskId);
-                    // const lastSubtask = currentIndex === taskKeys.length - 1;
-                    // const currentTask = subtasks?.[taskId];
+                    // index of current task
+                    const currentIndex = allKeys.indexOf(taskId);
+                    console.log(taskId);
 
-                    // const completed = taskKeys.slice(0, currentIndex);
-                    // const completed = ["Personal_Information", "Education"];
-                    // let isCompleted = completed.includes(key);
+                    // current users all inProgress subtasks
+                    const allProgress = allKeys.slice(0, currentIndex + 1); 
+
+                    let isCompleted = allProgress.includes(currentTask);
+                    let isLastCompleted = index === currentIndex;
 
                     return (
                         <div className='step' key={currentTask}>

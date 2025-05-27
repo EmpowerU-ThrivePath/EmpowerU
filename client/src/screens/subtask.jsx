@@ -48,7 +48,6 @@ const Subtask = () => {
                     credentials: 'include',
                     body: JSON.stringify({ userId: updatedUser.user, moduleId, taskId: nextTaskId}),
                 });
-                console.log("  Fetch sent, awaiting response…");
 
                 if (!response.ok) {
                     console.error("  Response not OK:", response.status, response.statusText);
@@ -58,7 +57,6 @@ const Subtask = () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    console.log("data success: " + data.subtasksInProgress);
                     updatedUser = {
                         ...user,
                         subtasksInProgress: data.subtasksInProgress
@@ -73,6 +71,39 @@ const Subtask = () => {
             }
         }
     };
+
+    // remove the current module from modulesInProgress and move to modulesComplete
+    const handleCompleteClick = async () => {
+        console.log("complete clicked");
+        try {
+            const response = await fetch ('http://localhost:3000/api/user/addModuleComplete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ userId: updatedUser.user, moduleId }),
+            });
+
+            if (!response.ok) {
+                console.error("  Response not OK:", response.status, response.statusText);
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                updatedUser = {
+                    ...user,
+                    modulesInProgress: data.modulesInProgress,
+                    modulesComplete: data.modulesComplete
+                };
+            } else {
+                alert(data.error);
+            }
+            navigate('/home');
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <>
@@ -167,7 +198,7 @@ const Subtask = () => {
                 </>
             )}
 
-            <div className='item3' onClick={handleNextClick}>
+            <div className='item3' onClick={ lastSubtask ? handleCompleteClick : handleNextClick}>
                 <p>{ lastSubtask ? "Complete module" : "Next" }</p>
             </div>
         </div>

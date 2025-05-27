@@ -81,6 +81,7 @@ const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
     updateQuizStat();
   }, [slug]);
 
+  // Handles user's answer to a question
   const handleAnswer = (questionId, answer) => {
     setAnswers((prev) => ({
       ...prev,
@@ -124,6 +125,7 @@ const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
   const QuestionComponent =
     currentQuestion && QuestionComponents[currentQuestion.type];
 
+    // Handles clicking the "Continue" button
   const handleContinue = () => {
     const currentQuestion = quiz.questions.find(
       (q) => q.id === currentQuestionId
@@ -162,7 +164,7 @@ const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
       }
     }
 
-    // Default linear progression
+    // Default next question if no branching
     const nextIndex =
       quiz.questions.findIndex((q) => q.id === currentQuestionId) + 1;
     if (nextIndex < quiz.questions.length) {
@@ -175,6 +177,7 @@ const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
     }
   };
 
+  // Handles "Back" button logic
   const handleBack = () => {
     if (history.length === 0) {
       // If we're on the first question and the user presses "Back", go to the previous page
@@ -189,6 +192,7 @@ const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
     }
   };
 
+  // Submits quiz result to the backend
   const submitQuizResult = async (finalResultId) => {
     try {
       const response = await fetch(
@@ -215,6 +219,7 @@ const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
     }
   };
 
+  // Finalizes the quiz and triggers result submission
   const handleCompleteQuiz = () => {
     // Determine the final resultId
     let finalResultId = null;
@@ -235,6 +240,7 @@ const TakeQuiz = ({ userPass, setHasTakenQuiz }) => {
     window.scrollTo(0, 0);
   };
 
+  // Render quiz or results view
   return (
     <div className="quiz-container">
       {currentQuestionId === "results" ? (

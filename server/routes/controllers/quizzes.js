@@ -3,6 +3,7 @@ import slugify from "slugify";
 
 var router = express.Router();
 
+// GET all quizzes with selected fields, sorted by newest first
 router.get("/quizzes", async (req, res) => {
   try {
     const quizzes = await req.models.Quiz.find()
@@ -14,6 +15,7 @@ router.get("/quizzes", async (req, res) => {
   }
 });
 
+// GET a single quiz by slug, including its full list of questions
 router.get("/:slug", async (req, res) => {
   try {
     const quiz = await req.models.Quiz.findOne({
@@ -30,6 +32,7 @@ router.get("/:slug", async (req, res) => {
   }
 });
 
+// POST to create a new quiz
 router.post("/", async (req, res) => {
   try {
     const { title, description, slug, questions, results, isOnboarding } =
@@ -58,7 +61,7 @@ router.post("/", async (req, res) => {
       }))
     );
 
-    // Create quiz
+    // Create the quiz document referencing the created questions
     const quiz = await req.models.Quiz.create({
       title,
       slug: generatedSlug,
@@ -74,6 +77,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// POST recommendation based on submitted scores for a quiz
 router.post("/:slug/recommendation", async (req, res) => {
   const { slug } = req.params;
   const { scores } = req.body;
@@ -89,6 +93,7 @@ router.post("/:slug/recommendation", async (req, res) => {
   return res.json({ message });
 });
 
+// POST result submission (only saved if quiz is marked as onboarding)
 router.post("/:slug/submit-result", async (req, res) => {
   const { resultId } = req.body;
   const { slug } = req.params;
@@ -125,6 +130,7 @@ router.post("/:slug/submit-result", async (req, res) => {
   }
 });
 
+// DELETE a quiz by slug
 router.delete("/:slug", async (req, res) => {
   try {
     const quiz = await req.models.Quiz.findOneAndDelete({

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Maps recommendation keywords to module display names
 const resultToModuleId = {
   resume: "Resume",
   portfolio: "Portfolio",
@@ -18,6 +19,7 @@ const Results = ({ slug, userScores }) => {
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
 
+  // On mount: fetch the currently logged-in user's ID
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -39,6 +41,7 @@ const Results = ({ slug, userScores }) => {
     fetchUser();
   }, []);
 
+  // Fetch recommendation from backend based on user scores and quiz slug
   useEffect(() => {
     const fetchRecommendation = async () => {
       try {
@@ -67,49 +70,9 @@ const Results = ({ slug, userScores }) => {
     fetchRecommendation();
   }, [slug, userScores]);
 
+  // Navigate back to dashboard. Commented-out section handles backend status update.
   const handleGoToDashboard = async () => {
     navigate("/home");
-    // try {
-    //   if (!userId) {
-    //     console.error('No user ID available');
-    //     alert('Please log in again to complete the quiz.');
-    //     return;
-    //   }
-
-    //   console.log('Updating quiz status for user:', userId);
-
-    //   // Update quiz completion status in database
-    //   const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/update-quiz-status`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ userId: userId }),
-    //   });
-
-    //   const data = await response.json();
-
-    //   if (!response.ok) {
-    //     throw new Error(data.message || 'Failed to update quiz status');
-    //   }
-
-    //   // Verify the update was successful
-    //   const verifyResponse = await fetch(`http://localhost:3000/api/user?userId=${userId}`);
-    //   const userData = await verifyResponse.json();
-
-    //   console.log('Verification response:', userData);
-
-    //   if (userData.hasCompletedQuiz) {
-    //     // Force a page reload to refresh the app state
-    //     window.location.href = '/home';
-    //   } else {
-    //     console.error('Quiz status not updated properly');
-    //     alert('There was an error completing the quiz. Please try again.');
-    //   }
-    // } catch (error) {
-    //   console.error('Error updating quiz status:', error);
-    //   alert(error.message || 'There was an error completing the quiz. Please try again.');
-    // }
   };
 
   const handleGoToRoadmap = () => {
@@ -118,7 +81,7 @@ const Results = ({ slug, userScores }) => {
       return;
     }
 
-    // Extract keyword from recommendation (you can make this smarter)
+    // Attempt to match a keyword in the recommendation string to a known module
     const lowerRec = recommendation.toLowerCase();
     let moduleId = null;
 
@@ -138,9 +101,11 @@ const Results = ({ slug, userScores }) => {
       return;
     }
 
+    // Navigate to roadmap page with identified module ID in state
     navigate("/roadmap", { state: { moduleId } });
   };
 
+  // Show loading or error messages if applicable
   if (loading) return <div className="loading">Analyzing your results...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 

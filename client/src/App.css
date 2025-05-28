@@ -472,6 +472,10 @@ body {
   width: fit-content;
 }
 
+.hidden {
+  display: none;
+}
+
 .module-button-div p {
   padding: 8px 50px;
   margin: 0;
@@ -575,6 +579,10 @@ body {
   height: 40px;
 }
 
+.bottom-padding {
+  height: 150px;
+}
+
 .item3 {
   background-color: white;
   color: #095c13;
@@ -591,6 +599,7 @@ body {
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #095c13;
+  margin-top: 40px;
 }
 
 .item3:hover {

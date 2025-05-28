@@ -6,34 +6,121 @@ import CompletionModal from "../components/CompletionModal";
 const Roadmap = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const moduleId = location.state?.moduleId;
+
+  const { moduleId, user } = location.state;
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   console.log("Opening " + moduleId);
 
+  console.log("User ID:", user._id);
   const [moduleData, setModuleData] = useState(null);
 
+  const [taskId, setTaskId] = useState(null);
+
+  const [currentUser, setCurrentUser] = useState({
+    modulesInProgress: [],
+    modulesComplete: [],
+    subtasksInProgress: {},
+  });
+
   useEffect(() => {
-    fetch("/Dashboard/modules.json")
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user._id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user profile');
+        }
+        const data = await response.json();
+        setCurrentUser(data);
+        console.log("Current user data:", data);
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [location.key]);
+
+  useEffect(() => {
+    const fetchModuleData = async () => {
+      try {
+        const response = await fetch("/Dashboard/modules.json");
+        if (!response.ok) {
+          throw new Error('Failed to fetch module data');
+        }
+        const data = await response.json();
         const selectedModule = data[moduleId.toLowerCase()];
         setModuleData(selectedModule);
-      })
-      .catch((error) => console.error("Error fetching modules:", error));
-  }, []);
+      } catch (error) {
+        console.error("Error fetching modules:", error);
+      }
+    };
 
-  console.log(moduleData);
+    fetchModuleData();
+  }, [moduleId]);
+
+  useEffect(() => {
+    if (!currentUser || !moduleData) return;
+
+    const task = currentUser.subtasksInProgress?.[moduleId.toLowerCase()];
+    console.log("Current task:", task);
+
+    if (task) {
+      setTaskId(task);
+    } else {
+      const firstTask = Object.keys(moduleData.subtasks)[0];
+      const updateSubtask = async () => {
+        try {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/addSubtaskInProgress`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              userId: user._id, 
+              moduleId: moduleId.toLowerCase(), 
+              taskId: firstTask 
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to update subtask');
+          }
+
+          const data = await response.json();
+          if (data.success) {
+            setCurrentUser(prev => ({
+              ...prev,
+              subtasksInProgress: data.subtasksInProgress
+            }));
+            setTaskId(firstTask);
+          } else {
+            console.error("Failed to add subtask:", data.error);
+          }
+        } catch (error) {
+          console.error("Error updating subtask:", error);
+        }
+      };
+
+      updateSubtask();
+    }
+  }, [currentUser, moduleData, moduleId, user._id]);
 
   if (!moduleData) {
     return <div>Loading roadmap...</div>;
   }
 
+  const taskKey = currentUser?.subtasksInProgress?.[moduleId.toLowerCase()];
+  const currentTask = taskKey && moduleData?.subtasks?.[taskKey];
+
+  console.log("Current task:", currentTask);
+  console.log("Task key:", taskKey);
+
+
   const handleBackClick = () => {
-    navigate('/home', { state: { moduleId } });
+    navigate('/home');
   };
 
   const handleContinueClick = () => {
-    navigate('/subtask', { state: { moduleId } });
+    navigate('/subtask', { state: { moduleId, user, taskId } });
   };
 
   const handleCompleteModule = () => {
@@ -86,12 +173,9 @@ const Roadmap = () => {
             <div className="next-task">
               <div className="next-task-content">
                 <p className="module-name">
-                  <b>Add name & personal info</b>
+                  <b>{ currentTask?.task_title }</b>
                 </p>
-                <p>
-                  Include your full name, phone number, email address, and
-                  additional links
-                </p>
+                <p>{ currentTask?.short_desc }</p>
 
                 <div className="next-task-button-div">
                   <div
@@ -107,30 +191,37 @@ const Roadmap = () => {
           </div>
 
           <div className="roadmap-steps">
-            <div className="step">
-              <div className="step-bubble green">
-                <img
-                  className="bubble-img"
-                  src="https://www.freeiconspng.com/thumbs/white-arrow-png/white-arrow-image-png-14.png"
-                ></img>
-              </div>
-              <p>Add name and personal information</p>
-            </div>
+            {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData], index) => {
+              // Get all subtask keys
+              const allKeys = Object.keys(moduleData.subtasks);
+              
+              // Get the current task's index
+              const currentTaskIndex = allKeys.indexOf(currentTask);
+              
+              // Get the user's current task index
+              const userCurrentTaskIndex = allKeys.indexOf(taskId);
+              
+              // A step is completed if its index is less than or equal to the user's current task index
+              const isCompleted = currentTaskIndex <= userCurrentTaskIndex;
+              
+              // A step is the last completed if it's the current task
+              const isLastCompleted = currentTaskIndex === userCurrentTaskIndex;
 
-            <div className="step">
-              <div className="step-bubble"></div>
-              <p>Add education</p>
-            </div>
-
-            <div className="step">
-              <div className="step-bubble"></div>
-              <p>List work experience/projects</p>
-            </div>
-
-            <div className="step">
-              <div className="step-bubble"></div>
-              <p>Add skills</p>
-            </div>
+              return (
+                <div className='step' key={currentTask}>
+                  <div className={`step-bubble ${isCompleted ? 'green' : ''}`}>
+                    {isLastCompleted && (
+                      <img
+                        className='bubble-img'
+                        src='https://www.freeiconspng.com/thumbs/white-arrow-png/white-arrow-image-png-14.png'
+                        alt='arrow'
+                      />
+                    )}
+                  </div>
+                  <p>{taskData.task_title}</p>
+                </div>
+              );
+            })}
           </div>
 
           <div className="item3" onClick={handleCompleteModule}>

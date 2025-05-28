@@ -2,17 +2,123 @@ import React from 'react'
 import {useNavigate} from 'react-router-dom'
 import ChatBot from '../components/ChatBot'
 import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const Subtask = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    //const taskId = location.state?.taskId;
-    //console.log("Opening " + taskId);
 
-    const moduleId = location.state?.moduleId;
+    const { moduleId, user, taskId } = useLocation().state;
+    let updatedUser = user;
+
+    const [subtasks, setSubtasks] = useState(null);
+
+    useEffect(() => {
+        fetch('/Dashboard/modules.json')
+            .then(response => response.json())
+            .then((data) => {
+                const selectedModule = data[moduleId.toLowerCase()];
+                setSubtasks(selectedModule.subtasks);
+            })
+            .catch(error => console.error('Error fetching modules:', error));
+    
+    }, [moduleId]);
+
+    const taskKeys = subtasks ? Object.keys(subtasks) : [];
+    const currentIndex = taskKeys.indexOf(taskId);
+    const lastSubtask = currentIndex === taskKeys.length - 1;
+    const currentTask = subtasks?.[taskId];
 
     const handleBackClick = () => {
-        navigate('/roadmap', { state: { moduleId } });
+        navigate('/roadmap', { state: { moduleId, user } });
+    };
+
+    const handleNextClick = async () => {
+        if (lastSubtask) {
+            navigate('/home');
+        } else { 
+            const nextTaskId = taskKeys[currentIndex + 1];
+            
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/addSubtaskInProgress`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        userId: updatedUser._id, 
+                        moduleId: moduleId.toLowerCase(), 
+                        taskId: nextTaskId
+                    }),
+                });
+
+                if (!response.ok) {
+                    console.error("Response not OK:", response.status, response.statusText);
+                    return;
+                }
+    
+                const data = await response.json();
+                console.log("Update response:", data);
+
+                if (data.success) {
+                    // Update the local user state with the new progress
+                    updatedUser = {
+                        ...updatedUser,
+                        subtasksInProgress: {
+                            ...updatedUser.subtasksInProgress,
+                            [moduleId.toLowerCase()]: nextTaskId
+                        }
+                    };
+                    console.log("Updated subtasks:", updatedUser.subtasksInProgress);
+
+                    // Navigate with the updated user state
+                    navigate('/subtask', { 
+                        state: { 
+                            moduleId, 
+                            user: updatedUser, 
+                            taskId: nextTaskId 
+                        } 
+                    });
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error("Error updating subtask:", error);
+            }
+        }
+    };
+
+    const handleCompleteClick = async() => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/addModuleComplete`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ 
+                    userId: updatedUser._id, 
+                    moduleId
+                }),
+            });
+
+            if (!response.ok) {
+                console.error("Response not OK:", response.status, response.statusText);
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                updatedUser = {
+                    ...user,
+                    modulesInProgress: data.modulesInProgress,
+                    modulesComplete: data.modulesComplete
+                };
+                navigate('/home');
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.error("Error completing module:", error);
+        }
     };
     
     return (
@@ -20,86 +126,96 @@ const Subtask = () => {
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>
             
             <div className='progress-bar'>
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-inprogress'>
-                        <img className='inprogress-dot' src='https://onedaycolor.com/cdn/shop/products/GPCX4030_650x.png?v=1533739257'></img>
-                    </div>
-                    <p className='progress-name'>Personal information</p>
-                </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Education</p>
-                </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Experience</p>
-                </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Skills</p>
-                </div>
-
-                <div className='progress-circle-div'>
-                    <div className='progress-circle progress-circle-incomplete'></div>
-                    <p className='progress-name'>Proofread</p>
-                </div>
+                    {subtasks && Object.entries(subtasks).map(([key], index) => {                    
+                        return(
+                            <div className='progress-circle-div' key={key}>
+                                <div className={`progress-circle progress-circle-inprogress`}>
+                                {index == currentIndex && (
+                                    <img
+                                    className='inprogress-dot'
+                                    src='https://onedaycolor.com/cdn/shop/products/GPCX4030_650x.png?v=1533739257'
+                                    alt='dot'
+                                    />
+                                )}
+                                </div>
+                                <p className='progress-name'>{key.replace(/_/g, ' ')}</p>
+                            </div>
+                        );
+                    })}
             </div>
 
             <div className='subtask-content'>
-                <p className='home-heading'><b>Add name & personal info</b></p>
-                <p>Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your your information is accurate, professional, and up to date.</p>
-                <p>
-                    This should Include:
-                    <ul>
-                        <li>Full name</li>
-                        <li>Position</li>
-                        <li>Location</li>
-                        <li>Email</li>
-                        <li>Phone number</li>
-                        <li>Additional links</li>
-                    </ul>
-                </p>
+            <p className='home-heading'><b>{currentTask?.task_title}</b></p>
+                {currentTask?.task_desc && Object.entries(currentTask.task_desc).map(([key, value], index) => {
+                    if (key.includes("p")) {
+                        return value.map((paragraph, i) => <p key={`p-${index}-${i}`}>{paragraph}</p>);
+                    }
+
+                    if (key.includes("ul")) {
+                        return (
+                        <ul key={`ul-${index}`}>
+                            {value.map((item, i) => (
+                            <li key={`li-${index}-${i}`}>{item}</li>
+                            ))}
+                        </ul>
+                        );
+                    }
+
+                    if (key.includes("ol")) {
+                        return (
+                        <ol key={`ol-${index}`}>
+                            {value.map((item, i) => (
+                            <li key={`li-${index}-${i}`}>{item}</li>
+                            ))}
+                        </ol>
+                        );
+                    }
+                    return null;
+                })}
             </div>
 
-           <p className='thirty-px'><b>Example</b></p>
-            <div className='example-div'>
-                <img className='example-img' src='https://www.cvplaza.com/wp-content/uploads/2012/09/cv-personal-profile-statement.png'></img>
+            {currentTask?.example_img && (
+                <>
+                    <p className='thirty-px'><b>Example</b></p>
+                    <div className='example-div'>
+                    <img className='example-img' src={currentTask.example_img} alt='Example' />
+                    </div>
+                </>
+            )}
+
+            {currentTask?.tips && (
+                <>
+                    <p className='thirty-px'><b>Tips for success</b></p>
+                    <div className='all-tips'>
+                        {currentTask?.tips?.map((tip) => (
+                            <div className='tip' key={tip.title}>
+                                <img className='tip-img' src={tip.tip_img}></img>
+                                <p><b>{tip.title}</b></p>
+                                <p>{tip.caption}</p>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+
+            {currentTask?.resources && (
+                <>
+                    <p className='thirty-px'><b>Resources</b></p>
+                    <div className='resource-div'>
+                        {currentTask?.resources?.map((resource) => (
+                            <div className='resource' key={ resource.resource_title }>
+                                <p><a href={resource.resource_link} target='_blank'>{resource.resource_title}</a></p>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+
+            <div className='item3' onClick={ lastSubtask ? handleCompleteClick : handleNextClick}>
+                <p>{ lastSubtask ? "Complete module" : "Next" }</p>
             </div>
 
-            <p className='thirty-px'><b>Tips for success</b></p>
-            <div className='all-tips'>
-                <div className='tip'>
-                    <img className='tip-img' src='https://www.designyup.com/wp-content/uploads/2019/03/arial-font-sample.jpg'></img>
-                    <p><b>Use a clear, readable font</b></p>
-                    <p>Choose a professional font to ensure your name and contact info are easy to read</p>
-                </div>
-
-                <div className='tip'>
-                    <img className='tip-img' src='https://pictarts.com/07/material/01-free/0054-clip-art-m.png'></img>
-                    <p><b>Have a professional email</b></p>
-                    <p>Use a simple, name-based email instead of a casual or outdated address</p>
-                </div>
-
-                <div className='tip'>
-                    <img className='tip-img' src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png'></img>
-                    <p><b>Include your LinkedIn/portfolio</b></p>
-                    <p>Add links to your LinkedIn or portfolio to showcase your work</p>
-                </div>
-            </div>
-           
-           <p className='thirty-px'><b>Resources</b></p>
-           <div className='resource-div'>
-                <div className='resource'>
-                    <p><a href='https://www.indeed.com/career-advice/resumes-cover-letters/personal-details-on-resume' target='_blank'>Including Personal Details on Your Resume</a></p>
-                </div>
-
-                <div className='resource'>
-                    <p><a href='https://resume.io/blog/resume-personal-statement' target='_blank'>How to Write a Resume Personal Statement</a></p>
-                </div>
-           </div>
+            <div className='bottom-padding'></div>
            
            <ChatBot />
         </div>

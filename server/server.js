@@ -177,6 +177,93 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+// Add a module to modulesInProgress array
+app.post('/api/user/addModuleInProgress', async (req, res) => {
+  try {
+      const { userId, moduleId } = req.body;
+
+      // handle missing parameters
+      if (!userId || !moduleId) {
+          return res.status(400).json({ error: "Missing parameter" });
+      }
+
+      // find user data
+      const user = await models.Profile.findById(userId);
+
+      // if the moduleId is not in the array, add it
+      if (!user.modulesInProgress.includes(moduleId)) {
+          user.modulesInProgress.push(moduleId);
+          await user.save();
+      }
+      res.json({ success: true, modulesInProgress: user.modulesInProgress });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Failed to update modulesInProgress" });
+  }
+});
+
+app.post('/api/user/addModuleComplete', async (req, res) => {
+  console.log("complete triggered");
+  try {
+      const { userId, moduleId } = req.body;
+
+      // handle missing parameters
+      if (!userId || !moduleId) {
+          return res.status(400).json({ error: "Missing parameter" });
+      }
+
+      // find user data
+      const user = await models.Profile.findById(userId);
+
+      // remove the module from modulesInProgress
+      user.modulesInProgress = user.modulesInProgress.filter(module => module !== moduleId);
+
+      // if the moduleId is not in the modulesComplete array, add it
+      if (!user.modulesComplete.includes(moduleId)) {
+          user.modulesComplete.push(moduleId);
+          await user.save();
+      }
+
+      res.json({ 
+          success: true, 
+          modulesInProgress: user.modulesInProgress,
+          modulesComplete: user.modulesComplete 
+      });
+  } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: error.message })
+  }
+});
+
+// update users subtaskInProgress array
+app.post('/api/user/addSubtaskInProgress', async (req, res) => {
+  try {
+      const { userId, moduleId, taskId } = req.body;
+      if (!userId || !moduleId || !taskId) {
+          return res.status(400).json({ error: "Missing parameter" })
+      }
+
+      const updated = await req.models.Profile.updateOne({ _id: userId },
+          {
+              $set: { [`subtasksInProgress.${moduleId}`]: taskId } 
+          }
+      );
+
+      if (!updated) {
+          return res.status(400).json({ error: "Cant find user" })
+      }
+
+      const result = await req.models.Profile.findById(userId, 'subtasksInProgress');
+          return res.json({
+          success: true,
+          subtasksInProgress: result.subtasksInProgress
+      });
+  } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: error.message })
+  }
+});
+
 app.use("/api", apiRouter);
 app.use("/qpi", quizzesRouter);
 

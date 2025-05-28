@@ -20,6 +20,9 @@ const profileSchema = new mongoose.Schema({
   password: { type: String, required: true },
   avatar: String,
   hasCompletedQuiz: { type: Boolean, default: false },
+  modulesInProgress: Array,
+  modulesComplete: Array,
+  subtasksInProgress: {type: Map, of: String, default: {}},
 });
 
 profileSchema.pre("save", function (next) {

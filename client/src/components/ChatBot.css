@@ -312,20 +312,18 @@ h2 {
 
 .chatbot-entry {
     position: fixed;
+    bottom: 10px;
     right: 20px;
-    bottom: 20px;
-    transform: none;
     background-color: #095C13;
     color: white;
-    padding: 12px 16px;
-    border-radius: 8px;
+    padding: 10px 20px;
+    border-radius: 20px;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
-    gap: 8px;
-    z-index: 999;
-    transition: all 0.3s ease;
+    gap: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
 }
 
 .chatbot-entry:hover {

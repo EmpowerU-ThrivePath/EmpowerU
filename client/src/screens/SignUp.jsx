@@ -24,7 +24,7 @@ const Signup = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        console.log("Sending profile data:", profile)
+        // console.log("Sending profile data:", profile)
         if (!profile.fname || !profile.lname || !profile.email || !profile.password) {
             alert("Please fill out all fields")
         } else if (!profile.email.includes("@")) {

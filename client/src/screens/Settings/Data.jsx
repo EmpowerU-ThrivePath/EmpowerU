@@ -6,7 +6,7 @@ import SettingsMenu from "../../components/SettingsMenu";
 
 const Data = ({ user, setUser, setIsLoggedIn }) => {
   const navigate = useNavigate()
-  console.log("testing what user is at data", user)
+  // console.log("testing what user is at data", user)
 
   const deleteAcc = async () => {
     await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`, {
@@ -29,7 +29,7 @@ const Data = ({ user, setUser, setIsLoggedIn }) => {
       });
 
       const data = await res.json();
-      console.log("Logout response:", data);
+      // console.log("Logout response:", data);
       setIsLoggedIn(false);
       setUser(null);
     } catch (error) {

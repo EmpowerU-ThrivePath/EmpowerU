@@ -16,7 +16,7 @@ const Support = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log("sending this message", message)
+    // console.log("sending this message", message)
 
     if (!message.name || !message.email || !message.message) {
       alert("Please fill in all neccessary information!");
@@ -33,7 +33,7 @@ const Support = () => {
         });
 
         if (response.ok) {
-          console.log("message sent")
+          // console.log("message sent")
           setMessage({
             name: '',
             email: '',

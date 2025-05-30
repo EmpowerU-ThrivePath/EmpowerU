@@ -7,7 +7,7 @@ import SettingsMenu from "../../components/SettingsMenu";
 const Security = ({user, setUser, setIsLoggedIn}) => {
   const navigate = useNavigate()
 
-  console.log(user)
+  // console.log(user)
 
   const [passUpdate, setPassUpdate] = useState({
     userId: user,
@@ -32,7 +32,7 @@ const Security = ({user, setUser, setIsLoggedIn}) => {
       alert("Passwords do not match")
     } else {
       try {
-        console.log("Sending password data:", passUpdate)
+        // console.log("Sending password data:", passUpdate)
         const response = await fetch('http://localhost:3000/api/login/update', {
           method: "POST",
           headers: {
@@ -41,7 +41,7 @@ const Security = ({user, setUser, setIsLoggedIn}) => {
           body: JSON.stringify(passUpdate)
         })
         if (response.ok) {
-          console.log("passupdated")
+          // console.log("passupdated")
           setPassUpdate({
             userId: user,
             currentPass: '',
@@ -56,7 +56,7 @@ const Security = ({user, setUser, setIsLoggedIn}) => {
             })
       
             const data = await res.json()
-            console.log("Logout response:", data)
+            // console.log("Logout response:", data)
             setIsLoggedIn(false);
             setUser(null);
       

@@ -17,7 +17,7 @@ const Login = ({ setHasTakenQuiz, setUser, setIsLoggedIn }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        console.log("sending this login info", loginInfo)
+        // console.log("sending this login info", loginInfo)
 
         if (!loginInfo.email || !loginInfo.password) {
             alert("Please fill in both email and password!");
@@ -35,14 +35,14 @@ const Login = ({ setHasTakenQuiz, setUser, setIsLoggedIn }) => {
 
                 if (response.ok) {
                     const data = await response.json()
-                    console.log("this is user at login", data.userId)
-                    console.log("this is quiz status from data", data.hasCompletedQuiz)
+                    // console.log("this is user at login", data.userId)
+                    // console.log("this is quiz status from data", data.hasCompletedQuiz)
 
                     if (data.hasCompletedQuiz) {
-                        console.log("going home!")
+                        // console.log("going home!")
                         navigate("/home")
                     } else {
-                        console.log("going 2 quiz!")
+                        // console.log("going 2 quiz!")
                         navigate("/quiz/onboarding-quiz")
                     }
 

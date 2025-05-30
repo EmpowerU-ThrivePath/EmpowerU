@@ -51,9 +51,11 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000, 
-      sameSite: isProduction ? "none" : "lax", 
-      secure: isProduction ? true : false,    
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: isProduction ? "none" : "lax",
+      secure: isProduction,
+      httpOnly: true,
+      path: "/"
     },
   })
 );
@@ -78,11 +80,11 @@ app.post("/api/chat", async (req, res) => {
 
             When a user pastes in their resume or a list of bullet points, your goal is to help them elevate their resume for internships or early-career roles. Review the entire content as a whole, and for **each bullet point that needs improvement**, provide clear, actionable feedback.
 
-            If user info is available, tailor your advice accordingly:
-
             ${userInfo ? `
-            - Graduation Year: ${profileSchema.grad_year}
-            - Intended Career: ${profileSchema.intended_career}
+            User Information:
+            - Name: ${userInfo.name}
+            - Graduation: ${userInfo.gradMonth} ${userInfo.gradYear}
+            - Intended Career: ${userInfo.intendedCareer}
             ` : ''}
 
             ### What to Do:
@@ -91,11 +93,11 @@ app.post("/api/chat", async (req, res) => {
             3. For each bullet that needs improvement, follow this format:
             - **Goal:** What skill or result the bullet aims to highlight
             - **Original:** The original bullet
-            - **Improved:** A stronger version using the XYZ format: “Accomplished [X] as measured by [Y], by doing [Z]”
+            - **Improved:** A stronger version using the XYZ format: "Accomplished [X] as measured by [Y], by doing [Z]"
             - **Tip:** One actionable suggestion to improve clarity, impact, or relevance
 
             If a bullet is already strong, you may briefly note:  
-            **“This bullet is strong and does not need changes.”**
+            **"This bullet is strong and does not need changes."**
 
             ### Format Output Like This:
 
@@ -110,7 +112,7 @@ app.post("/api/chat", async (req, res) => {
             ### At the End, Include:
 
             **Overall Summary:**
-            - 3–5 sentence review of the resume’s tone, clarity, and alignment with the user’s goals
+            - 3–5 sentence review of the resume's tone, clarity, and alignment with the user's goals
 
             **3 Quick Wins:**
             1. [...]
@@ -126,7 +128,7 @@ app.post("/api/chat", async (req, res) => {
 
             ---
 
-            ### If the User Says They Don’t Have a Resume:
+            ### If the User Says They Don't Have a Resume:
 
             1. Respond positively and guide them through creating their first one.
             2. Ask 3–5 friendly, conversational questions:
@@ -142,12 +144,11 @@ app.post("/api/chat", async (req, res) => {
             - Encourage them to keep adding experiences and refining over time
 
             Keep your tone beginner-friendly, supportive, and practical. Help users build confidence as they create a strong early-career resume.
-
         `;
 
-    if (!message) {
-      return res.status(400).json({ error: "Message is required" });
-    }
+        if (!message) {
+            return res.status(400).json({ error: "Message is required" });
+        }
 
         console.log("Sending request to OpenAI...")
         const completion = await openai.chat.completions.create({
@@ -166,15 +167,15 @@ app.post("/api/chat", async (req, res) => {
             max_tokens: 1000
         })
 
-    console.log("OpenAI response received");
-    res.json({ response: completion.choices[0].message.content });
-  } catch (error) {
-    console.error("Detailed error:", error);
-    res.status(500).json({
-      error: "An error occurred while processing your request",
-      details: error.message,
-    });
-  }
+        console.log("OpenAI response received");
+        res.json({ response: completion.choices[0].message.content });
+    } catch (error) {
+        console.error("Detailed error:", error);
+        res.status(500).json({
+            error: "An error occurred while processing your request",
+            details: error.message,
+        });
+    }
 });
 
 // Add a module to modulesInProgress array
@@ -261,6 +262,37 @@ app.post('/api/user/addSubtaskInProgress', async (req, res) => {
   } catch (error) {
       console.log(error);
       return res.status(500).json({ error: error.message })
+  }
+});
+
+// Get user profile information
+app.get('/api/user/profile', async (req, res) => {
+  try {
+    // Get the user ID from the session
+    const userId = req.session.userId;
+    
+    if (!userId) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+
+    // Find the user in the database
+    const user = await req.models.Profile.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Return the user's profile information
+    res.json({
+      fname: user.fname,
+      lname: user.lname,
+      grad_year: user.grad_year,
+      grad_month: user.grad_month,
+      intended_career: user.intended_career
+    });
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ error: "Failed to fetch user profile" });
   }
 });
 

@@ -21,7 +21,7 @@ const NavBar = ({ user, setUser, setIsLoggedIn }) => {
       });
 
       const data = await res.json();
-      console.log("Logout response:", data);
+      // console.log("Logout response:", data);
       setIsLoggedIn(false);
       setUser(null);
     } catch (error) {
@@ -38,7 +38,7 @@ const NavBar = ({ user, setUser, setIsLoggedIn }) => {
           credentials: "include",
         });
         const data = await res.json();
-        console.log("Session data:", data);
+        // console.log("Session data:", data);
         setIsLoggedIn(data.loggedIn);
         if (data.userId) {
           setUser(data.userId)
@@ -55,8 +55,8 @@ const NavBar = ({ user, setUser, setIsLoggedIn }) => {
   }, [user, location]);
 
   const loadUserProfile = async () => {
-    console.log("BRUH", user)
-    console.log(`this is user wowoow ${user}`)
+    // console.log("BRUH", user)
+    // console.log(`this is user wowoow ${user}`)
     await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user}`, {
       credentials: "include"
     })

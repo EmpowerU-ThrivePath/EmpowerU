@@ -54,7 +54,7 @@ const ProfileEdit = ({ user }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log("profile afterrr", profile)
+    // console.log("profile afterrr", profile)
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/change`, {
         method: "POST",

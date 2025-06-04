@@ -19,10 +19,21 @@ const ChatBot = () => {
         // Fetch user information when component mounts
         const fetchUserInfo = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/profile`)
-                setUserInfo(response.data)
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/profile`, {
+                    withCredentials: true
+                })
+                if (response.data) {
+                    setUserInfo({
+                        name: `${response.data.fname} ${response.data.lname}`,
+                        gradYear: response.data.grad_year,
+                        gradMonth: response.data.grad_month,
+                        intendedCareer: response.data.intended_career
+                    })
+                }
             } catch (error) {
                 console.error('Error fetching user info:', error)
+                // If user is not logged in, continue without user info
+                setUserInfo(null)
             }
         }
         fetchUserInfo()
@@ -44,7 +55,9 @@ const ChatBot = () => {
             console.log('Sending message to server:', userMessage)
             const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/chat`, {
                 message: userMessage,
-                userInfo: userInfo
+                userInfo: userInfo // This will be null if user is not logged in
+            }, {
+                withCredentials: true
             })
             console.log('Server response:', response.data)
 

@@ -37,7 +37,7 @@ const Home = ({ user }) => {
             setModulesData(modulesArray);
           })
           .catch(error => console.error('Error fetching modules:', error));
-    }, [user]);
+    }, []);
 
     // Handles click event for button moving onto roadmap
     const handleContinueClick = async (moduleId) => {

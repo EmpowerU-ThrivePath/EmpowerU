@@ -91,11 +91,11 @@ app.post("/api/chat", async (req, res) => {
             3. For each bullet that needs improvement, follow this format:
             - **Goal:** What skill or result the bullet aims to highlight
             - **Original:** The original bullet
-            - **Improved:** A stronger version using the XYZ format: “Accomplished [X] as measured by [Y], by doing [Z]”
+            - **Improved:** A stronger version using the XYZ format: "Accomplished [X] as measured by [Y], by doing [Z]"
             - **Tip:** One actionable suggestion to improve clarity, impact, or relevance
 
             If a bullet is already strong, you may briefly note:  
-            **“This bullet is strong and does not need changes.”**
+            **"This bullet is strong and does not need changes."**
 
             ### Format Output Like This:
 
@@ -110,7 +110,7 @@ app.post("/api/chat", async (req, res) => {
             ### At the End, Include:
 
             **Overall Summary:**
-            - 3–5 sentence review of the resume’s tone, clarity, and alignment with the user’s goals
+            - 3–5 sentence review of the resume's tone, clarity, and alignment with the user's goals
 
             **3 Quick Wins:**
             1. [...]
@@ -126,7 +126,7 @@ app.post("/api/chat", async (req, res) => {
 
             ---
 
-            ### If the User Says They Don’t Have a Resume:
+            ### If the User Says They Don't Have a Resume:
 
             1. Respond positively and guide them through creating their first one.
             2. Ask 3–5 friendly, conversational questions:
@@ -221,8 +221,11 @@ app.post('/api/user/addModuleComplete', async (req, res) => {
       // if the moduleId is not in the modulesComplete array, add it
       if (!user.modulesComplete.includes(moduleId)) {
           user.modulesComplete.push(moduleId);
-          await user.save();
       }
+
+      await user.save();
+
+      console.log("In progress: " + user.modulesInProgress + ". Complete: " + user.modulesComplete);
 
       res.json({ 
           success: true, 
@@ -237,29 +240,40 @@ app.post('/api/user/addModuleComplete', async (req, res) => {
 
 // update users subtaskInProgress array
 app.post('/api/user/addSubtaskInProgress', async (req, res) => {
+  console.log("add subtask triggered");
   try {
       const { userId, moduleId, taskId } = req.body;
+      console.log("Request body:", { userId, moduleId, taskId });
+
       if (!userId || !moduleId || !taskId) {
           return res.status(400).json({ error: "Missing parameter" })
       }
 
-      const updated = await req.models.Profile.updateOne({ _id: userId },
-          {
-              $set: { [`subtasksInProgress.${moduleId}`]: taskId } 
-          }
-      );
-
-      if (!updated) {
-          return res.status(400).json({ error: "Cant find user" })
+      // First, find the user to check their current state
+      const user = await models.Profile.findById(userId);
+      if (!user) {
+          return res.status(400).json({ error: "User not found" });
       }
 
-      const result = await req.models.Profile.findById(userId, 'subtasksInProgress');
-          return res.json({
+      console.log("Current user subtasks:", user.subtasksInProgress);
+
+      // Initialize subtasksInProgress if it doesn't exist
+      if (!user.subtasksInProgress) {
+          user.subtasksInProgress = new Map();
+      }
+
+      // Update the subtask directly on the user document
+      user.subtasksInProgress.set(moduleId, taskId);
+      await user.save();
+
+      console.log("Updated user subtasks:", user.subtasksInProgress);
+
+      return res.json({
           success: true,
-          subtasksInProgress: result.subtasksInProgress
+          subtasksInProgress: Object.fromEntries(user.subtasksInProgress)
       });
   } catch (error) {
-      console.log(error);
+      console.log("Error in addSubtaskInProgress:", error);
       return res.status(500).json({ error: error.message })
   }
 });

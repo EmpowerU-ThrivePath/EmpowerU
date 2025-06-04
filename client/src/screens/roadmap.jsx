@@ -10,35 +10,10 @@ const Roadmap = () => {
   const { moduleId, user } = location.state;
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   console.log("Opening " + moduleId);
-
   console.log("User ID:", user._id);
+
   const [moduleData, setModuleData] = useState(null);
-
   const [taskId, setTaskId] = useState(null);
-
-  const [currentUser, setCurrentUser] = useState({
-    modulesInProgress: [],
-    modulesComplete: [],
-    subtasksInProgress: {},
-  });
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user?userId=${user._id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-        const data = await response.json();
-        setCurrentUser(data);
-        console.log("Current user data:", data);
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    };
-
-    fetchUserProfile();
-  }, [location.key]);
 
   useEffect(() => {
     const fetchModuleData = async () => {
@@ -59,9 +34,9 @@ const Roadmap = () => {
   }, [moduleId]);
 
   useEffect(() => {
-    if (!currentUser || !moduleData) return;
+    if (!moduleData) return;
 
-    const task = currentUser.subtasksInProgress?.[moduleId.toLowerCase()];
+    const task = user.subtasksInProgress?.[moduleId.toLowerCase()];
     console.log("Current task:", task);
 
     if (task) {
@@ -87,10 +62,8 @@ const Roadmap = () => {
 
           const data = await response.json();
           if (data.success) {
-            setCurrentUser(prev => ({
-              ...prev,
-              subtasksInProgress: data.subtasksInProgress
-            }));
+            // Update the user object in location state to reflect the new subtask
+            location.state.user.subtasksInProgress = data.subtasksInProgress;
             setTaskId(firstTask);
           } else {
             console.error("Failed to add subtask:", data.error);
@@ -102,18 +75,17 @@ const Roadmap = () => {
 
       updateSubtask();
     }
-  }, [currentUser, moduleData, moduleId, user._id]);
+  }, [moduleData, moduleId, user._id, location.key]);
 
   if (!moduleData) {
     return <div>Loading roadmap...</div>;
   }
 
-  const taskKey = currentUser?.subtasksInProgress?.[moduleId.toLowerCase()];
+  const taskKey = user.subtasksInProgress?.[moduleId.toLowerCase()];
   const currentTask = taskKey && moduleData?.subtasks?.[taskKey];
 
   console.log("Current task:", currentTask);
   console.log("Task key:", taskKey);
-
 
   const handleBackClick = () => {
     navigate('/home');
@@ -187,11 +159,10 @@ const Roadmap = () => {
                 </div>
               </div>
             </div>
-
           </div>
 
           <div className="roadmap-steps">
-            {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData], index) => {
+            {moduleData && Object.entries(moduleData.subtasks).map(([currentTask, taskData]) => {
               // Get all subtask keys
               const allKeys = Object.keys(moduleData.subtasks);
               

@@ -30,7 +30,7 @@ const Subtask = () => {
     const currentTask = subtasks?.[taskId];
 
     const handleBackClick = () => {
-        navigate('/roadmap', { state: { moduleId, user } });
+        navigate('/roadmap', { state: { moduleId, user: updatedUser } });
     };
 
     const handleNextClick = async () => {

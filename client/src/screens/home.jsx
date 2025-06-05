@@ -9,7 +9,8 @@ const Home = ({ user }) => {
     const [userName, setUserName] = useState('');
     const [currentUser, setCurrentUser] = useState({
         modulesInProgress: [],
-        modulesComplete: []
+        modulesComplete: [],
+        subtasksInProgress: {}
     });
 
     useEffect(() => {
@@ -27,6 +28,7 @@ const Home = ({ user }) => {
 
         if (user) {
             fetchUserProfile();
+            console.log("Current user tasks:", currentUser.subtasksInProgress["resume"]);
         }
 
         // Fetch modules data

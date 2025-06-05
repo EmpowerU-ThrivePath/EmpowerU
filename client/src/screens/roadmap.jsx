@@ -75,7 +75,7 @@ const Roadmap = () => {
 
       updateSubtask();
     }
-  }, [currentUser, moduleData, moduleId, user._id, location.key]);
+  }, [moduleData, moduleId, user._id]);
 
   if (!moduleData) {
     return <div>Loading roadmap...</div>;

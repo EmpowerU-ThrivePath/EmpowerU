@@ -203,8 +203,8 @@ app.post('/api/user/addModuleInProgress', async (req, res) => {
   }
 });
 
+// Add a module to modulesComplete array
 app.post('/api/user/addModuleComplete', async (req, res) => {
-  console.log("complete triggered");
   try {
       const { userId, moduleId } = req.body;
 
@@ -226,8 +226,6 @@ app.post('/api/user/addModuleComplete', async (req, res) => {
 
       await user.save();
 
-      console.log("In progress: " + user.modulesInProgress + ". Complete: " + user.modulesComplete);
-
       res.json({ 
           success: true, 
           modulesInProgress: user.modulesInProgress,
@@ -239,39 +237,37 @@ app.post('/api/user/addModuleComplete', async (req, res) => {
   }
 });
 
-// update users subtaskInProgress array
+// update users subtaskInProgress
 app.post('/api/user/addSubtaskInProgress', async (req, res) => {
-  console.log("add subtask triggered");
   try {
       const { userId, moduleId, taskId } = req.body;
-      console.log("Request body:", { userId, moduleId, taskId });
 
       if (!userId || !moduleId || !taskId) {
           return res.status(400).json({ error: "Missing parameter" })
       }
 
-      // First, find the user to check their current state
+      // find the user to check their current state
       const user = await models.Profile.findById(userId);
       if (!user) {
           return res.status(400).json({ error: "User not found" });
       }
 
-      console.log("Current user subtasks:", user.subtasksInProgress);
+      // Create a new object with all existing subtasks plus the new one
+      const updatedSubtasks = {
+          ...user.subtasksInProgress,
+          [moduleId]: taskId
+      };
 
-      // Initialize subtasksInProgress if it doesn't exist
-      if (!user.subtasksInProgress) {
-          user.subtasksInProgress = new Map();
-      }
-
-      // Update the subtask directly on the user document
-      user.subtasksInProgress.set(moduleId, taskId);
-      await user.save();
-
-      console.log("Updated user subtasks:", user.subtasksInProgress);
+      // Use findByIdAndUpdate to ensure the change is saved
+      const updatedUser = await models.Profile.findByIdAndUpdate(
+          userId,
+          { $set: { subtasksInProgress: updatedSubtasks } },
+          { new: true }
+      );
 
       return res.json({
           success: true,
-          subtasksInProgress: Object.fromEntries(user.subtasksInProgress)
+          subtasksInProgress: updatedUser.subtasksInProgress
       });
   } catch (error) {
       console.log("Error in addSubtaskInProgress:", error);

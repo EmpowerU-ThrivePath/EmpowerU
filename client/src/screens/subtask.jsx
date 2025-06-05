@@ -4,10 +4,12 @@ import ChatBot from '../components/ChatBot'
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import CompletionModal from "../components/CompletionModal";
 
 const Subtask = () => {
     const navigate = useNavigate();
 
+    const [showCompletionModal, setShowCompletionModal] = useState(false);
     const { moduleId, user, taskId } = useLocation().state;
     let updatedUser = user;
 
@@ -57,7 +59,6 @@ const Subtask = () => {
                 }
     
                 const data = await response.json();
-                console.log("Update response:", data);
 
                 if (data.success) {
                     // Update the local user state with the new progress
@@ -68,9 +69,7 @@ const Subtask = () => {
                             [moduleId.toLowerCase()]: nextTaskId
                         }
                     };
-                    console.log("Updated subtasks:", updatedUser.subtasksInProgress);
 
-                    // Navigate with the updated user state
                     navigate('/subtask', { 
                         state: { 
                             moduleId, 
@@ -120,7 +119,7 @@ const Subtask = () => {
             console.error("Error completing module:", error);
         }
     };
-    
+
     return (
         <div className='subtask-div'>
             <p className='back-btn' onClick={() => handleBackClick()}>&lt; Back</p>

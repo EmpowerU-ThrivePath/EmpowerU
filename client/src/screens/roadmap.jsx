@@ -9,9 +9,6 @@ const Roadmap = () => {
 
   const { moduleId, user } = location.state;
   const [showCompletionModal, setShowCompletionModal] = useState(false);
-  console.log("Opening " + moduleId);
-  console.log("User ID:", user._id);
-
   const [moduleData, setModuleData] = useState(null);
   const [taskId, setTaskId] = useState(null);
 
@@ -37,7 +34,6 @@ const Roadmap = () => {
     if (!moduleData) return;
 
     const task = user.subtasksInProgress?.[moduleId.toLowerCase()];
-    console.log("Current task:", task);
 
     if (task) {
       setTaskId(task);
@@ -83,9 +79,6 @@ const Roadmap = () => {
 
   const taskKey = user.subtasksInProgress?.[moduleId.toLowerCase()];
   const currentTask = taskKey && moduleData?.subtasks?.[taskKey];
-
-  console.log("Current task:", currentTask);
-  console.log("Task key:", taskKey);
 
   const handleBackClick = () => {
     navigate('/home');

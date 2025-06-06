@@ -1,3 +1,5 @@
+EmpowerU is no longer working on this project. All ownership and responsibility have been transferred to No Brainer. For any questions or support, please contact wintana@no-brainer-solutions.com.
+
 # Project Team
 EmpowerU
 

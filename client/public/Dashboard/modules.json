@@ -5,69 +5,156 @@
         "description": "Build a professional resume step-by-step with our guided tool.",
         "img": "/Dashboard/attachedFile.png",
         "subtasks": {
-            "Personal_Informtion": {
-                "task_title": "Add name and personal information",
-                "short_desc": "Include your full name, phone number, email address, and additional links",
-                "task_desc": {
-                    "p": ["Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your your information is accurate, professional, and up to date.", 
-                    "This should include:"],
-                    "ul": ["Full name", "Position", "Location", "Email", "Phone number", "Additional links"]
-                },
-                "example_img": "https://www.cvplaza.com/wp-content/uploads/2012/09/cv-personal-profile-statement.png",
-                "tips": [
-                    {
-                        "title": "Use a clear, readable font",
-                        "caption": "Choose a professional font to ensure your name and contact info are easy to read",
-                        "tip_img": "https://www.designyup.com/wp-content/uploads/2019/03/arial-font-sample.jpg"
-                    },
-                    {
-                        "title": "Have a professional email",
-                        "caption": "Use a simple, name-based email instead of a casual or outdated address",
-                        "tip_img": "https://pictarts.com/07/material/01-free/0054-clip-art-m.png"
-                    },
-                    {
-                        "title": "Include your LinkedIn/portfolio",
-                        "caption": "Add links to your LinkedIn or portfolio to showcase your work",
-                        "tip_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
-                    }
+            "Personal_Information": {
+              "task_title": "Add name and personal information",
+              "short_desc": "Include your full name, phone number, email address, and additional links",
+              "task_desc": {
+                "p": [
+                  "Your name and personal information are the first things employers will see on your resume. This section is crucial because it allows potential employers to contact you for interviews or follow-ups. Make sure your information is accurate, professional, and up to date.",
+                  "This should include:"
                 ],
-                "resources": [
-                    {
-                        "resource_title": "Including Personal Details on Your Resume",
-                        "resource_link": "https://www.indeed.com/career-advice/resumes-cover-letters/personal-details-on-resume"
-                    }, {
-                        "resource_title": "How to Write a Resume Personal Statement",
-                        "resource_link": "https://resume.io/blog/resume-personal-statement"
-                    }
-                ]
+                "ul": ["Full name", "Position", "Location", "Email", "Phone number", "Additional links"]
+              },
+              "example_img": "https://www.cvplaza.com/wp-content/uploads/2012/09/cv-personal-profile-statement.png",
+              "tips": [
+                {
+                  "title": "Use a clear, readable font",
+                  "caption": "Choose a professional font to ensure your name and contact info are easy to read",
+                  "tip_img": "https://www.designyup.com/wp-content/uploads/2019/03/arial-font-sample.jpg"
+                },
+                {
+                  "title": "Have a professional email",
+                  "caption": "Use a simple, name-based email instead of a casual or outdated address",
+                  "tip_img": "https://pictarts.com/07/material/01-free/0054-clip-art-m.png"
+                },
+                {
+                  "title": "Include your LinkedIn/portfolio",
+                  "caption": "Add links to your LinkedIn or portfolio to showcase your work",
+                  "tip_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/960px-LinkedIn_logo_initials.png"
+                }
+              ],
+              "resources": [
+                {
+                  "resource_title": "Including Personal Details on Your Resume",
+                  "resource_link": "https://www.indeed.com/career-advice/resumes-cover-letters/personal-details-on-resume"
+                },
+                {
+                  "resource_title": "How to Write a Resume Personal Statement",
+                  "resource_link": "https://resume.io/blog/resume-personal-statement"
+                }
+              ]
             },
             "Education": {
-                "task_title": "Add education2",
-                "short_desc": "Include your education history",
-                "task_desc": {
-                    "p": ["Create an education section and list your recent or current school"]
+              "task_title": "Add education history",
+              "short_desc": "Outline your academic background",
+              "task_desc": {
+                "p": [
+                  "List your most recent educational experiences first. Include the institution name, degree obtained, field of study, and graduation date.",
+                  "Focus on education that supports the type of position you are applying for."
+                ],
+                "ul": ["Institution name", "Degree or diploma", "Field of study", "Dates attended", "Honors or awards"]
+              },
+              "example_img": "https://via.placeholder.com/150",
+              "tips": [
+                {
+                  "title": "Order by most recent",
+                  "caption": "Always list your latest education first to make it easy to follow."
+                },
+                {
+                  "title": "Include relevant coursework",
+                  "caption": "Add specific courses that are related to the job you are applying for."
                 }
+              ],
+              "resources": [
+                {
+                  "resource_title": "How to List Education on a Resume",
+                  "resource_link": "https://www.thebalancemoney.com/how-to-include-education-on-your-resume-2062881"
+                }
+              ]
             },
             "Experience": {
-                "task_title": "Add education3",
-                "short_desc": "Include your education history",
-                "task_desc": {
-                    "p": ["Create an education section and list your recent or current school"]
+              "task_title": "Add work experience",
+              "short_desc": "Highlight your past job roles and responsibilities",
+              "task_desc": {
+                "p": [
+                  "Describe your previous jobs starting from the most recent one. Mention your title, employer, dates of employment, and key achievements.",
+                  "Use action verbs to show your contributions."
+                ],
+                "ul": ["Job title", "Company name", "Location", "Dates of employment", "Achievements and responsibilities"]
+              },
+              "example_img": "https://via.placeholder.com/150",
+              "tips": [
+                {
+                  "title": "Use bullet points",
+                  "caption": "Bullet points make your resume easier to read."
+                },
+                {
+                  "title": "Quantify achievements",
+                  "caption": "Use numbers and metrics to highlight your impact."
                 }
+              ],
+              "resources": [
+                {
+                  "resource_title": "How to Describe Work Experience on a Resume",
+                  "resource_link": "https://zety.com/blog/work-experience-resume"
+                }
+              ]
             },
             "Skills": {
-                "task_title": "Add education4",
-                "short_desc": "Include your education history",
-                "task_desc": {
-                    "p": ["Create an education section and list your recent or current school"]
+              "task_title": "List your skills",
+              "short_desc": "Showcase your technical and soft skills",
+              "task_desc": {
+                "p": [
+                  "Skills help employers quickly see if you meet their needs. Include a mix of hard and soft skills relevant to the job.",
+                  "Group skills by category if you have many."
+                ],
+                "ul": ["Technical skills", "Communication skills", "Leadership skills", "Problem-solving skills"]
+              },
+              "example_img": "https://via.placeholder.com/150",
+              "tips": [
+                {
+                  "title": "Tailor skills to the job",
+                  "caption": "Focus on skills that are listed in the job description."
+                },
+                {
+                  "title": "Keep it concise",
+                  "caption": "List only the skills you are confident in using professionally."
                 }
+              ],
+              "resources": [
+                {
+                  "resource_title": "Top Skills to Include on Your Resume",
+                  "resource_link": "https://www.indeed.com/career-advice/resumes-cover-letters/best-skills-to-put-on-resume"
+                }
+              ]
             },
             "Proofread": {
-                "task_title": "Add education5",
-                "short_desc": "Include your education history",
-                "task_desc": {
-                    "p": ["Create an education section and list your recent or current school"]
+              "task_title": "Proofread your resume",
+              "short_desc": "Check for errors and polish your resume",
+              "task_desc": {
+                "p": [
+                  "Review your resume carefully to catch typos, grammatical errors, and formatting issues.",
+                  "Ask a friend or mentor to review it for a second opinion."
+                ],
+                "ul": ["Spelling and grammar check", "Consistency in formatting", "Clear and concise language", "Updated contact information"]
+              },
+              "example_img": "https://via.placeholder.com/150",
+              "tips": [
+                {
+                  "title": "Read aloud",
+                  "caption": "Reading your resume aloud can help catch awkward phrasing."
+                },
+                {
+                  "title": "Use spellcheck tools",
+                  "caption": "Tools like Grammarly can catch mistakes you might miss."
                 }
+              ],
+              "resources": [
+                {
+                  "resource_title": "Proofreading Tips for Your Resume",
+                  "resource_link": "https://www.themuse.com/advice/13-essential-dos-and-donts-for-proofreading-your-resume"
+                }
+              ]
             }
         }
     },

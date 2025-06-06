@@ -22,7 +22,7 @@ const profileSchema = new mongoose.Schema({
   hasCompletedQuiz: { type: Boolean, default: false },
   modulesInProgress: Array,
   modulesComplete: Array,
-  subtasksInProgress: {type: Map, of: String, default: {}},
+  subtasksInProgress: { type: Object, default: {} }
 });
 
 profileSchema.pre("save", function (next) {

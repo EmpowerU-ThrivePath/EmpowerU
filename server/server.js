@@ -203,8 +203,8 @@ app.post('/api/user/addModuleInProgress', async (req, res) => {
   }
 });
 
+// Add a module to modulesComplete array
 app.post('/api/user/addModuleComplete', async (req, res) => {
-  console.log("complete triggered");
   try {
       const { userId, moduleId } = req.body;
 
@@ -222,8 +222,9 @@ app.post('/api/user/addModuleComplete', async (req, res) => {
       // if the moduleId is not in the modulesComplete array, add it
       if (!user.modulesComplete.includes(moduleId)) {
           user.modulesComplete.push(moduleId);
-          await user.save();
       }
+
+      await user.save();
 
       res.json({ 
           success: true, 
@@ -236,31 +237,40 @@ app.post('/api/user/addModuleComplete', async (req, res) => {
   }
 });
 
-// update users subtaskInProgress array
+// update users subtaskInProgress
 app.post('/api/user/addSubtaskInProgress', async (req, res) => {
   try {
       const { userId, moduleId, taskId } = req.body;
+
       if (!userId || !moduleId || !taskId) {
           return res.status(400).json({ error: "Missing parameter" })
       }
 
-      const updated = await req.models.Profile.updateOne({ _id: userId },
-          {
-              $set: { [`subtasksInProgress.${moduleId}`]: taskId } 
-          }
-      );
-
-      if (!updated) {
-          return res.status(400).json({ error: "Cant find user" })
+      // find the user to check their current state
+      const user = await models.Profile.findById(userId);
+      if (!user) {
+          return res.status(400).json({ error: "User not found" });
       }
 
-      const result = await req.models.Profile.findById(userId, 'subtasksInProgress');
-          return res.json({
+      // Create a new object with all existing subtasks plus the new one
+      const updatedSubtasks = {
+          ...user.subtasksInProgress,
+          [moduleId]: taskId
+      };
+
+      // Use findByIdAndUpdate to ensure the change is saved
+      const updatedUser = await models.Profile.findByIdAndUpdate(
+          userId,
+          { $set: { subtasksInProgress: updatedSubtasks } },
+          { new: true }
+      );
+
+      return res.json({
           success: true,
-          subtasksInProgress: result.subtasksInProgress
+          subtasksInProgress: updatedUser.subtasksInProgress
       });
   } catch (error) {
-      console.log(error);
+      console.log("Error in addSubtaskInProgress:", error);
       return res.status(500).json({ error: error.message })
   }
 });

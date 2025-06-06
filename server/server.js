@@ -70,6 +70,7 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "Server is working!" });
 });
 
+// change how the chatbot operates, do not remove the userinfo or the chatbot will not know the user's information
 app.post("/api/chat", async (req, res) => {
     try {
         console.log("Received chat request:", req.body)
@@ -150,6 +151,7 @@ app.post("/api/chat", async (req, res) => {
             return res.status(400).json({ error: "Message is required" });
         }
 
+        // change the model of the chatbot
         console.log("Sending request to OpenAI...")
         const completion = await openai.chat.completions.create({
             model: "gpt-3.5-turbo-0125",
